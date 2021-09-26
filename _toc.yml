@@ -1,7 +1,6 @@
 format: jb-book
-root: index
+root: intro
 parts:
   - caption: Neural Coding
     chapters:
-    - file: Lectures/02-NeuralResponses&TuningCurves.ipynb
-    - file: 06-Decoding.ipynb
+    - file: lectures/02-NeuralResponses&TuningCurves.ipynb
