@@ -4,3 +4,4 @@ parts:
   - caption: Neural Coding
     chapters:
     - file: lectures/02-NeuralResponses&TuningCurves.ipynb
+    - file: lectures/06-Decoding.ipynb
