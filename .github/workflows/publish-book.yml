@@ -1,53 +1,42 @@
-name: publish-book
+name: deploy-book
 
-on: 
-
-  workflow_dispatch:
-    
+# Only run this when the master branch changes
+on:
   push:
-    branches: main
+    branches:
+    - master
+    # If your git repository has the Jupyter Book within some-subfolder next to
+    # unrelated files, you can make this run only if a file within that specific
+    # folder has been modified.
+    #
+    # paths:
+    # - some-subfolder/**
 
-env:
-  NB_KERNEL: python
-
-# This job installs dependencies, build the book, and pushes it to `gh-pages`
+# This job installs dependencies, builds the book, and pushes it to `gh-pages`
 jobs:
-  build-and-deploy-book:
+  deploy-book:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
 
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false
-          fetch-depth: 0
-          ref: ${{ github.head_ref }}
-          
-      - name: Get commit message
-        run: |
-          readonly local msg=$(git log -1 --pretty=format:"%s")
-          echo "COMMIT_MESSAGE=$msg" >> $GITHUB_ENV
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.7
-          
-      - name: Install dependencies
-        run: |
-          pip install jupyter-book==0.10.2 ghp-import
-          
-      - name: Build the book
-        run: |
-          jupyter-book build ./
-      - name: Commit book
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          ghp-import -n -m "Update course book" book/_build/html
-          git checkout -f gh-pages
-      - name: Publish to gh-pages
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages
-          force: true
+    # Install dependencies
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    # Build the book
+    - name: Build the book
+      run: |
+        jupyter-book build .
+
+    # Push the book's HTML to github-pages
+    - name: GitHub Pages action
+      uses: peaceiris/actions-gh-pages@v3.6.1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./_build/html
