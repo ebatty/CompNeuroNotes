@@ -38,7 +38,7 @@ jobs:
           
       - name: Build the book
         run: |
-          jupyter-book build book
+          jupyter-book build ./
       - name: Commit book
         run: |
           git config --local user.email "action@github.com"
