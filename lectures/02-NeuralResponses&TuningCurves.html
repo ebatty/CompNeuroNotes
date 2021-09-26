@@ -213,18 +213,18 @@
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#visualizing-neural-reponses">
-   Visualizing Neural Reponses
+  <a class="reference internal nav-link" href="#section-2-visualizing-neural-reponses">
+   Section 2: Visualizing Neural Reponses
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#raster-plots">
-     Raster Plots
+    <a class="reference internal nav-link" href="#section-2-1-raster-plots">
+     Section 2.1: Raster Plots
     </a>
    </li>
    <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#psths">
-     PSTHs
+    <a class="reference internal nav-link" href="#section-2-2-psths">
+     Section 2.2: PSTHs
     </a>
    </li>
   </ul>
@@ -245,7 +245,8 @@
         
               <div>
                 
-  <div class="section" id="neural-responses-tuning-curves">
+  <p><a href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/lectures/02-NeuralResponses%26TuningCurves.ipynb" target="_blank"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<div class="section" id="neural-responses-tuning-curves">
 <h1>02 - Neural Responses &amp; Tuning Curves<a class="headerlink" href="#neural-responses-tuning-curves" title="Permalink to this headline">¶</a></h1>
 <p><strong>Learning objectives of lecture/notes</strong>:
 After lecture, students should be able to:</p>
@@ -254,38 +255,256 @@ After lecture, students should be able to:</p>
 <li><p>Know the steps for constructing raster plots &amp; PSTHs</p></li>
 <li><p>Interpret information about neural response to a stimulus from a tuning curve</p></li>
 </ul>
+<div class="tip dropdown admonition">
+<p class="admonition-title"><strong>Stop and think!</strong> What would happen if you choose a bin width that’s too big? Too small?</p>
+<p>Too big a bin and you might lose temporal information in the neural reponses because you’re summing spikes over a long period of time. Too small a bin and the PSTH could be hard to interpret. For example, imagine if you chose a time bin small enough that there was almost always at most 1 spike in each, even across all trials. The PSTH would not convey much information. See Figures 5 and 6 to see too big a bin width and too small a bin width, respectively.```</p>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>```{admonition} **Stop and think!** What can you conclude about the neural responses to whatever the trial is from the raster in Figure 3?
+:class: tip, dropdown
+From the raster, in Figure 3, you can conclude that the neurons in the population are firing at similar times of the trial as each other.```
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>  File &quot;/tmp/ipykernel_1633/3783215297.py&quot;, line 1
+    ```{admonition} **Stop and think!** What can you conclude about the neural responses to whatever the trial is from the raster in Figure 3?
+    ^
+SyntaxError: invalid syntax
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 <div class="section" id="section-1-experimental-set-up">
 <h1>Section 1: Experimental set-up<a class="headerlink" href="#section-1-experimental-set-up" title="Permalink to this headline">¶</a></h1>
 <p>In the next few sections, we will cover important concepts in the context of a case study. In this case study, you are a computational neuroscientist and you have a hypothesis that some neurons in monkey motor cortex correlate with the direction of arm movement while reaching. By this, you mean that a particular neuron will fire more when the monkey reaches in certain directions than others.</p>
 <p>You are able to record the spike times of a neuron from motor cortex in a monkey.</p>
-<p><strong>Stop and think:</strong> what do you want the experiment to look like?</p>
+<p><strong>Stop and think!</strong> What do you want the experiment to look like?</p>
 <p>You choose an experimental set-up which will allow pretty easy analysis of the data. You have a monkey reach in eight different directions while recording from the neuron. Importantly, you have the monkey reach in each direction numerous times, not just once. You record the time the reach is initiated, perhaps by having the monkey hold onto a joystick with a sensor in it until they reach (the sensor can automatically record when the monkey lets go).</p>
 <p>This is a typical experimental protocol in neuroscience: recording the spike times of a neuron while presenting the same stimulus over and over, or having the animal perform the same behavior over and over. Each presentation of the stimulus or iteration of the behavior is called a <strong>trial</strong>. Neurons are noisy - they do not respond exactly the same way every time they see the same stimulus or behavior - collecting multiple trials of data helps us better understand the neural responses and see how variable they are.</p>
 <p>You go ahead and perform your experiment and collect a bunch of data. You now have the spike times of the neuron during multiple reachs in the same direction (and you have this for 8 different directions).</p>
 </div>
-<div class="section" id="visualizing-neural-reponses">
-<h1>Visualizing Neural Reponses<a class="headerlink" href="#visualizing-neural-reponses" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="section-2-visualizing-neural-reponses">
+<h1>Section 2: Visualizing Neural Reponses<a class="headerlink" href="#section-2-visualizing-neural-reponses" title="Permalink to this headline">¶</a></h1>
 <p>The very first thing you should do when you collect new data or receive data from someone else is visualize it! The importance of this step cannot be overemphasized.</p>
-<div class="section" id="raster-plots">
-<h2>Raster Plots<a class="headerlink" href="#raster-plots" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-2-1-raster-plots">
+<h2>Section 2.1: Raster Plots<a class="headerlink" href="#section-2-1-raster-plots" title="Permalink to this headline">¶</a></h2>
 <p>An excellent and common way to visualize neural spiking in multiple trials is a <strong>raster plot</strong>, an example of which can be found in Figure 1. In this style of plot, time is represented on the x-axis. Each spike is represented by a vertical line at the time it occurs. Each row (y-axis) can be a separate trial - in this case the raster plot displays a single neuron’s responses over multiple trials and can be used to quickly assess response variability. Alternatively, each row can show the responses of a single neuron - in this case the raster plot displays a population of neuron’s responses.</p>
 <p>Note that the timing of each trial needs to be synced. In other words, the stimulus onset, or event onset, should happen at the same time in each trial. For example, the blue line in Figure 1 could indicate the time that the monkey starts the reach movement.</p>
-<p>![raster.png](data:image/png;base64,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)</p>
+<img alt="rasterplotexample" src="https://praneethnamburi.files.wordpress.com/2015/02/02_raster_baselineandstim.png" />
 <p><em>Figure 1: An example raster plot, from https://praneethnamburi.com/category/matlab/</em></p>
-<div class="tip dropdown admonition">
-<p class="admonition-title">Stop and think! What can you conclude about the neural responses to whatever the trial is from the raster in Figure 1?</p>
+<p><strong>Stop and think!</strong> What can you conclude about the neural responses to whatever the trial is from the raster in Figure 1?</p>
 <p>From the raster, in Figure 1, you can see that the neuron tends to respond slightly more after the event (blue line) than before, but there are not very time-locked responses. In other words, there are not certain points in the trial where the neuron always responds.</p>
+<img alt="rasterplotexample1" src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs10827-018-0693-9/MediaObjects/10827_2018_693_Fig3_HTML.png?as=webp" />
+<p><em>Figure 2: Another example raster plot, from https://link.springer.com/article/10.1007/s10827-018-0693-9</em></p>
+<p><strong>Stop and think!</strong> What can you conclude about the neural responses to whatever the trial is from the raster in Figure 2?</p>
+<p>From the raster in Figure 2 (the top row), you can see that the neuron responds in a time-locked manner - there are certain times during the trial where the neuron reliably spikes (the black columns indicate a spike in every row).</p>
+<p>As mentioned above, we could also have the rows indicate different neurons - see Figure 3A for an example of this.</p>
+<img alt="rasterplotexample1" src="https://s3-eu-west-1.amazonaws.com/ppreviews-plos-725668748/1638070/preview.jpg" />
+<p><em>Figure 3: A) An example raster plot with rows as different neurons, from https://www.researchgate.net/publication/264865592_Large-Scale_High-Resolution_Multielectrode-Array_Recording_Depicts_Functional_Network_Differences_of_Cortical_and_Hippocampal_Cultures</em></p>
+<p><strong>Stop and think!</strong> What can you conclude about the neural responses to whatever the trial is from the raster in Figure 3?</p>
+<p>From the raster, in Figure 3, you can conclude that the neurons in the population are firing at similar times of the trial as each other.</p>
 </div>
-<div class="tip dropdown admonition">
-<p class="admonition-title">Stop and think! What can you conclude about the neural responses to whatever the trial is from the raster in Figure 2?</p>
-<p>From the raster, in Figure 2, you can see that the neuron tends to respond slightly more after the event (blue line) than before, but there are not very time-locked responses. In other words, there are not certain points in the trial where the neuron always responds.</p>
+<div class="section" id="section-2-2-psths">
+<h2>Section 2.2: PSTHs<a class="headerlink" href="#section-2-2-psths" title="Permalink to this headline">¶</a></h2>
+<p>We can summarize the information over trials contained in a raster plot in a peri-stimulus time histogram (PSTH), also sometimes called a peri-event time histogram (PETH). In this plot, we want to show the average underlying firing rate over time. To do that, we need to use discrete chunks of time - we divide time into time bins of some length. For each time bin, we can then count the number of spikes in that time bin over all the trials. We can then get the average spikes/bin for that time bin during the trial as the the number of spikes divided by the number of trials.</p>
+<p>See Figure 4 for an example of the construction of a PSTH from 5 trials of neural data, where each trial is just 30 ms long. We use a bin width of 5 ms - the red vertical lines denote the bin edges. We then count up the number of spikes over all the trials (2 for the first time bin), divide by the number of trials (to get to 2/5 for the first time bin), and that is our average firing rate in spikes/bin for that part of the trial.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown </span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">})</span>
+
+<span class="n">all_sp_time_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.4</span><span class="p">,</span> <span class="mf">11.1</span><span class="p">,</span> <span class="mf">15.6</span><span class="p">,</span> <span class="mf">16.7</span><span class="p">,</span> <span class="mf">27.8</span><span class="p">]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">11.9</span><span class="p">,</span> <span class="mf">15.9</span><span class="p">,</span> <span class="mf">17.7</span><span class="p">,</span> <span class="mi">28</span><span class="p">]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">8.6</span><span class="p">,</span> <span class="mf">10.6</span><span class="p">,</span> <span class="mf">13.2</span><span class="p">,</span> <span class="mf">14.2</span><span class="p">,</span> <span class="mi">27</span><span class="p">]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">8.9</span><span class="p">,</span> <span class="mf">11.9</span><span class="p">,</span> <span class="mf">12.9</span><span class="p">,</span> <span class="mf">14.5</span><span class="p">,</span> <span class="mf">26.3</span><span class="p">]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">.4</span><span class="p">,</span> <span class="mf">8.2</span><span class="p">,</span> <span class="mf">10.6</span><span class="p">,</span> <span class="mf">13.2</span><span class="p">,</span> <span class="mf">16.9</span><span class="p">,</span> <span class="mi">28</span><span class="p">])]</span>
+
+<span class="c1"># Make raster plot</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Make raster of this data</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">eventplot</span><span class="p">(</span><span class="n">all_sp_time_list</span><span class="p">,</span> <span class="n">colors</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="c1"># Label x and y axes (with units!)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="c1">#xlabel = &#39;Time (ms)&#39;, </span>
+       <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Trial Number&#39;</span><span class="p">,</span>
+       <span class="n">xlim</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+       <span class="n">ylim</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">.7</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">],</span>
+       <span class="n">yticks</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+       <span class="n">yticklabels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]);</span>
+
+<span class="c1"># Plot bin vertical lines </span>
+<span class="n">bin_width</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">bin_edge_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">30.1</span><span class="p">,</span> <span class="n">bin_width</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">bin_time</span> <span class="ow">in</span> <span class="n">bin_edge_times</span><span class="p">:</span>
+  <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">bin_time</span><span class="p">,</span> <span class="n">bin_time</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">.7</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">],</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+
+<span class="c1"># Make PSTH</span>
+
+<span class="n">binned_spikes</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">all_sp_time_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">bins</span> <span class="o">=</span> <span class="n">bin_edge_times</span><span class="p">)</span>
+
+<span class="n">x_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mf">.1</span><span class="p">)</span>
+<span class="n">y_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">x_vals</span><span class="p">)))</span>
+<span class="k">for</span> <span class="n">i_bin</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bin_edge_times</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+  <span class="n">y_vals</span><span class="p">[(</span><span class="n">x_vals</span> <span class="o">&gt;</span> <span class="n">bin_edge_times</span><span class="p">[</span><span class="n">i_bin</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x_vals</span> <span class="o">&lt;=</span> <span class="n">bin_edge_times</span><span class="p">[</span><span class="n">i_bin</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])]</span> <span class="o">=</span> <span class="n">binned_spikes</span><span class="p">[</span><span class="n">i_bin</span><span class="p">]</span> <span class="o">/</span> <span class="mi">5</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_vals</span><span class="p">,</span> <span class="n">y_vals</span><span class="p">,</span>  <span class="s1">&#39;k&#39;</span><span class="p">);</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time (ms)&#39;</span><span class="p">,</span> 
+            <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Firing rate (spikes/bin)&#39;</span><span class="p">);</span>
+</pre></div>
 </div>
-<p>As mentioned above, we could also have the rows indicate different neurons (this is slightly more rare).</p>
 </div>
-<div class="section" id="psths">
-<h2>PSTHs<a class="headerlink" href="#psths" title="Permalink to this headline">¶</a></h2>
-<p>We can summarize the information over trials contained in a raster plot in a peri-stimulus time histogram (PSTH).</p>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1633</span><span class="o">/</span><span class="mf">3170727464.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">})</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> 
+<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">all_sp_time_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.4</span><span class="p">,</span> <span class="mf">11.1</span><span class="p">,</span> <span class="mf">15.6</span><span class="p">,</span> <span class="mf">16.7</span><span class="p">,</span> <span class="mf">27.8</span><span class="p">]),</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span>                     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">11.9</span><span class="p">,</span> <span class="mf">15.9</span><span class="p">,</span> <span class="mf">17.7</span><span class="p">,</span> <span class="mi">28</span><span class="p">]),</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span>                     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">8.6</span><span class="p">,</span> <span class="mf">10.6</span><span class="p">,</span> <span class="mf">13.2</span><span class="p">,</span> <span class="mf">14.2</span><span class="p">,</span> <span class="mi">27</span><span class="p">]),</span>
+
+<span class="ne">NameError</span>: name &#39;np&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p><em>Figure 4: PSTH (bottom row) constructed from a raster plot (top row) with a bin width of 5 ms.</em></p>
+<p><strong>Stop and think!</strong> What would happen if you choose a bin width that’s too big? Too small?</p>
+<p>Too big a bin and you might lose temporal information in the neural reponses because you’re summing spikes over a long period of time. Too small a bin and the PSTH could be hard to interpret. For example, imagine if you chose a time bin small enough that there was almost always at most 1 spike in each, even across all trials. The PSTH would not convey much information. See Figures 5 and 6 to see too big a bin width and too small a bin width, respectively.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown </span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">})</span>
+
+<span class="n">all_sp_time_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.4</span><span class="p">,</span> <span class="mf">11.1</span><span class="p">,</span> <span class="mf">15.6</span><span class="p">,</span> <span class="mf">16.7</span><span class="p">,</span> <span class="mf">27.8</span><span class="p">]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">11.9</span><span class="p">,</span> <span class="mf">15.9</span><span class="p">,</span> <span class="mf">17.7</span><span class="p">,</span> <span class="mi">28</span><span class="p">]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">8.6</span><span class="p">,</span> <span class="mf">10.6</span><span class="p">,</span> <span class="mf">13.2</span><span class="p">,</span> <span class="mf">14.2</span><span class="p">,</span> <span class="mi">27</span><span class="p">]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">8.9</span><span class="p">,</span> <span class="mf">11.9</span><span class="p">,</span> <span class="mf">12.9</span><span class="p">,</span> <span class="mf">14.5</span><span class="p">,</span> <span class="mf">26.3</span><span class="p">]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">.4</span><span class="p">,</span> <span class="mf">8.2</span><span class="p">,</span> <span class="mf">10.6</span><span class="p">,</span> <span class="mf">13.2</span><span class="p">,</span> <span class="mf">16.9</span><span class="p">,</span> <span class="mi">28</span><span class="p">])]</span>
+
+<span class="c1"># Make raster plot</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Make raster of this data</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">eventplot</span><span class="p">(</span><span class="n">all_sp_time_list</span><span class="p">,</span> <span class="n">colors</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="c1"># Label x and y axes (with units!)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="c1">#xlabel = &#39;Time (ms)&#39;, </span>
+       <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Trial Number&#39;</span><span class="p">,</span>
+       <span class="n">xlim</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+       <span class="n">ylim</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">.7</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">],</span>
+       <span class="n">yticks</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+       <span class="n">yticklabels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]);</span>
+
+<span class="c1"># Plot bin vertical lines </span>
+<span class="n">bin_width</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">bin_edge_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">30.1</span><span class="p">,</span> <span class="n">bin_width</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">bin_time</span> <span class="ow">in</span> <span class="n">bin_edge_times</span><span class="p">:</span>
+  <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">bin_time</span><span class="p">,</span> <span class="n">bin_time</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">.7</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">],</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+
+<span class="c1"># Make PSTH</span>
+
+<span class="n">binned_spikes</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">all_sp_time_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">bins</span> <span class="o">=</span> <span class="n">bin_edge_times</span><span class="p">)</span>
+
+<span class="n">x_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mf">.1</span><span class="p">)</span>
+<span class="n">y_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">x_vals</span><span class="p">)))</span>
+<span class="k">for</span> <span class="n">i_bin</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bin_edge_times</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+  <span class="n">y_vals</span><span class="p">[(</span><span class="n">x_vals</span> <span class="o">&gt;</span> <span class="n">bin_edge_times</span><span class="p">[</span><span class="n">i_bin</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x_vals</span> <span class="o">&lt;=</span> <span class="n">bin_edge_times</span><span class="p">[</span><span class="n">i_bin</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])]</span> <span class="o">=</span> <span class="n">binned_spikes</span><span class="p">[</span><span class="n">i_bin</span><span class="p">]</span> <span class="o">/</span> <span class="mi">5</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_vals</span><span class="p">,</span> <span class="n">y_vals</span><span class="p">,</span>  <span class="s1">&#39;k&#39;</span><span class="p">);</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time (ms)&#39;</span><span class="p">,</span> 
+            <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Firing rate (spikes/bin)&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1633</span><span class="o">/</span><span class="mf">3287975044.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">})</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> 
+<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">all_sp_time_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.4</span><span class="p">,</span> <span class="mf">11.1</span><span class="p">,</span> <span class="mf">15.6</span><span class="p">,</span> <span class="mf">16.7</span><span class="p">,</span> <span class="mf">27.8</span><span class="p">]),</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span>                     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">11.9</span><span class="p">,</span> <span class="mf">15.9</span><span class="p">,</span> <span class="mf">17.7</span><span class="p">,</span> <span class="mi">28</span><span class="p">]),</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span>                     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">8.6</span><span class="p">,</span> <span class="mf">10.6</span><span class="p">,</span> <span class="mf">13.2</span><span class="p">,</span> <span class="mf">14.2</span><span class="p">,</span> <span class="mi">27</span><span class="p">]),</span>
+
+<span class="ne">NameError</span>: name &#39;np&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p><em>Figure 5: PSTH (bottom row) constructed from a raster plot (top row) with a bin width of 15 ms. This bin width is too large and you lose a lot of temporal information!</em></p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown </span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">})</span>
+
+<span class="n">all_sp_time_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.4</span><span class="p">,</span> <span class="mf">11.1</span><span class="p">,</span> <span class="mf">15.6</span><span class="p">,</span> <span class="mf">16.7</span><span class="p">,</span> <span class="mf">27.8</span><span class="p">]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">11.9</span><span class="p">,</span> <span class="mf">15.9</span><span class="p">,</span> <span class="mf">17.7</span><span class="p">,</span> <span class="mi">28</span><span class="p">]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">8.6</span><span class="p">,</span> <span class="mf">10.6</span><span class="p">,</span> <span class="mf">13.2</span><span class="p">,</span> <span class="mf">14.2</span><span class="p">,</span> <span class="mi">27</span><span class="p">]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">8.9</span><span class="p">,</span> <span class="mf">11.9</span><span class="p">,</span> <span class="mf">12.9</span><span class="p">,</span> <span class="mf">14.5</span><span class="p">,</span> <span class="mf">26.3</span><span class="p">]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">.4</span><span class="p">,</span> <span class="mf">8.2</span><span class="p">,</span> <span class="mf">10.6</span><span class="p">,</span> <span class="mf">13.2</span><span class="p">,</span> <span class="mf">16.9</span><span class="p">,</span> <span class="mi">28</span><span class="p">])]</span>
+
+<span class="c1"># Make raster plot</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Make raster of this data</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">eventplot</span><span class="p">(</span><span class="n">all_sp_time_list</span><span class="p">,</span> <span class="n">colors</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="c1"># Label x and y axes (with units!)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="c1">#xlabel = &#39;Time (ms)&#39;, </span>
+       <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Trial Number&#39;</span><span class="p">,</span>
+       <span class="n">xlim</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+       <span class="n">ylim</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">.7</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">],</span>
+       <span class="n">yticks</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+       <span class="n">yticklabels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]);</span>
+
+<span class="c1"># Plot bin vertical lines </span>
+<span class="n">bin_width</span> <span class="o">=</span> <span class="mf">.5</span>
+<span class="n">bin_edge_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">30.1</span><span class="p">,</span> <span class="n">bin_width</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">bin_time</span> <span class="ow">in</span> <span class="n">bin_edge_times</span><span class="p">:</span>
+  <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">bin_time</span><span class="p">,</span> <span class="n">bin_time</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">.7</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">],</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+
+<span class="c1"># Make PSTH</span>
+
+<span class="n">binned_spikes</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">all_sp_time_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">bins</span> <span class="o">=</span> <span class="n">bin_edge_times</span><span class="p">)</span>
+
+<span class="n">x_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mf">.1</span><span class="p">)</span>
+<span class="n">y_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">x_vals</span><span class="p">)))</span>
+<span class="k">for</span> <span class="n">i_bin</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bin_edge_times</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+  <span class="n">y_vals</span><span class="p">[(</span><span class="n">x_vals</span> <span class="o">&gt;</span> <span class="n">bin_edge_times</span><span class="p">[</span><span class="n">i_bin</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x_vals</span> <span class="o">&lt;=</span> <span class="n">bin_edge_times</span><span class="p">[</span><span class="n">i_bin</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])]</span> <span class="o">=</span> <span class="n">binned_spikes</span><span class="p">[</span><span class="n">i_bin</span><span class="p">]</span> <span class="o">/</span> <span class="mi">5</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_vals</span><span class="p">,</span> <span class="n">y_vals</span><span class="p">,</span>  <span class="s1">&#39;k&#39;</span><span class="p">);</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time (ms)&#39;</span><span class="p">,</span> 
+            <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Firing rate (spikes/bin)&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1633</span><span class="o">/</span><span class="mf">3633017327.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">})</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> 
+<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">all_sp_time_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.4</span><span class="p">,</span> <span class="mf">11.1</span><span class="p">,</span> <span class="mf">15.6</span><span class="p">,</span> <span class="mf">16.7</span><span class="p">,</span> <span class="mf">27.8</span><span class="p">]),</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span>                     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">11.9</span><span class="p">,</span> <span class="mf">15.9</span><span class="p">,</span> <span class="mf">17.7</span><span class="p">,</span> <span class="mi">28</span><span class="p">]),</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span>                     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">8.6</span><span class="p">,</span> <span class="mf">10.6</span><span class="p">,</span> <span class="mf">13.2</span><span class="p">,</span> <span class="mf">14.2</span><span class="p">,</span> <span class="mi">27</span><span class="p">]),</span>
+
+<span class="ne">NameError</span>: name &#39;np&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p><em>Figure 6: PSTH (bottom row) constructed from a raster plot (top row) with a bin width of .5 ms. This bin width is too small - the PSTH conveys a lot about the exact spike timings in this set of trials but doesn’t give us a sense of how the underlying firing rate is changing over time</em></p>
 </div>
 </div>
 <div class="section" id="tuning-curves">
