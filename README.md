@@ -1,1 +1,1 @@
-# Intro to Comp Neuro Lecture Notes
+# Intro to Comp Neuro
