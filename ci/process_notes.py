@@ -45,23 +45,15 @@ def make_stop_and_thinks(content):
     for i_cell, cell in enumerate(cells):
         if cell['source'][0].startswith("**Stop and think!**"):
             question = cell['source'][0]
-            for i_cell in range(1, len(cell['source'])):
-                if cell['source'][i_cell] != '\n':
-                    answer = cell['source'][i_cell]
+            for jj in range(1, len(cell['source'])):
+                if cell['source'][jj] != '\n':
+                    answer = cell['source'][jj]
 
             updated_cells[i_cell]['source'] = [f'```{{admonition}} {question}',
                 ':class: tip, dropdown\n',
                 f'{answer}',
                 '```']
-
-            #updated_cells[i_cell]['source'] = ['```{admonition} Test \\n :class: tip, dropdown  \\n Answer ```']
-        # if cell['source'][0].startswith("**Stop and think:**"):
-        #     question = cell['source'][0]
-        #     for i_cell in range(1, len(cell['source'])):
-        #        if cell['source'][i_cell] != '\n':
-        #             answer = cell['source'][i_cell]
-        #     updated_cells[i_cell]['source'] = "```{admonition} Test :class: tip, dropdown  Answer ```"
-
+            
     content['cells'] = updated_cells
     return content
 
