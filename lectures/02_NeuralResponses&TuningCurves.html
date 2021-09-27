@@ -56,7 +56,7 @@
     <link rel="shortcut icon" href="../_static/NeuroImage.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="06 - Decoding" href="06-Decoding.html" />
+    <link rel="next" title="03 - Spike Triggered Averages" href="03_SpikeTriggeredAverages.html" />
     <link rel="prev" title="Introduction" href="../intro.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -110,7 +110,22 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="06-Decoding.html">
+  <a class="reference internal" href="03_SpikeTriggeredAverages.html">
+   03 - Spike Triggered Averages
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="04_NeuralEncodingI.html">
+   04 - Neural Encoding I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="05_NeuralEncodingII.html">
+   05 - Neural Encoding II
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="06_Decoding.html">
    06 - Decoding
   </a>
  </li>
@@ -155,7 +170,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/lectures/02-NeuralResponses&TuningCurves.ipynb"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/lectures/02_NeuralResponses&TuningCurves.ipynb"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
@@ -182,7 +197,7 @@
         
         
         
-        <a class="colab-button" href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/lectures/02-NeuralResponses&TuningCurves.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+        <a class="colab-button" href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/lectures/02_NeuralResponses&TuningCurves.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
                 title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
                     src="../_static/images/logo_colab.png"
                     alt="Interact on Colab">Colab</button></a>
@@ -247,7 +262,7 @@
         
               <div>
                 
-  <p><a href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/lectures/02-NeuralResponses%26TuningCurves.ipynb" target="_blank"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+  <p><a href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/lectures/02_NeuralResponses%26TuningCurves.ipynb" target="_blank"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
 <div class="section" id="neural-responses-tuning-curves">
 <h1>02 - Neural Responses &amp; Tuning Curves<a class="headerlink" href="#neural-responses-tuning-curves" title="Permalink to this headline">¶</a></h1>
 <p><strong>Learning objectives of lecture/notes</strong>:
@@ -359,7 +374,7 @@ After lecture, students should be able to:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/02-NeuralResponses&amp;TuningCurves_18_0.png" src="../_images/02-NeuralResponses&amp;TuningCurves_18_0.png" />
+<img alt="../_images/02_NeuralResponses&amp;TuningCurves_18_0.png" src="../_images/02_NeuralResponses&amp;TuningCurves_18_0.png" />
 </div>
 </div>
 <p><em>Figure 4: PSTH (bottom row) constructed from a raster plot (top row) with a bin width of 5 ms.</em></p>
@@ -416,7 +431,7 @@ After lecture, students should be able to:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/02-NeuralResponses&amp;TuningCurves_22_0.png" src="../_images/02-NeuralResponses&amp;TuningCurves_22_0.png" />
+<img alt="../_images/02_NeuralResponses&amp;TuningCurves_22_0.png" src="../_images/02_NeuralResponses&amp;TuningCurves_22_0.png" />
 </div>
 </div>
 <p><em>Figure 5: PSTH (bottom row) constructed from a raster plot (top row) with a bin width of 15 ms. This bin width is too large and you lose a lot of temporal information!</em></p>
@@ -469,7 +484,7 @@ After lecture, students should be able to:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/02-NeuralResponses&amp;TuningCurves_25_0.png" src="../_images/02-NeuralResponses&amp;TuningCurves_25_0.png" />
+<img alt="../_images/02_NeuralResponses&amp;TuningCurves_25_0.png" src="../_images/02_NeuralResponses&amp;TuningCurves_25_0.png" />
 </div>
 </div>
 <p><em>Figure 6: PSTH (bottom row) constructed from a raster plot (top row) with a bin width of .5 ms. This bin width is too small - the PSTH conveys a lot about the exact spike timings in this set of trials but doesn’t give us a sense of how the underlying firing rate is changing over time</em></p>
@@ -530,7 +545,7 @@ After lecture, students should be able to:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/02-NeuralResponses&amp;TuningCurves_30_0.png" src="../_images/02-NeuralResponses&amp;TuningCurves_30_0.png" />
+<img alt="../_images/02_NeuralResponses&amp;TuningCurves_30_0.png" src="../_images/02_NeuralResponses&amp;TuningCurves_30_0.png" />
 </div>
 </div>
 <p><em>Figure 7: Raster plots of motor neuron response for 10 trials for each reach condition. Please note that this is faked data for illustrative purposes. The vertical line indicates the start of each reach.</em></p>
@@ -564,7 +579,7 @@ After lecture, students should be able to:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/02-NeuralResponses&amp;TuningCurves_36_0.png" src="../_images/02-NeuralResponses&amp;TuningCurves_36_0.png" />
+<img alt="../_images/02_NeuralResponses&amp;TuningCurves_36_0.png" src="../_images/02_NeuralResponses&amp;TuningCurves_36_0.png" />
 </div>
 </div>
 <p><em>Figure 8: Example of how to get the average firing rate for this reach condition from a raster plot. In the 500 ms time window (250 ms before reach onset, 250 ms after) denoted by red lines, there are 287 spikes over all trials. So, the average firing rate is 287 spikes / .5 s / 10 trials = 57.4 spikes per second.</em></p>
@@ -587,7 +602,7 @@ After lecture, students should be able to:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/02-NeuralResponses&amp;TuningCurves_39_0.png" src="../_images/02-NeuralResponses&amp;TuningCurves_39_0.png" />
+<img alt="../_images/02_NeuralResponses&amp;TuningCurves_39_0.png" src="../_images/02_NeuralResponses&amp;TuningCurves_39_0.png" />
 </div>
 </div>
 <p><em>Figure 9: Average firing rate of the neuron to each reach direction.</em></p>
@@ -640,10 +655,10 @@ After lecture, students should be able to:</p>
         </a>
     </div>
      <div id="next">
-        <a class="right-next" href="06-Decoding.html" title="next page">
+        <a class="right-next" href="03_SpikeTriggeredAverages.html" title="next page">
             <div class="prevnext-info">
                 <p class="prevnext-label">next</p>
-                <p class="prevnext-title">06 - Decoding</p>
+                <p class="prevnext-title">03 - Spike Triggered Averages</p>
             </div>
             <i class="prevnext-label fas fa-angle-right"></i>
         </a>
