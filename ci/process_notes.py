@@ -46,7 +46,7 @@ def make_stop_and_thinks(content):
         if cell['source'][0].startswith("**Stop and think!**"):
             question = cell['source'][0]
             for jj in range(1, len(cell['source'])):
-                    answer = cell['source'][2:].join()
+                    answer = ''.join(cell['source'][2:])
 
             updated_cells[i_cell]['source'] = [f'```{{admonition}} {question}',
                 ':class: tip, dropdown\n',
