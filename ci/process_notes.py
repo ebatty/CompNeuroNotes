@@ -50,7 +50,7 @@ def make_stop_and_thinks(content):
 
             updated_cells[i_cell]['source'] = [f'```{{admonition}} {question}',
                 ':class: tip, dropdown\n',
-                f'{answer}```']
+                f'{answer}']
             
     content['cells'] = updated_cells
     return content
