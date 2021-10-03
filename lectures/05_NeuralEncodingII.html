@@ -44,6 +44,8 @@
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe,.cell"
@@ -212,6 +214,68 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   05 - Neural Encoding II
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-1-fitting-lnps-to-data">
+   Section 1: Fitting LNPs to data
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-1-best-estimated-firing-rate-from-raster-plot">
+     Section 1.1: Best estimated firing rate from raster plot
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-2-finding-the-linear-filter-for-data">
+     Section 1.2: Finding the linear filter for data
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-3-white-noise-stimuli">
+     Section 1.3: White noise stimuli
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-2-benefits-drawbacks-of-lnps">
+   Section 2: Benefits/drawbacks of LNPs
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-1-benefits">
+     Section 2.1: Benefits
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-2-drawbacks">
+     Section 2.2: Drawbacks
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-3-model-comparison-analysis">
+   Section 3: Model comparison analysis
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary">
+   Summary
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -223,7 +287,192 @@
   <p><a href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/lectures/05_NeuralEncodingII.ipynb" target="_blank"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
 <div class="section" id="neural-encoding-ii">
 <h1>05 - Neural Encoding II<a class="headerlink" href="#neural-encoding-ii" title="Permalink to this headline">¶</a></h1>
-<p>Coming soon!</p>
+<p>Learning objectives of lecture/notes: After lecture, students should be able to:</p>
+<ul class="simple">
+<li><p>Describe how to fit LNPs to data</p></li>
+<li><p>Explain the benefits and drawbacks of LNPs as an encoding model</p></li>
+<li><p>Explain model comparison analysis and how it allows us to gain understanding from LNPs</p></li>
+</ul>
+<p>Imports</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown Imports</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="section-1-fitting-lnps-to-data">
+<h1>Section 1: Fitting LNPs to data<a class="headerlink" href="#section-1-fitting-lnps-to-data" title="Permalink to this headline">¶</a></h1>
+<p>First, let’s recap the equations of an LNP model:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\lambda_t = f(x_t \cdot k) \\
+y_t \sim
+ Poiss(\lambda_t)\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(x_t\)</span> is the stimulus we want to use to predict the neural reponse at time bin <span class="math notranslate nohighlight">\(t\)</span>, <span class="math notranslate nohighlight">\(k\)</span> is the linear filter, <span class="math notranslate nohighlight">\(\lambda_t\)</span> is the firing rate of the neuron in spikes per second, <span class="math notranslate nohighlight">\(y_t\)</span> is the spike count at time bin <span class="math notranslate nohighlight">\(t\)</span>, and <span class="math notranslate nohighlight">\(f\)</span> is some nonlinearity. This is our model architecture - how we are specifying the mapping from stimulus to neural spikes in general. We need to learn the parameters of the model - in this case the linear filter k - based on data from a neuron though. Each neuron would have a different linear filter. We also might want to learn the nonlinearity <span class="math notranslate nohighlight">\(f\)</span> sometimes, but for now we will assume we have chosen it to be an exponential function.</p>
+<p>So, how do we learn the linear filter for a neuron? We want to find the linear filter that leads to the best predictions of the neural response. In other words, the predicted spikes should be as similar as possible to the real spikes. It’s hard to come up with a metric that relates predicted to real spikes well since the exact timing is from Poisson draws and assumed under our model not to matter. Instead, we will find the linear filter that maximizes the probability of the true spikes given the model and stimulus. In other words, we want to find the linear filter that predicts a firing rate over time, <span class="math notranslate nohighlight">\(\lambda\)</span>, that results in the max probability of the spikes given that firing rate.</p>
+<div class="section" id="section-1-1-best-estimated-firing-rate-from-raster-plot">
+<h2>Section 1.1: Best estimated firing rate from raster plot<a class="headerlink" href="#section-1-1-best-estimated-firing-rate-from-raster-plot" title="Permalink to this headline">¶</a></h2>
+<p>Let’s backtrack to the second lecture - remember when we were working with raster plots and PSTHs? We computed the PSTH, or firing rate in spikes per bin, for each time bin as the mean number of spikes in that time bin over trials. Is this the firing rate that maximizes the probability, or likelihood, of those spikes if we assume a Poisson distribution? Let’s check.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown </span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">})</span>
+
+<span class="n">all_sp_time_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.4</span><span class="p">,</span> <span class="mf">11.1</span><span class="p">,</span> <span class="mf">15.6</span><span class="p">,</span> <span class="mf">16.7</span><span class="p">,</span> <span class="mf">27.8</span><span class="p">]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">11.9</span><span class="p">,</span> <span class="mf">15.9</span><span class="p">,</span> <span class="mf">17.7</span><span class="p">,</span> <span class="mi">28</span><span class="p">]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">8.6</span><span class="p">,</span> <span class="mf">10.6</span><span class="p">,</span> <span class="mf">13.2</span><span class="p">,</span> <span class="mf">14.2</span><span class="p">,</span> <span class="mi">27</span><span class="p">]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">8.9</span><span class="p">,</span> <span class="mf">11.9</span><span class="p">,</span> <span class="mf">12.9</span><span class="p">,</span> <span class="mf">14.5</span><span class="p">,</span> <span class="mf">26.3</span><span class="p">]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">.4</span><span class="p">,</span> <span class="mf">8.2</span><span class="p">,</span> <span class="mf">10.6</span><span class="p">,</span> <span class="mf">13.2</span><span class="p">,</span> <span class="mf">16.9</span><span class="p">,</span> <span class="mi">28</span><span class="p">])]</span>
+
+<span class="c1"># Make raster plot</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Make raster of this data</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">eventplot</span><span class="p">(</span><span class="n">all_sp_time_list</span><span class="p">,</span> <span class="n">colors</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="c1"># Label x and y axes (with units!)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="c1">#xlabel = &#39;Time (ms)&#39;, </span>
+       <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Trial Number&#39;</span><span class="p">,</span>
+       <span class="n">xlim</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+       <span class="n">ylim</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">.7</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">],</span>
+       <span class="n">yticks</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+       <span class="n">yticklabels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]);</span>
+
+<span class="c1"># Plot bin vertical lines </span>
+<span class="n">bin_width</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">bin_edge_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">30.1</span><span class="p">,</span> <span class="n">bin_width</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">bin_time</span> <span class="ow">in</span> <span class="n">bin_edge_times</span><span class="p">:</span>
+  <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">bin_time</span><span class="p">,</span> <span class="n">bin_time</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">.7</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">],</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+
+<span class="c1"># Make PSTH</span>
+
+<span class="n">binned_spikes</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">all_sp_time_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">bins</span> <span class="o">=</span> <span class="n">bin_edge_times</span><span class="p">)</span>
+
+<span class="n">x_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mf">.1</span><span class="p">)</span>
+<span class="n">y_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">x_vals</span><span class="p">)))</span>
+<span class="k">for</span> <span class="n">i_bin</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bin_edge_times</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+  <span class="n">y_vals</span><span class="p">[(</span><span class="n">x_vals</span> <span class="o">&gt;</span> <span class="n">bin_edge_times</span><span class="p">[</span><span class="n">i_bin</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x_vals</span> <span class="o">&lt;=</span> <span class="n">bin_edge_times</span><span class="p">[</span><span class="n">i_bin</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])]</span> <span class="o">=</span> <span class="n">binned_spikes</span><span class="p">[</span><span class="n">i_bin</span><span class="p">]</span> <span class="o">/</span> <span class="mi">5</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_vals</span><span class="p">,</span> <span class="n">y_vals</span><span class="p">,</span>  <span class="s1">&#39;k&#39;</span><span class="p">);</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time (ms)&#39;</span><span class="p">,</span> 
+            <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Firing rate (spikes/bin)&#39;</span><span class="p">);</span>
+            
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/05_NeuralEncodingII_7_0.png" src="../_images/05_NeuralEncodingII_7_0.png" />
+</div>
+</div>
+<p>Remember from the last lecture that our Poisson distribution is:</p>
+<div class="math notranslate nohighlight">
+\[p(y_{t, k} | \lambda_t) = \frac{\lambda_t^{y_{t, k}} e^{-\lambda_{t}}}{y_{t,k}!} \]</div>
+<p>where</p>
+<p><span class="math notranslate nohighlight">\(y_{t, k}\)</span>: spike count for bin <span class="math notranslate nohighlight">\(t\)</span> and trial <span class="math notranslate nohighlight">\(k\)</span></p>
+<p><span class="math notranslate nohighlight">\(\lambda_t\)</span>: firing rate in terms of spikes per bin</p>
+<p><span class="math notranslate nohighlight">\(p(y_{t, k} | \lambda_t)\)</span>: the probability of the spike count being equal to some number given the firing rate</p>
+<p>Let’s just look at a single time bin <span class="math notranslate nohighlight">\(t\)</span>. We want to find the <span class="math notranslate nohighlight">\(\lambda_t\)</span> that maximizes the probability of seeing the spike counds <span class="math notranslate nohighlight">\(y_{t, k}\)</span> for k from 1 to the number of trials, <span class="math notranslate nohighlight">\(n\)</span>. The likelihood of seeing those spike counts given <span class="math notranslate nohighlight">\(\lambda_t\)</span> is <span class="math notranslate nohighlight">\(L(\lambda_t)\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[L(\lambda_t) = p(y_{t,1:n} | \lambda_t) \]</div>
+<p>We assume the spike count on each trial is independent so we can turn this into a product of the probabilities of the spike counts on each trial:</p>
+<div class="math notranslate nohighlight">
+\[L(\lambda_t) = \prod_{k=1}^{n}p(y_{t, k} | \lambda_t) \]</div>
+<p>We actually want the log of the likelihood (for reasons I won’t go into here). The log of a times b equals the log of a plus the log of b, so we can turn the product into a sum of logs.</p>
+<div class="math notranslate nohighlight">
+\[log(L(\lambda_t)) = \sum_{k=1}^{n}log(p(y_{t, k} | \lambda_t)) \]</div>
+<p>Let’s substitute in what <span class="math notranslate nohighlight">\(p(y_{t,k}|\lambda_t)\)</span> equals and do some simplifying:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a8800278-a7a2-4713-8775-9b00ea1e0ab5">
+<span class="eqno">(4)<a class="headerlink" href="#equation-a8800278-a7a2-4713-8775-9b00ea1e0ab5" title="Permalink to this equation">¶</a></span>\[\begin{align}
+log(L(\lambda_t)) &amp;= \sum_{k=1}^{n}log(p(y_{t, k} | \lambda_t))\\
+&amp;= \sum_{k=1}^{n}log(\frac{\lambda_t^{y_{t, k}} e^{-\lambda_{t}}}{y_{t,k}!}) \\
+&amp;= \sum_{k=1}^{n} [log(\lambda_t^{y_{t,k}}) + log(e^{-\lambda_t} - log(y_{t,k}!]\\
+&amp;= \sum_{k=1}^{n} [y_{t,k}log(\lambda_t) -\lambda_t - log(y_{t,k}!]\\
+\end{align}\]</div>
+<p>We want to find the <span class="math notranslate nohighlight">\(\lambda_t\)</span> that maximizes this. The maximums and minimums of functions occur when the derivative is zero. We can compute the derivative of the log likelihood function with respect to <span class="math notranslate nohighlight">\(\lambda_t\)</span>, set it equal to 0, and solve for <span class="math notranslate nohighlight">\(\lambda_t\)</span>.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c0ad449c-2c11-400a-846a-48a41c8e02d7">
+<span class="eqno">(5)<a class="headerlink" href="#equation-c0ad449c-2c11-400a-846a-48a41c8e02d7" title="Permalink to this equation">¶</a></span>\[\begin{align} 
+\frac{d log(L(\lambda_t))}{d \lambda_t} = \sum_{k=1}^n [ \frac{y_{k, t}}{\lambda_t} - 1] &amp;= 0 \\
+\sum_{k=1}^n [ \frac{y_{k, t}}{\lambda_t}] - n &amp;= 0 \\
+\sum_{k=1}^n [ \frac{y_{k, t}}{\lambda_t}] &amp;= n\\ 
+ \frac{\sum_{k=1}^n y_{k, t}}{\lambda_t} &amp;= n\\
+ \sum_{k=1}^n y_{k, t} &amp;= n\lambda_t \\
+ \lambda_t &amp;= \frac{\sum_{k=1}^n y_{k, t}}{n}
+\end{align}\]</div>
+<p>The value of <span class="math notranslate nohighlight">\(\lambda_t\)</span> that maximizes the probability of seeing the spike counts under a Poisson distribution is the mean of those spike counts across trials, exactly what we were using to compute our PSTH!</p>
+</div>
+<div class="section" id="section-1-2-finding-the-linear-filter-for-data">
+<h2>Section 1.2: Finding the linear filter for data<a class="headerlink" href="#section-1-2-finding-the-linear-filter-for-data" title="Permalink to this headline">¶</a></h2>
+<p>The process of finding the linear filter based on the data from a neuron is a similar idea. We want to maximize the log likelihood of the spikes given <span class="math notranslate nohighlight">\(\lambda\)</span>. Instead of looking over trials, we will now look over time bins, we want to maximize the probability of the spike counts in multiple time bins given the <span class="math notranslate nohighlight">\(\lambda_t\)</span> in each time bin.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-66c54fcf-c1e4-4f86-8c86-c99aa4a8c325">
+<span class="eqno">(6)<a class="headerlink" href="#equation-66c54fcf-c1e4-4f86-8c86-c99aa4a8c325" title="Permalink to this equation">¶</a></span>\[\begin{align}
+log(L(\lambda)) &amp;= \sum_{t=1}^{T} [y_{t}log(\lambda_t) -\lambda_t - log(y_{t}!]\\
+\end{align}\]</div>
+<p>Now however, <span class="math notranslate nohighlight">\(\lambda_t\)</span> depends on our linear filter <span class="math notranslate nohighlight">\(k\)</span> and the stimulus.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-9679415e-5828-45db-8c70-97eccc51ccf3">
+<span class="eqno">(7)<a class="headerlink" href="#equation-9679415e-5828-45db-8c70-97eccc51ccf3" title="Permalink to this equation">¶</a></span>\[\begin{align}
+\lambda_t &amp;= e^{x_t \cdot k}\\
+log(L(\lambda)) &amp;= \sum_{t=1}^{T} [y_{t}log(\lambda_t) -\lambda_t - log(y_{t})!]\\
+\end{align}\]</div>
+<p>We can not set the derivative of this equal to 0 and solve for <span class="math notranslate nohighlight">\(k\)</span>, it is impossible to distangle <span class="math notranslate nohighlight">\(k\)</span> from the dot product with <span class="math notranslate nohighlight">\(x_t\)</span>.  Instead we have to use other methods to find the <span class="math notranslate nohighlight">\(k\)</span> that maximizes this quantity. Most of these methods find parameters that minimize a function, not maximize, which we can easily adhere to by finding the filter <span class="math notranslate nohighlight">\(k\)</span> that minimizes the negative log likelihood (NLL):</p>
+<div class="amsmath math notranslate nohighlight" id="equation-ae5b2a71-4b44-4a44-92d0-c84eefe4dbab">
+<span class="eqno">(8)<a class="headerlink" href="#equation-ae5b2a71-4b44-4a44-92d0-c84eefe4dbab" title="Permalink to this equation">¶</a></span>\[\begin{align}
+NLL &amp;= -\sum_{t=1}^{T} [y_{t}log(\lambda_t) -\lambda_t - log(y_{t}!]\\
+\end{align}\]</div>
+<p>We can get rid of the last term - we want to find the linear filter <span class="math notranslate nohighlight">\(k\)</span> that minimizes the negative log likelihood and the last term is not affected by the linear filter - it will be a constant.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f83e49d1-9973-4551-9b99-eda4b831fef7">
+<span class="eqno">(9)<a class="headerlink" href="#equation-f83e49d1-9973-4551-9b99-eda4b831fef7" title="Permalink to this equation">¶</a></span>\[\begin{align}
+NLL &amp;= -\sum_{t=1}^{T} [y_{t}log(\lambda_t) -\lambda_t ]\\
+\end{align}\]</div>
+<p>We can vectorize this computation for ease of coding: if <span class="math notranslate nohighlight">\(\lambda\)</span> is a vector of our predicted firing rates over time and <span class="math notranslate nohighlight">\(y\)</span> is a vector of our spike counts over time, we can rewrite the above as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-fa0e4dc0-9ad2-4ea0-bd0c-1ad07bc885eb">
+<span class="eqno">(10)<a class="headerlink" href="#equation-fa0e4dc0-9ad2-4ea0-bd0c-1ad07bc885eb" title="Permalink to this equation">¶</a></span>\[\begin{align}
+NLL &amp;= - y \cdot log(\lambda) + \sum_{t=1}^T\lambda_t\\
+\end{align}\]</div>
+<p>Now that we have it simplified, how do we actually find the linear filter that minimizes this NLL? We will use gradient descent, which we will discuss in the next lecture when we focus on model fitting. Luckily, we have a python function that finds the parameters that minimize a metric for us: <code class="docutils literal notranslate"><span class="pre">scipy.optimize.minimize</span></code>. If you pass a function that computes the negative log likelihood given an input of a linear filter, it will find the minimizing linear filter. You will see this in HW 1!</p>
+</div>
+<div class="section" id="section-1-3-white-noise-stimuli">
+<h2>Section 1.3: White noise stimuli<a class="headerlink" href="#section-1-3-white-noise-stimuli" title="Permalink to this headline">¶</a></h2>
+<p>If your stimuli is a white noise stimuli, the STA is a pretty good estimate for <span class="math notranslate nohighlight">\(k\)</span>. You can then find the nonlinearity as described in “Characterizing the Nonlinearity” in https://jov.arvojournals.org/article.aspx?articleid=2192881?</p>
+</div>
+</div>
+<div class="section" id="section-2-benefits-drawbacks-of-lnps">
+<h1>Section 2: Benefits/drawbacks of LNPs<a class="headerlink" href="#section-2-benefits-drawbacks-of-lnps" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="section-2-1-benefits">
+<h2>Section 2.1: Benefits<a class="headerlink" href="#section-2-1-benefits" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Linear-nonlinear-Poisson models are a fairly simple encoding model and are fairly interpretable in terms of how they are capturing neural processing. The linear filter is similar to a receptive field.</p></li>
+<li><p>These models are easy to fit. If we choose an exponential nonlinearity (or certain other ones), the negative log likelihood will be convex. This means that it is easier to learn the parameters, as we will learn about next lecture.</p></li>
+<li><p>These models also have worked pretty well. We can get good predictions of neural responses for neurons in early sensory and motor areas.</p></li>
+<li><p>These models are easy to add extensions to. People have altered these models to incorporate the spiking history of the neuron (and thus capture things like refractory period or spike frequency adaptation) or the responses of neighboring neurons. We can add more filters from the stimulus that interact in complex ways.</p></li>
+</ul>
+</div>
+<div class="section" id="section-2-2-drawbacks">
+<h2>Section 2.2: Drawbacks<a class="headerlink" href="#section-2-2-drawbacks" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>This model makes a lot of assumptions about the neural processing, including that the underlying firing rate on each trial is the same. Extensions mentioned in the previous section can alter this and incorporate spiking history.</p></li>
+<li><p>The model is quite simple and often doesn’t capture more complex neural responses well.</p></li>
+<li><p>The linear filters are a bit dangerous to overly interpret. The exact look can depend on various model fitting choices. Instead, it is more safe to use model comparison analysis to make conclusions from LNPs, as detailed in the next section.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="section-3-model-comparison-analysis">
+<h1>Section 3: Model comparison analysis<a class="headerlink" href="#section-3-model-comparison-analysis" title="Permalink to this headline">¶</a></h1>
+<p>How do we make conclusions from linear-nonlinear-Poisson models? One way is to do <strong>model comparison analysis</strong>: we fit models with different inputs or structures and compare which best predict the neuron.</p>
+<p>Let’s say we’re trying to figure out if a neuron is responding to an auditory stimulus or a visual stimulus. We can fit an LNP model with the auditory stimulus as input, a model with the visual stimulus as input, and one with both auditory and visual stimulus as input. We then evalute the model performance on <strong>held-out data</strong>, or data we have not used to learn the best linear filter. We will see next lecture why this is important.</p>
+<p>If the model using the visual stimulus predicts neural responses much better than the auditory stimulus, we can infer that the neuron is primarily responding to the visual stimulus, at least within the context of this specific model.</p>
+<p>In class, we talked about the model comparison analysis approach done in this paper: https://www-nature-com.ezp-prod1.hul.harvard.edu/articles/s41593-019-0502-4. In this paper, they fit encoding models with various inputs related to the task the mouse was performing and movements of the mouse (moving its whiskers, legs, etc). They found that movements of the animal were important for predicting neural responses across the brain, even outside of motor cortices!</p>
+<p>We can also change the structure of the model. Researchers added the trial-specific spiking responses of neighboring neurons to help predict the spiking responses of a neuron in this study: https://www.nature.com/articles/nature07140 . This improved prediction, so they concluded that the neurons were correlated beyond their dependence on the stimulus.</p>
+</div>
+<div class="section" id="summary">
+<h1>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h1>
+<p>LNPs are easily fit to data by finding the linear filter that minimizes the negative log likelihood of the spikes given the predicted firing rate. They are a simple descriptive encoding model that can be used to generate insights into what the neurons are responding to, and how.</p>
 </div>
 
     <script type="text/x-thebe-config">
