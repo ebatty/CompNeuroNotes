@@ -273,6 +273,11 @@
    </li>
   </ul>
  </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optional-reading">
+   Optional Reading
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -340,20 +345,21 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading...
 From: https://drive.google.com/uc?id=1V2QAdFLQnAb-gdFQ9-Py1AydI7tlTifm
 To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
-
-0.00B [00:00, ?B/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>524kB [00:00, 3.95MB/s]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.00B [00:00, ?B/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5.40MB [00:00, 24.9MB/s]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>524kB [00:00, 4.59MB/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5.40MB [00:00, 26.8MB/s]
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Text(0.5, 1.0, &#39;Spikes&#39;), Text(0.5, 0, &#39;Time bins&#39;)]
 </pre></div>
 </div>
-<img alt="../_images/03_SpikeTriggeredAverages_8_4.png" src="../_images/03_SpikeTriggeredAverages_8_4.png" />
+<img alt="../_images/03_SpikeTriggeredAverages_8_5.png" src="../_images/03_SpikeTriggeredAverages_8_5.png" />
 </div>
 </div>
 <p>As you can see below, for each time bin (2 ms chunk of time), we have the value of the stimulus and whether a spike occurred or not. The stimulus is denoted by just a single number per time bin.</p>
@@ -418,6 +424,10 @@ To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
 <p><span class="math notranslate nohighlight">\(y\)</span> = [0, 0, 0, 1, 0,  1,  0, 1, 0, 0, 0]</p>
 <div class="tip dropdown admonition">
 <p class="admonition-title"><strong>Stop and think!</strong> What is the spike-triggered average? Let’s use 3 time bins, including the time bin that the spike occurs.</p>
+<p>Our first spike is at time step 4. The previous stimulus is [1, 1, 0]. Remember we’re including the time step of the spike, so we are not using [0, 1, 1].</p>
+<p>The next spike is at time step 6. The previous stimulus is [0, 2, -1].</p>
+<p>The next spike is at time step 8. The previous stimulus is [-1, 0, 3]</p>
+<p>So our spike-triggered stimuli are: [1, 1, 0], [0, 2, -1], and [-1, 0, 3].</p>
 <p>Our STA is the average of those so: [0, 1, 2].```</p>
 </div>
 </div>
@@ -616,28 +626,22 @@ To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1609</span><span class="o">/</span><span class="mf">4006575899.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">     </span><span class="mi">28</span>       <span class="n">this_nonlin</span> <span class="o">=</span> <span class="n">nonlin</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-<span class="g g-Whitespace">     </span><span class="mi">29</span>     <span class="k">else</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">30</span>       <span class="n">nonlin_bin</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">STA_stim</span><span class="p">[</span><span class="n">i_t</span><span class="p">],</span> <span class="n">bins</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">31</span>       <span class="n">this_nonlin</span> <span class="o">=</span> <span class="n">nonlin</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">nonlin_bin</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]</span>
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1622</span><span class="o">/</span><span class="mf">4006575899.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="g g-Whitespace">     </span><span class="mi">32</span> 
+<span class="g g-Whitespace">     </span><span class="mi">33</span>     <span class="n">all_nonlin</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_nonlin</span>
+<span class="ne">---&gt; </span><span class="mi">34</span>     <span class="n">sim_spikes</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">this_nonlin</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">35</span> 
+<span class="g g-Whitespace">     </span><span class="mi">36</span> <span class="c1"># Visualize</span>
 
-<span class="nn">&lt;__array_function__ internals&gt;</span> in <span class="ni">histogram</span><span class="nt">(*args, **kwargs)</span>
+<span class="nn">mtrand.pyx</span> in <span class="ni">numpy.random.mtrand.RandomState.poisson</span><span class="nt">()</span>
 
-<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/histograms.py</span> in <span class="ni">histogram</span><span class="nt">(a, bins, range, normed, weights, density)</span>
-<span class="g g-Whitespace">    </span><span class="mi">877</span>             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">_range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">BLOCK</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">878</span>                 <span class="n">sa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">BLOCK</span><span class="p">])</span>
-<span class="ne">--&gt; </span><span class="mi">879</span>                 <span class="n">cum_n</span> <span class="o">+=</span> <span class="n">_search_sorted_inclusive</span><span class="p">(</span><span class="n">sa</span><span class="p">,</span> <span class="n">bin_edges</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">880</span>         <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">881</span>             <span class="n">zero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">ntype</span><span class="p">)</span>
+<span class="nn">_common.pyx</span> in <span class="ni">numpy.random._common.disc</span><span class="nt">()</span>
 
-<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/numpy/lib/histograms.py</span> in <span class="ni">_search_sorted_inclusive</span><span class="nt">(a, v)</span>
-<span class="g g-Whitespace">    </span><span class="mi">459</span>     <span class="s2">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">460</span><span class="s2">     return np.concatenate((</span>
-<span class="ne">--&gt; </span><span class="mi">461</span><span class="s2">         a.searchsorted(v[:-1], &#39;left&#39;),</span>
-<span class="g g-Whitespace">    </span><span class="mi">462</span><span class="s2">         a.searchsorted(v[-1:], &#39;right&#39;)</span>
-<span class="g g-Whitespace">    </span><span class="mi">463</span><span class="s2">     ))</span>
+<span class="nn">_common.pyx</span> in <span class="ni">numpy.random._common.discrete_broadcast_d</span><span class="nt">()</span>
+
+<span class="nn">_common.pyx</span> in <span class="ni">numpy.random._common.check_array_constraint</span><span class="nt">()</span>
+
+<span class="nn">&lt;__array_function__ internals&gt;</span> in <span class="ni">all</span><span class="nt">(*args, **kwargs)</span>
 
 <span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
@@ -683,6 +687,11 @@ To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
 </div>
 </div>
 </div>
+</div>
+<div class="section" id="optional-reading">
+<h1>Optional Reading<a class="headerlink" href="#optional-reading" title="Permalink to this headline">¶</a></h1>
+<p>Dayan &amp; Abbott cover spike triggered averages in Chapter 1: http://www.gatsby.ucl.ac.uk/~lmate/biblio/dayanabbott.pdf</p>
+<p>More advanced than we go, but a very thorough review of spike-triggered neural characterization: https://jov.arvojournals.org/article.aspx?articleid=2192881</p>
 </div>
 
     <script type="text/x-thebe-config">
