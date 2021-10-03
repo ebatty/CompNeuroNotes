@@ -345,21 +345,20 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading...
 From: https://drive.google.com/uc?id=1V2QAdFLQnAb-gdFQ9-Py1AydI7tlTifm
 To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
+
+0.00B [00:00, ?B/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.00B [00:00, ?B/s]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>524kB [00:00, 3.92MB/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>524kB [00:00, 4.59MB/s]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5.40MB [00:00, 26.8MB/s]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5.40MB [00:00, 24.8MB/s]
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Text(0.5, 1.0, &#39;Spikes&#39;), Text(0.5, 0, &#39;Time bins&#39;)]
 </pre></div>
 </div>
-<img alt="../_images/03_SpikeTriggeredAverages_8_5.png" src="../_images/03_SpikeTriggeredAverages_8_5.png" />
+<img alt="../_images/03_SpikeTriggeredAverages_8_4.png" src="../_images/03_SpikeTriggeredAverages_8_4.png" />
 </div>
 </div>
 <p>As you can see below, for each time bin (2 ms chunk of time), we have the value of the stimulus and whether a spike occurred or not. The stimulus is denoted by just a single number per time bin.</p>
@@ -428,7 +427,7 @@ To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
 <p>The next spike is at time step 6. The previous stimulus is [0, 2, -1].</p>
 <p>The next spike is at time step 8. The previous stimulus is [-1, 0, 3]</p>
 <p>So our spike-triggered stimuli are: [1, 1, 0], [0, 2, -1], and [-1, 0, 3].</p>
-<p>Our STA is the average of those so: [0, 1, 2].```</p>
+<p>Our STA is the average of those so: [0, 1, 2].</p>
 </div>
 </div>
 <div class="section" id="section-2-3-computing-stas-in-code">
@@ -539,7 +538,7 @@ To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
 </div>
 <div class="tip dropdown admonition">
 <p class="admonition-title"><strong>Stop and think!</strong> What can you interpret about this fly H1 neuron response to the visual motion stimulus from the STA?</p>
-<p>High values of the stimulus tend to prompt a neural spike around 50 milliseconds later.```</p>
+<p>High values of the stimulus tend to prompt a neural spike around 50 milliseconds later.</p>
 </div>
 <p>Execute to visualize another STA</p>
 <div class="cell tag_hide-input docutils container">
@@ -563,11 +562,11 @@ To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
 </div>
 <div class="tip dropdown admonition">
 <p class="admonition-title"><strong>Stop and think!</strong> If you saw a completely flat STA, as above, what would you guess about the neuron?</p>
-<p>You could hypothesis that the neural response doesn’t depend on the stimulus/isn’t affected by it. You might see this if you are recording from an auditory neuron and trying to relate to a visual stimulus for example! This may not be true, the neural response may depend on the stimulus in a way that’s more complex than an STA can capture.```</p>
+<p>You could hypothesis that the neural response doesn’t depend on the stimulus/isn’t affected by it. You might see this if you are recording from an auditory neuron and trying to relate to a visual stimulus for example! This may not be true, the neural response may depend on the stimulus in a way that’s more complex than an STA can capture.</p>
 </div>
 <div class="tip dropdown admonition">
 <p class="admonition-title"><strong>Stop and think!</strong> Why do we use the prior stimulus before a spike to compute the STA? Why not also use the stimulus after a spike?</p>
-<p>A neuron could not respond based on a future stimulus that it hasn’t seen yet. If we were looking at a behavioral variable, it could be useful to look at the spike-triggered average in the past and future as neurons could be firing in advance of some behavior. However, behavior doesn’t usually fulfil the input requirements for useful spike-triggered averages (detailed in next section).```</p>
+<p>A neuron could not respond based on a future stimulus that it hasn’t seen yet. If we were looking at a behavioral variable, it could be useful to look at the spike-triggered average in the past and future as neurons could be firing in advance of some behavior. However, behavior doesn’t usually fulfil the input requirements for useful spike-triggered averages (detailed in next section).</p>
 </div>
 </div>
 <div class="section" id="section-4-2-stimulus-requirements">
@@ -624,28 +623,7 @@ To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1622</span><span class="o">/</span><span class="mf">4006575899.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">     </span><span class="mi">32</span> 
-<span class="g g-Whitespace">     </span><span class="mi">33</span>     <span class="n">all_nonlin</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_nonlin</span>
-<span class="ne">---&gt; </span><span class="mi">34</span>     <span class="n">sim_spikes</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">this_nonlin</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">35</span> 
-<span class="g g-Whitespace">     </span><span class="mi">36</span> <span class="c1"># Visualize</span>
-
-<span class="nn">mtrand.pyx</span> in <span class="ni">numpy.random.mtrand.RandomState.poisson</span><span class="nt">()</span>
-
-<span class="nn">_common.pyx</span> in <span class="ni">numpy.random._common.disc</span><span class="nt">()</span>
-
-<span class="nn">_common.pyx</span> in <span class="ni">numpy.random._common.discrete_broadcast_d</span><span class="nt">()</span>
-
-<span class="nn">_common.pyx</span> in <span class="ni">numpy.random._common.check_array_constraint</span><span class="nt">()</span>
-
-<span class="nn">&lt;__array_function__ internals&gt;</span> in <span class="ni">all</span><span class="nt">(*args, **kwargs)</span>
-
-<span class="ne">KeyboardInterrupt</span>: 
-</pre></div>
-</div>
+<img alt="../_images/03_SpikeTriggeredAverages_32_0.png" src="../_images/03_SpikeTriggeredAverages_32_0.png" />
 </div>
 </div>
 <p>The neuron always spikes around the same point in the pattern. This means that when we average over the stimuli before the spikes, we get unwanted structure in our STA. See the STA computed in the cell below. As we’ve seen, the neuron responds to high stimulus values about 50 ms before the spike. Because of the repeating nature of the stimulus, it looks from this STA like the neuron responds to negative values of the stimulus around .. before the spike, which is incorrect! In essence, the correlated nature of the stimulus has meant we haven’t explored enough stimulus patterns to get a good sense of the neural dependency on the stimulus. This is an especially egregious case of a correlated stimulus - we have repeating chunks - but any amount of correlation can interfere with our ability to estimate the linear receptive field with a linear filter well!</p>
@@ -684,6 +662,9 @@ To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
       <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Stimulus intensity&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/03_SpikeTriggeredAverages_35_0.png" src="../_images/03_SpikeTriggeredAverages_35_0.png" />
 </div>
 </div>
 </div>

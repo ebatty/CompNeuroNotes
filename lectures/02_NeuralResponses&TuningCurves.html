@@ -305,20 +305,20 @@ After lecture, students should be able to:</p>
 <p><em>Figure 1: An example raster plot, from https://praneethnamburi.com/category/matlab/</em></p>
 <div class="tip dropdown admonition">
 <p class="admonition-title"><strong>Stop and think!</strong> What can you conclude about the neural responses to whatever the trial is from the raster in Figure 1?</p>
-<p>From the raster, in Figure 1, you can see that the neuron tends to respond slightly more after the event (blue line) than before, but there are not very time-locked responses. In other words, there are not certain points in the trial where the neuron always responds.```</p>
+<p>From the raster, in Figure 1, you can see that the neuron tends to respond slightly more after the event (blue line) than before, but there are not very time-locked responses. In other words, there are not certain points in the trial where the neuron always responds.</p>
 </div>
 <img alt="rasterplotexample1" src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs10827-018-0693-9/MediaObjects/10827_2018_693_Fig3_HTML.png?as=webp" />
 <p><em>Figure 2: Another example raster plot, from https://link.springer.com/article/10.1007/s10827-018-0693-9</em></p>
 <div class="tip dropdown admonition">
 <p class="admonition-title"><strong>Stop and think!</strong> What can you conclude about the neural responses to whatever the trial is from the raster in Figure 2?</p>
-<p>From the raster in Figure 2 (the top row), you can see that the neuron responds in a time-locked manner - there are certain times during the trial where the neuron reliably spikes (the black columns indicate a spike in every row).```</p>
+<p>From the raster in Figure 2 (the top row), you can see that the neuron responds in a time-locked manner - there are certain times during the trial where the neuron reliably spikes (the black columns indicate a spike in every row).</p>
 </div>
 <p>As mentioned above, we could also have the rows indicate different neurons - see Figure 3A for an example of this.</p>
 <img alt="rasterplotexample1" src="https://s3-eu-west-1.amazonaws.com/ppreviews-plos-725668748/1638070/preview.jpg" />
 <p><em>Figure 3: A) An example raster plot with rows as different neurons, from https://www.researchgate.net/publication/264865592_Large-Scale_High-Resolution_Multielectrode-Array_Recording_Depicts_Functional_Network_Differences_of_Cortical_and_Hippocampal_Cultures</em></p>
 <div class="tip dropdown admonition">
 <p class="admonition-title"><strong>Stop and think!</strong> What can you conclude about the neural responses to whatever the trial is from the raster in Figure 3?</p>
-<p>From the raster, in Figure 3, you can conclude that the neurons in the population are firing at similar times of the trial as each other.```</p>
+<p>From the raster, in Figure 3, you can conclude that the neurons in the population are firing at similar times of the trial as each other.</p>
 </div>
 </div>
 <div class="section" id="section-2-2-psths">
@@ -380,7 +380,7 @@ After lecture, students should be able to:</p>
 <p><em>Figure 4: PSTH (bottom row) constructed from a raster plot (top row) with a bin width of 5 ms.</em></p>
 <div class="tip dropdown admonition">
 <p class="admonition-title"><strong>Stop and think!</strong> What would happen if you choose a bin width that’s too big? Too small?</p>
-<p>Too big a bin and you might lose temporal information in the neural reponses because you’re summing spikes over a long period of time. Too small a bin and the PSTH could be hard to interpret. For example, imagine if you chose a time bin small enough that there was almost always at most 1 spike in each, even across all trials. The PSTH would not convey much information. See Figures 5 and 6 to see too big a bin width and too small a bin width, respectively.```</p>
+<p>Too big a bin and you might lose temporal information in the neural reponses because you’re summing spikes over a long period of time. Too small a bin and the PSTH could be hard to interpret. For example, imagine if you chose a time bin small enough that there was almost always at most 1 spike in each, even across all trials. The PSTH would not convey much information. See Figures 5 and 6 to see too big a bin width and too small a bin width, respectively.</p>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
@@ -551,12 +551,12 @@ After lecture, students should be able to:</p>
 <p><em>Figure 7: Raster plots of motor neuron response for 10 trials for each reach condition. Please note that this is faked data for illustrative purposes. The vertical line indicates the start of each reach.</em></p>
 <div class="tip dropdown admonition">
 <p class="admonition-title"><strong>Stop and think!</strong> Based on Figure 7, what directions of reach does this neuron fire a lot to? What directions of reach does it not respond for?</p>
-<p>The neuron fires a lot when the monkey is reaching at 135 and 180 degrees. It responds much less for 0 degrees and 315 degrees.```</p>
+<p>The neuron fires a lot when the monkey is reaching at 135 and 180 degrees. It responds much less for 0 degrees and 315 degrees.</p>
 </div>
 <p>We can summarize how the neuron responds to different reach directions by creating a tuning curve. We want to plot the overall firing rate of the neuron for each reach direction vs the reach direction.  See Figure 9 for the tuning curve based on the above rasters!</p>
 <div class="tip dropdown admonition">
 <p class="admonition-title"><strong>Stop and think!</strong> How could we get the overall firing rate of the neuron for a certain reach?</p>
-<p>We can choose some time window around reach onset. We can then count up the spikes over all trials in that time window and divide by both the number of trials and the length of the time window to get firing rate in terms of spikes per second. We choose a 500 ms time window: 250 ms before reach onset and 250 ms after. In Figure 9, we count 287 spikes in that 500 ms time window over all the trials, so the average firing rate is 287 spikes / .5 s / 10 trials = 57.4 spikes per second.```</p>
+<p>We can choose some time window around reach onset. We can then count up the spikes over all trials in that time window and divide by both the number of trials and the length of the time window to get firing rate in terms of spikes per second. We choose a 500 ms time window: 250 ms before reach onset and 250 ms after. In Figure 9, we count 287 spikes in that 500 ms time window over all the trials, so the average firing rate is 287 spikes / .5 s / 10 trials = 57.4 spikes per second.</p>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">

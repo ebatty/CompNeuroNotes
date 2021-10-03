@@ -439,7 +439,7 @@ y_t \sim
 <p>Let’s say you wanted to predict the neural response based just on the frame of a movie at the current time bin. In that case <span class="math notranslate nohighlight">\(x_t\)</span> would be all the pixel values in the image. Note that an image is 2-dimensional so we want to flatten this into a vector. In this case the linear filter would be a vector with length equal to the total number of pixels. We would call this filter a spatial filter (it’s acting over space)</p>
 <div class="tip dropdown admonition">
 <p class="admonition-title"><strong>Stop and think!</strong> You could go even more complicated and use the previous 10 frames of a movie. If each frame was 5 pixels by 5 pixels, what length would your linear filter be?</p>
-<p>We can put every feature that we want to use to predict as an entry in our vector <span class="math notranslate nohighlight">\(x_t\)</span>. In this case that would be 5 x 5 x 10 = 250 features. The linear filter would be the same length so would have 250 entries. ```</p>
+<p>We can put every feature that we want to use to predict as an entry in our vector <span class="math notranslate nohighlight">\(x_t\)</span>. In this case that would be 5 x 5 x 10 = 250 features. The linear filter would be the same length so would have 250 entries.</p>
 </div>
 <p>We would call the filter in the example above a spatiotemporal filter (it’s acting over both space and time).</p>
 </div>
@@ -460,22 +460,22 @@ y_t \sim
 <p>We are using an exponential nonlinearity.</p>
 <div class="tip dropdown admonition">
 <p class="admonition-title"><strong>Stop and think!</strong> What is the predicted firing rate, <span class="math notranslate nohighlight">\(\lambda\)</span> for time bins 3 and after based on the above numbers?</p>
-<div class="amsmath math notranslate nohighlight" id="equation-99d8ec18-0cd3-4833-98b6-a54ee2a6acd1">
-<span class="eqno">(1)<a class="headerlink" href="#equation-99d8ec18-0cd3-4833-98b6-a54ee2a6acd1" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f772f0e5-fb25-4f47-b688-614d3ad72e97">
+<span class="eqno">(1)<a class="headerlink" href="#equation-f772f0e5-fb25-4f47-b688-614d3ad72e97" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_3 &amp;= e^{x_3 \cdot k}\\
 &amp;= e^{[5, -1, 4] \cdot [.3, 1, .4]}\\
 &amp;= e^{2.1} \\
 &amp;= 8.16
 \end{align}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-f348138e-17f8-48b4-a993-44800f6e14ad">
-<span class="eqno">(2)<a class="headerlink" href="#equation-f348138e-17f8-48b4-a993-44800f6e14ad" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-5fa68c4c-da1a-4e4f-ace8-65f9e7688a91">
+<span class="eqno">(2)<a class="headerlink" href="#equation-5fa68c4c-da1a-4e4f-ace8-65f9e7688a91" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_4 &amp;= e^{x_4 \cdot k}\\
 &amp;= e^{[-1, 4, 0] \cdot [.3, 1, .4]}\\
 &amp;= e^{3.7} \\
 &amp;= 40.45
 \end{align}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-68f9fd37-4f81-426f-85f1-3ca8ec104241">
-<span class="eqno">(3)<a class="headerlink" href="#equation-68f9fd37-4f81-426f-85f1-3ca8ec104241" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-39039cd2-14c5-447a-a588-324ef0e4d8a5">
+<span class="eqno">(3)<a class="headerlink" href="#equation-39039cd2-14c5-447a-a588-324ef0e4d8a5" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_5 &amp;= e^{x_4 \cdot k}\\
 &amp;= e^{[4, 0, 2] \cdot [.3, 1, .4]}\\
 &amp;= e^{2} \\
