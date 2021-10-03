@@ -312,7 +312,7 @@
 </div>
 <div class="section" id="section-1-encoding-models">
 <h1>Section 1: Encoding models<a class="headerlink" href="#section-1-encoding-models" title="Permalink to this headline">¶</a></h1>
-<img alt="STA from movie" src="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/NeuralCoding.jpg" />
+<img alt="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/NeuralCoding.jpg" src="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/NeuralCoding.jpg" />
 <p>In order to build a neural encoding model, we want to be able to predict the spikes of a neuron given the stimulus or behavior. So far, with tuning curves and spike triggered averages, we have explored how to understand more about the relationship between stimulus and neural response, but we have not yet built a full encoding model that allows us to predict spikes.</p>
 <p>The idea behind an encoding model is that you determine the general structure, basically a set of equations of how the stimulus is converted in to the spikes of the neuron. These equations involve learnable variables, or parameters. You learn these parameters from neural data to fit your encoding model. We’ll touch much more on model fitting in future days. For now, we will focus on the structure of the most common type of encoding model: the linear-nonlinear-Poisson model.</p>
 </div>
@@ -460,22 +460,22 @@ y_t \sim
 <p>We are using an exponential nonlinearity.</p>
 <div class="tip dropdown admonition">
 <p class="admonition-title"><strong>Stop and think!</strong> What is the predicted firing rate, <span class="math notranslate nohighlight">\(\lambda\)</span> for time bins 3 and after based on the above numbers?</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f772f0e5-fb25-4f47-b688-614d3ad72e97">
-<span class="eqno">(1)<a class="headerlink" href="#equation-f772f0e5-fb25-4f47-b688-614d3ad72e97" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-260772f8-689c-4f8f-b5cc-0a0ed3e5c413">
+<span class="eqno">(1)<a class="headerlink" href="#equation-260772f8-689c-4f8f-b5cc-0a0ed3e5c413" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_3 &amp;= e^{x_3 \cdot k}\\
 &amp;= e^{[5, -1, 4] \cdot [.3, 1, .4]}\\
 &amp;= e^{2.1} \\
 &amp;= 8.16
 \end{align}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-5fa68c4c-da1a-4e4f-ace8-65f9e7688a91">
-<span class="eqno">(2)<a class="headerlink" href="#equation-5fa68c4c-da1a-4e4f-ace8-65f9e7688a91" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-3ef3dc5c-7030-4e0d-b238-8311eebf831c">
+<span class="eqno">(2)<a class="headerlink" href="#equation-3ef3dc5c-7030-4e0d-b238-8311eebf831c" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_4 &amp;= e^{x_4 \cdot k}\\
 &amp;= e^{[-1, 4, 0] \cdot [.3, 1, .4]}\\
 &amp;= e^{3.7} \\
 &amp;= 40.45
 \end{align}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-39039cd2-14c5-447a-a588-324ef0e4d8a5">
-<span class="eqno">(3)<a class="headerlink" href="#equation-39039cd2-14c5-447a-a588-324ef0e4d8a5" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-81aee53a-fee3-40db-a06a-a7ce20100898">
+<span class="eqno">(3)<a class="headerlink" href="#equation-81aee53a-fee3-40db-a06a-a7ce20100898" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_5 &amp;= e^{x_4 \cdot k}\\
 &amp;= e^{[4, 0, 2] \cdot [.3, 1, .4]}\\
 &amp;= e^{2} \\
@@ -515,6 +515,25 @@ y_t \sim
 </div>
 </div>
 <p>Why do we use the Poisson distribution for neural spiking? It works nicely because the Poisson distribution is only defined for non-negative integers. Spike counts are non-negative integers, so this is a natural fit. However, we do have to look at if neurons fire spikes in a Poisson-like way. This isn’t guaranteed! It turns out that the Poisson distribution seems to be a fairly good way to capture spiking responses, although it doesn’t work well for all neurons. Dayan &amp; Abbott 2001 covers this comparison to data well: read the section on Comparison with Data from page 31 to 24 for more information: http://www.gatsby.ucl.ac.uk/~lmate/biblio/dayanabbott.pdf</p>
+<p>Coding note: we can draw random spikes using a Poisson distribution as shown in the code below. Remember our firing rates from a previous problem of [0, 0, 8.16, 40.45, 7.38].</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create firing rates</span>
+<span class="n">firing_rates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">8.16</span><span class="p">,</span> <span class="mf">40.45</span><span class="p">,</span> <span class="mf">7.38</span><span class="p">])</span>
+
+<span class="c1"># Draw spike counts based on firing rates</span>
+<span class="n">spikes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">firing_rates</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">spikes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 0  0 10 41 10]
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="summary">
