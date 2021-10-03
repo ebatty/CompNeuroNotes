@@ -8,3 +8,4 @@ parts:
     - file: lectures/04_NeuralEncodingI.ipynb
     - file: lectures/05_NeuralEncodingII.ipynb
     - file: lectures/06_Decoding.ipynb
+    - file: lectures/07_DimensionalityReduction.ipynb
