@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>02 - Neural Responses &amp; Tuning Curves &#8212; Introductory Computational Neuroscience</title>
+    <title>03 - Spike Triggered Averages &#8212; Introductory Computational Neuroscience</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -111,7 +111,7 @@
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   02 - Neural Responses &amp; Tuning Curves
+   03 - Spike Triggered Averages
   </a>
  </li>
  <li class="toctree-l1">
@@ -221,35 +221,57 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#">
-   02 - Neural Responses &amp; Tuning Curves
+   03 - Spike Triggered Averages
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#section-1-experimental-set-up">
-   Section 1: Experimental set-up
+  <a class="reference internal nav-link" href="#section-1-why-do-we-need-to-move-beyond-tuning-curves">
+   Section 1: Why do we need to move beyond tuning curves?
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#section-2-visualizing-neural-reponses">
-   Section 2: Visualizing Neural Reponses
+  <a class="reference internal nav-link" href="#section-2-one-dimensional-spike-triggered-average-sta">
+   Section 2: One-dimensional spike triggered average (STA)
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#section-2-1-raster-plots">
-     Section 2.1: Raster Plots
+    <a class="reference internal nav-link" href="#section-2-1-intro-to-sta">
+     Section 2.1: Intro to STA
     </a>
    </li>
    <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#section-2-2-psths">
-     Section 2.2: PSTHs
+    <a class="reference internal nav-link" href="#section-2-2-computing-stas-by-hand">
+     Section 2.2: Computing STAs by hand
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-3-computing-stas-in-code">
+     Section 2.3: Computing STAs in code
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#section-3-tuning-curves">
-   Section 3: Tuning curves
+  <a class="reference internal nav-link" href="#section-3-stas-for-higher-dimensional-stimuli">
+   Section 3: STAs for higher-dimensional stimuli
   </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-4-interpreting-stas">
+   Section 4: Interpreting STAs
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-4-1-stas-receptive-fields">
+     Section 4.1: STAs ~ receptive fields
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-4-2-stimulus-requirements">
+     Section 4.2: Stimulus requirements
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -263,14 +285,12 @@
               <div>
                 
   <p><a href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/lectures/03_SpikeTriggeredAverages.ipynb" target="_blank"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
-<div class="section" id="neural-responses-tuning-curves">
-<h1>02 - Neural Responses &amp; Tuning Curves<a class="headerlink" href="#neural-responses-tuning-curves" title="Permalink to this headline">¶</a></h1>
-<p><strong>Learning objectives of lecture/notes</strong>:
-After lecture, students should be able to:</p>
+<div class="section" id="spike-triggered-averages">
+<h1>03 - Spike Triggered Averages<a class="headerlink" href="#spike-triggered-averages" title="Permalink to this headline">¶</a></h1>
+<p>Learning objectives of lecture/notes: After lecture, students should be able to:</p>
 <ul class="simple">
-<li><p>Interpret information about neural firing from raster plots &amp; PSTHs</p></li>
-<li><p>Know the steps for constructing raster plots &amp; PSTHs</p></li>
-<li><p>Interpret information about neural response to a stimulus from a tuning curve</p></li>
+<li><p>Interpret information from spike-triggered average and know when you can do so</p></li>
+<li><p>Be able to compute STA using both math and code</p></li>
 </ul>
 <p>Imports</p>
 <div class="cell tag_hide-input docutils container">
@@ -278,342 +298,467 @@ After lecture, students should be able to:</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown Imports</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">scipy.io</span> <span class="k">as</span> <span class="nn">sio</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="section" id="section-1-experimental-set-up">
-<h1>Section 1: Experimental set-up<a class="headerlink" href="#section-1-experimental-set-up" title="Permalink to this headline">¶</a></h1>
-<p>In the next few sections, we will cover important concepts in the context of a case study. In this case study, you are a computational neuroscientist and you have a hypothesis that some neurons in monkey motor cortex correlate with the direction of arm movement while reaching. By this, you mean that a particular neuron will fire more when the monkey reaches in certain directions than others.</p>
-<p>You are able to record the spike times of a neuron from motor cortex in a monkey.</p>
-<div class="tip dropdown admonition">
-<p class="admonition-title"><strong>Stop and think!</strong> What do you want the experiment to look like?</p>
-<p>You choose an experimental set-up which will allow pretty easy analysis of the data. You have a monkey reach in eight different directions while recording from the neuron. Importantly, you have the monkey reach in each direction numerous times, not just once. You record the time the reach is initiated, perhaps by having the monkey hold onto a joystick with a sensor in it until they reach (the sensor can automatically record when the monkey lets go).</p>
+<div class="section" id="section-1-why-do-we-need-to-move-beyond-tuning-curves">
+<h1>Section 1: Why do we need to move beyond tuning curves?<a class="headerlink" href="#section-1-why-do-we-need-to-move-beyond-tuning-curves" title="Permalink to this headline">¶</a></h1>
+<p>In the last lecture, we saw the use of tuning curves as a way to understand the relationship between a stimulus and the responses of a neuron. However, this approch is pretty limited. Tuning curves are very simple: you can’t use them to capture responses to complex or multiple features. You can only use them to look at average firing rate to discrete options of a stimulus that you choose (like different reaches).  Additionally, they don’t consider timing information present in neural responses. Neurons tend to respond to aspects of the stimuli in a recent window in the past, essentially integrating over the recent past. They also respond in a time-varying manner to different stimuli. So, we need to move beyond tuning curves to more sophisticated methods of observing the relationship between stimulus and neural response.</p>
 </div>
-<p>This is a typical experimental protocol in neuroscience: recording the spike times of a neuron while presenting the same stimulus over and over, or having the animal perform the same behavior over and over. Each presentation of the stimulus or iteration of the behavior is called a <strong>trial</strong>. Neurons are noisy - they do not respond exactly the same way every time they see the same stimulus or behavior - collecting multiple trials of data helps us better understand the neural responses and see how variable they are.</p>
-<p>You go ahead and perform your experiment and collect a bunch of data. You now have the spike times of the neuron during multiple reachs in the same direction (and you have this for 8 different directions).</p>
-</div>
-<div class="section" id="section-2-visualizing-neural-reponses">
-<h1>Section 2: Visualizing Neural Reponses<a class="headerlink" href="#section-2-visualizing-neural-reponses" title="Permalink to this headline">¶</a></h1>
-<p>The very first thing you should do when you collect new data or receive data from someone else is visualize it! The importance of this step cannot be overemphasized.</p>
-<div class="section" id="section-2-1-raster-plots">
-<h2>Section 2.1: Raster Plots<a class="headerlink" href="#section-2-1-raster-plots" title="Permalink to this headline">¶</a></h2>
-<p>An excellent and common way to visualize neural spiking in multiple trials is a <strong>raster plot</strong>, an example of which can be found in Figure 1. In this style of plot, time is represented on the x-axis. Each spike is represented by a vertical line at the time it occurs. Each row (y-axis) can be a separate trial - in this case the raster plot displays a single neuron’s responses over multiple trials and can be used to quickly assess response variability. Alternatively, each row can show the responses of a single neuron - in this case the raster plot displays a population of neuron’s responses.</p>
-<p>Note that the timing of each trial needs to be synced. In other words, the stimulus onset, or event onset, should happen at the same time in each trial. For example, the blue line in Figure 1 could indicate the time that the monkey starts the reach movement.</p>
-<img alt="rasterplotexample" src="https://praneethnamburi.files.wordpress.com/2015/02/02_raster_baselineandstim.png" />
-<p><em>Figure 1: An example raster plot, from https://praneethnamburi.com/category/matlab/</em></p>
-<div class="tip dropdown admonition">
-<p class="admonition-title"><strong>Stop and think!</strong> What can you conclude about the neural responses to whatever the trial is from the raster in Figure 1?</p>
-<p>From the raster, in Figure 1, you can see that the neuron tends to respond slightly more after the event (blue line) than before, but there are not very time-locked responses. In other words, there are not certain points in the trial where the neuron always responds.```</p>
-</div>
-<img alt="rasterplotexample1" src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs10827-018-0693-9/MediaObjects/10827_2018_693_Fig3_HTML.png?as=webp" />
-<p><em>Figure 2: Another example raster plot, from https://link.springer.com/article/10.1007/s10827-018-0693-9</em></p>
-<div class="tip dropdown admonition">
-<p class="admonition-title"><strong>Stop and think!</strong> What can you conclude about the neural responses to whatever the trial is from the raster in Figure 2?</p>
-<p>From the raster in Figure 2 (the top row), you can see that the neuron responds in a time-locked manner - there are certain times during the trial where the neuron reliably spikes (the black columns indicate a spike in every row).```</p>
-</div>
-<p>As mentioned above, we could also have the rows indicate different neurons - see Figure 3A for an example of this.</p>
-<img alt="rasterplotexample1" src="https://s3-eu-west-1.amazonaws.com/ppreviews-plos-725668748/1638070/preview.jpg" />
-<p><em>Figure 3: A) An example raster plot with rows as different neurons, from https://www.researchgate.net/publication/264865592_Large-Scale_High-Resolution_Multielectrode-Array_Recording_Depicts_Functional_Network_Differences_of_Cortical_and_Hippocampal_Cultures</em></p>
-<div class="tip dropdown admonition">
-<p class="admonition-title"><strong>Stop and think!</strong> What can you conclude about the neural responses to whatever the trial is from the raster in Figure 3?</p>
-<p>From the raster, in Figure 3, you can conclude that the neurons in the population are firing at similar times of the trial as each other.```</p>
-</div>
-</div>
-<div class="section" id="section-2-2-psths">
-<h2>Section 2.2: PSTHs<a class="headerlink" href="#section-2-2-psths" title="Permalink to this headline">¶</a></h2>
-<p>We can summarize the information over trials contained in a raster plot in a peri-stimulus time histogram (PSTH), also sometimes called a peri-event time histogram (PETH). In this plot, we want to show the average underlying firing rate over time. To do that, we need to use discrete chunks of time - we divide time into time bins of some length. For each time bin, we can then count the number of spikes in that time bin over all the trials. We can then get the average spikes/bin for that time bin during the trial as the the number of spikes divided by the number of trials.</p>
-<p>See Figure 4 for an example of the construction of a PSTH from 5 trials of neural data, where each trial is just 30 ms long. We use a bin width of 5 ms - the red vertical lines denote the bin edges. We then count up the number of spikes over all the trials (2 for the first time bin), divide by the number of trials (to get to 2/5 for the first time bin), and that is our average firing rate in spikes/bin for that part of the trial.</p>
+<div class="section" id="section-2-one-dimensional-spike-triggered-average-sta">
+<h1>Section 2: One-dimensional spike triggered average (STA)<a class="headerlink" href="#section-2-one-dimensional-spike-triggered-average-sta" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="section-2-1-intro-to-sta">
+<h2>Section 2.1: Intro to STA<a class="headerlink" href="#section-2-1-intro-to-sta" title="Permalink to this headline">¶</a></h2>
+<p>We will first work with spike times from a single neuron, recording while a 1-dimensional stimulus was presented. We will work with data collected by Rob de Ruyter van Steveninck from a fly H1 neuron responding to an approximate white-noise visual motion stimulus (from Dayan &amp; Abbott 2001). The data was collected for 20 minutes at a sampling rate of 500 Hz.</p>
+<p>Execute this cell to download &amp; visualize data</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown </span>
-<span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">})</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown Execute this cell to download &amp; visualize data</span>
+<span class="o">!</span>gdown --id  1V2QAdFLQnAb-gdFQ9-Py1AydI7tlTifm
 
-<span class="n">all_sp_time_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.4</span><span class="p">,</span> <span class="mf">11.1</span><span class="p">,</span> <span class="mf">15.6</span><span class="p">,</span> <span class="mf">16.7</span><span class="p">,</span> <span class="mf">27.8</span><span class="p">]),</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">11.9</span><span class="p">,</span> <span class="mf">15.9</span><span class="p">,</span> <span class="mf">17.7</span><span class="p">,</span> <span class="mi">28</span><span class="p">]),</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">8.6</span><span class="p">,</span> <span class="mf">10.6</span><span class="p">,</span> <span class="mf">13.2</span><span class="p">,</span> <span class="mf">14.2</span><span class="p">,</span> <span class="mi">27</span><span class="p">]),</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">8.9</span><span class="p">,</span> <span class="mf">11.9</span><span class="p">,</span> <span class="mf">12.9</span><span class="p">,</span> <span class="mf">14.5</span><span class="p">,</span> <span class="mf">26.3</span><span class="p">]),</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">.4</span><span class="p">,</span> <span class="mf">8.2</span><span class="p">,</span> <span class="mf">10.6</span><span class="p">,</span> <span class="mf">13.2</span><span class="p">,</span> <span class="mf">16.9</span><span class="p">,</span> <span class="mi">28</span><span class="p">])]</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">sio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="s1">&#39;c1p8.mat&#39;</span><span class="p">)</span>
 
-<span class="c1"># Make raster plot</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">spikes</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;rho&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">))</span>
+<span class="n">stim</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;stim&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,))</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># length of each bin in milliseconds</span>
 
-<span class="c1"># Make raster of this data</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">eventplot</span><span class="p">(</span><span class="n">all_sp_time_list</span><span class="p">,</span> <span class="n">colors</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">sharex</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 
-<span class="c1"># Label x and y axes (with units!)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="c1">#xlabel = &#39;Time (ms)&#39;, </span>
-       <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Trial Number&#39;</span><span class="p">,</span>
-       <span class="n">xlim</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
-       <span class="n">ylim</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">.7</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">],</span>
-       <span class="n">yticks</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
-       <span class="n">yticklabels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]);</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stim</span><span class="p">[:</span><span class="mi">500</span><span class="p">],</span> <span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Stimulus&#39;</span><span class="p">)</span>
 
-<span class="c1"># Plot bin vertical lines </span>
-<span class="n">bin_width</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">bin_edge_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">30.1</span><span class="p">,</span> <span class="n">bin_width</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">bin_time</span> <span class="ow">in</span> <span class="n">bin_edge_times</span><span class="p">:</span>
-  <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">bin_time</span><span class="p">,</span> <span class="n">bin_time</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">.7</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">],</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
-
-<span class="c1"># Make PSTH</span>
-
-<span class="n">binned_spikes</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">all_sp_time_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">bins</span> <span class="o">=</span> <span class="n">bin_edge_times</span><span class="p">)</span>
-
-<span class="n">x_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mf">.1</span><span class="p">)</span>
-<span class="n">y_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">x_vals</span><span class="p">)))</span>
-<span class="k">for</span> <span class="n">i_bin</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bin_edge_times</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-  <span class="n">y_vals</span><span class="p">[(</span><span class="n">x_vals</span> <span class="o">&gt;</span> <span class="n">bin_edge_times</span><span class="p">[</span><span class="n">i_bin</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x_vals</span> <span class="o">&lt;=</span> <span class="n">bin_edge_times</span><span class="p">[</span><span class="n">i_bin</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])]</span> <span class="o">=</span> <span class="n">binned_spikes</span><span class="p">[</span><span class="n">i_bin</span><span class="p">]</span> <span class="o">/</span> <span class="mi">5</span>
-
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_vals</span><span class="p">,</span> <span class="n">y_vals</span><span class="p">,</span>  <span class="s1">&#39;k&#39;</span><span class="p">);</span>
-
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time (ms)&#39;</span><span class="p">,</span> 
-            <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Firing rate (spikes/bin)&#39;</span><span class="p">);</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">eventplot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">spikes</span><span class="p">[:</span><span class="mi">500</span><span class="p">])[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Spikes&#39;</span><span class="p">,</span> <span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time bins&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/03_SpikeTriggeredAverages_18_0.png" src="../_images/03_SpikeTriggeredAverages_18_0.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/bin/sh: 1: gdown: not found
+</pre></div>
 </div>
-</div>
-<p><em>Figure 4: PSTH (bottom row) constructed from a raster plot (top row) with a bin width of 5 ms.</em></p>
-<div class="tip dropdown admonition">
-<p class="admonition-title"><strong>Stop and think!</strong> What would happen if you choose a bin width that’s too big? Too small?</p>
-<p>Too big a bin and you might lose temporal information in the neural reponses because you’re summing spikes over a long period of time. Too small a bin and the PSTH could be hard to interpret. For example, imagine if you chose a time bin small enough that there was almost always at most 1 spike in each, even across all trials. The PSTH would not convey much information. See Figures 5 and 6 to see too big a bin width and too small a bin width, respectively.```</p>
-</div>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown </span>
-<span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">})</span>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/scipy/io/matlab/mio.py</span> in <span class="ni">_open_file</span><span class="nt">(file_like, appendmat, mode)</span>
+<span class="g g-Whitespace">     </span><span class="mi">38</span>     <span class="k">try</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">39</span>         <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_like</span><span class="p">,</span> <span class="n">mode</span><span class="p">),</span> <span class="kc">True</span>
+<span class="g g-Whitespace">     </span><span class="mi">40</span>     <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 
-<span class="n">all_sp_time_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.4</span><span class="p">,</span> <span class="mf">11.1</span><span class="p">,</span> <span class="mf">15.6</span><span class="p">,</span> <span class="mf">16.7</span><span class="p">,</span> <span class="mf">27.8</span><span class="p">]),</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">11.9</span><span class="p">,</span> <span class="mf">15.9</span><span class="p">,</span> <span class="mf">17.7</span><span class="p">,</span> <span class="mi">28</span><span class="p">]),</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">8.6</span><span class="p">,</span> <span class="mf">10.6</span><span class="p">,</span> <span class="mf">13.2</span><span class="p">,</span> <span class="mf">14.2</span><span class="p">,</span> <span class="mi">27</span><span class="p">]),</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">8.9</span><span class="p">,</span> <span class="mf">11.9</span><span class="p">,</span> <span class="mf">12.9</span><span class="p">,</span> <span class="mf">14.5</span><span class="p">,</span> <span class="mf">26.3</span><span class="p">]),</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">.4</span><span class="p">,</span> <span class="mf">8.2</span><span class="p">,</span> <span class="mf">10.6</span><span class="p">,</span> <span class="mf">13.2</span><span class="p">,</span> <span class="mf">16.9</span><span class="p">,</span> <span class="mi">28</span><span class="p">])]</span>
+<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;c1p8.mat&#39;
 
-<span class="c1"># Make raster plot</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
 
-<span class="c1"># Make raster of this data</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">eventplot</span><span class="p">(</span><span class="n">all_sp_time_list</span><span class="p">,</span> <span class="n">colors</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1641</span><span class="o">/</span><span class="mf">1831057168.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;gdown --id  1V2QAdFLQnAb-gdFQ9-Py1AydI7tlTifm&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> 
+<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">d</span> <span class="o">=</span> <span class="n">sio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="s1">&#39;c1p8.mat&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> 
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">spikes</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;rho&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">))</span>
 
-<span class="c1"># Label x and y axes (with units!)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="c1">#xlabel = &#39;Time (ms)&#39;, </span>
-       <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Trial Number&#39;</span><span class="p">,</span>
-       <span class="n">xlim</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
-       <span class="n">ylim</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">.7</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">],</span>
-       <span class="n">yticks</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
-       <span class="n">yticklabels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]);</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/scipy/io/matlab/mio.py</span> in <span class="ni">loadmat</span><span class="nt">(file_name, mdict, appendmat, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">222</span>     <span class="s2">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">223</span><span class="s2">     variable_names = kwargs.pop(&#39;variable_names&#39;, None)</span>
+<span class="ne">--&gt; </span><span class="mi">224</span><span class="s2">     with _open_file_context(file_name, appendmat) as f:</span>
+<span class="g g-Whitespace">    </span><span class="mi">225</span><span class="s2">         MR, _ = mat_reader_factory(f, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">226</span><span class="s2">         matfile_dict = MR.get_variables(variable_names)</span>
 
-<span class="c1"># Plot bin vertical lines </span>
-<span class="n">bin_width</span> <span class="o">=</span> <span class="mi">15</span>
-<span class="n">bin_edge_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">30.1</span><span class="p">,</span> <span class="n">bin_width</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">bin_time</span> <span class="ow">in</span> <span class="n">bin_edge_times</span><span class="p">:</span>
-  <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">bin_time</span><span class="p">,</span> <span class="n">bin_time</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">.7</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">],</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/contextlib.py</span> in <span class="ni">__enter__</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">110</span><span class="s2">         del self.args, self.kwds, self.func</span>
+<span class="g g-Whitespace">    </span><span class="mi">111</span><span class="s2">         try:</span>
+<span class="ne">--&gt; </span><span class="mi">112</span><span class="s2">             return next(self.gen)</span>
+<span class="g g-Whitespace">    </span><span class="mi">113</span><span class="s2">         except StopIteration:</span>
+<span class="g g-Whitespace">    </span><span class="mi">114</span><span class="s2">             raise RuntimeError(&quot;generator didn&#39;t yield&quot;) from None</span>
 
-<span class="c1"># Make PSTH</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/scipy/io/matlab/mio.py</span> in <span class="ni">_open_file_context</span><span class="nt">(file_like, appendmat, mode)</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span><span class="s2"> @contextmanager</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span><span class="s2"> def _open_file_context(file_like, appendmat, mode=&#39;rb&#39;):</span>
+<span class="ne">---&gt; </span><span class="mi">17</span><span class="s2">     f, opened = _open_file(file_like, appendmat, mode)</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span><span class="s2">     try:</span>
+<span class="g g-Whitespace">     </span><span class="mi">19</span><span class="s2">         yield f</span>
 
-<span class="n">binned_spikes</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">all_sp_time_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">bins</span> <span class="o">=</span> <span class="n">bin_edge_times</span><span class="p">)</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/scipy/io/matlab/mio.py</span> in <span class="ni">_open_file</span><span class="nt">(file_like, appendmat, mode)</span>
+<span class="g g-Whitespace">     </span><span class="mi">43</span><span class="s2">             if appendmat and not file_like.endswith(&#39;.mat&#39;):</span>
+<span class="g g-Whitespace">     </span><span class="mi">44</span><span class="s2">                 file_like += &#39;.mat&#39;</span>
+<span class="ne">---&gt; </span><span class="mi">45</span><span class="s2">             return open(file_like, mode), True</span>
+<span class="g g-Whitespace">     </span><span class="mi">46</span><span class="s2">         else:</span>
+<span class="g g-Whitespace">     </span><span class="mi">47</span><span class="s2">             raise IOError(</span>
 
-<span class="n">x_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mf">.1</span><span class="p">)</span>
-<span class="n">y_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">x_vals</span><span class="p">)))</span>
-<span class="k">for</span> <span class="n">i_bin</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bin_edge_times</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-  <span class="n">y_vals</span><span class="p">[(</span><span class="n">x_vals</span> <span class="o">&gt;</span> <span class="n">bin_edge_times</span><span class="p">[</span><span class="n">i_bin</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x_vals</span> <span class="o">&lt;=</span> <span class="n">bin_edge_times</span><span class="p">[</span><span class="n">i_bin</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])]</span> <span class="o">=</span> <span class="n">binned_spikes</span><span class="p">[</span><span class="n">i_bin</span><span class="p">]</span> <span class="o">/</span> <span class="mi">5</span>
-
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_vals</span><span class="p">,</span> <span class="n">y_vals</span><span class="p">,</span>  <span class="s1">&#39;k&#39;</span><span class="p">);</span>
-
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time (ms)&#39;</span><span class="p">,</span> 
-            <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Firing rate (spikes/bin)&#39;</span><span class="p">);</span>
+<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;c1p8.mat&#39;
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/03_SpikeTriggeredAverages_22_0.png" src="../_images/03_SpikeTriggeredAverages_22_0.png" />
 </div>
-</div>
-<p><em>Figure 5: PSTH (bottom row) constructed from a raster plot (top row) with a bin width of 15 ms. This bin width is too large and you lose a lot of temporal information!</em></p>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown </span>
-<span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">})</span>
-
-<span class="n">all_sp_time_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.4</span><span class="p">,</span> <span class="mf">11.1</span><span class="p">,</span> <span class="mf">15.6</span><span class="p">,</span> <span class="mf">16.7</span><span class="p">,</span> <span class="mf">27.8</span><span class="p">]),</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">11.9</span><span class="p">,</span> <span class="mf">15.9</span><span class="p">,</span> <span class="mf">17.7</span><span class="p">,</span> <span class="mi">28</span><span class="p">]),</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">8.6</span><span class="p">,</span> <span class="mf">10.6</span><span class="p">,</span> <span class="mf">13.2</span><span class="p">,</span> <span class="mf">14.2</span><span class="p">,</span> <span class="mi">27</span><span class="p">]),</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">8.9</span><span class="p">,</span> <span class="mf">11.9</span><span class="p">,</span> <span class="mf">12.9</span><span class="p">,</span> <span class="mf">14.5</span><span class="p">,</span> <span class="mf">26.3</span><span class="p">]),</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">.4</span><span class="p">,</span> <span class="mf">8.2</span><span class="p">,</span> <span class="mf">10.6</span><span class="p">,</span> <span class="mf">13.2</span><span class="p">,</span> <span class="mf">16.9</span><span class="p">,</span> <span class="mi">28</span><span class="p">])]</span>
-
-<span class="c1"># Make raster plot</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="c1"># Make raster of this data</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">eventplot</span><span class="p">(</span><span class="n">all_sp_time_list</span><span class="p">,</span> <span class="n">colors</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">)</span>
-
-<span class="c1"># Label x and y axes (with units!)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="c1">#xlabel = &#39;Time (ms)&#39;, </span>
-       <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Trial Number&#39;</span><span class="p">,</span>
-       <span class="n">xlim</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
-       <span class="n">ylim</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">.7</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">],</span>
-       <span class="n">yticks</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
-       <span class="n">yticklabels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]);</span>
-
-<span class="c1"># Plot bin vertical lines </span>
-<span class="n">bin_width</span> <span class="o">=</span> <span class="mf">.5</span>
-<span class="n">bin_edge_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">30.1</span><span class="p">,</span> <span class="n">bin_width</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">bin_time</span> <span class="ow">in</span> <span class="n">bin_edge_times</span><span class="p">:</span>
-  <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">bin_time</span><span class="p">,</span> <span class="n">bin_time</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">.7</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">],</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
-
-<span class="c1"># Make PSTH</span>
-
-<span class="n">binned_spikes</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">all_sp_time_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">bins</span> <span class="o">=</span> <span class="n">bin_edge_times</span><span class="p">)</span>
-
-<span class="n">x_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mf">.1</span><span class="p">)</span>
-<span class="n">y_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">x_vals</span><span class="p">)))</span>
-<span class="k">for</span> <span class="n">i_bin</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bin_edge_times</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-  <span class="n">y_vals</span><span class="p">[(</span><span class="n">x_vals</span> <span class="o">&gt;</span> <span class="n">bin_edge_times</span><span class="p">[</span><span class="n">i_bin</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x_vals</span> <span class="o">&lt;=</span> <span class="n">bin_edge_times</span><span class="p">[</span><span class="n">i_bin</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])]</span> <span class="o">=</span> <span class="n">binned_spikes</span><span class="p">[</span><span class="n">i_bin</span><span class="p">]</span> <span class="o">/</span> <span class="mi">5</span>
-
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_vals</span><span class="p">,</span> <span class="n">y_vals</span><span class="p">,</span>  <span class="s1">&#39;k&#39;</span><span class="p">);</span>
-
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time (ms)&#39;</span><span class="p">,</span> 
-            <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Firing rate (spikes/bin)&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/03_SpikeTriggeredAverages_25_0.png" src="../_images/03_SpikeTriggeredAverages_25_0.png" />
-</div>
-</div>
-<p><em>Figure 6: PSTH (bottom row) constructed from a raster plot (top row) with a bin width of .5 ms. This bin width is too small - the PSTH conveys a lot about the exact spike timings in this set of trials but doesn’t give us a sense of how the underlying firing rate is changing over time</em></p>
-</div>
-</div>
-<div class="section" id="section-3-tuning-curves">
-<h1>Section 3: Tuning curves<a class="headerlink" href="#section-3-tuning-curves" title="Permalink to this headline">¶</a></h1>
-<p>Let’s return to our proposed experiment. We have recorded the spike times of a motor neuron in a monkey while that monkey reaches in 8 different directions. We have plotted the raster plots given multiple trials of a reach in each direction, see Figure 7 below.</p>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown</span>
-
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
-<span class="n">n_trials</span> <span class="o">=</span> <span class="mi">10</span>
-
-<span class="n">angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">135</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">225</span><span class="p">,</span> <span class="mi">270</span><span class="p">,</span> <span class="mi">315</span><span class="p">])</span>
-<span class="n">firing_rates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">54</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
-
-<span class="n">reach_sp_times</span> <span class="o">=</span> <span class="p">{}</span>
-
-<span class="c1"># Make raster plots</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
-
-<span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">i_angle</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
-
-    <span class="n">reach_firing_rates</span> <span class="o">=</span> <span class="mi">15</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1500</span><span class="p">))</span>
-    <span class="n">reach_firing_rates</span><span class="p">[(</span><span class="mi">750</span> <span class="o">-</span> <span class="mi">250</span><span class="p">):(</span><span class="mi">750</span> <span class="o">+</span> <span class="mi">250</span><span class="p">)]</span> <span class="o">=</span> <span class="n">firing_rates</span><span class="p">[</span><span class="n">i_angle</span><span class="p">]</span>
-
-    <span class="n">bin_width</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">1000</span>
-
-    <span class="n">all_sp_time_list</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">i_trial</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_trials</span><span class="p">):</span>
-
-        <span class="n">binned_spikes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">reach_firing_rates</span> <span class="o">*</span> <span class="n">bin_width</span><span class="p">)</span>
-        <span class="n">sp_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">binned_spikes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-
-        <span class="n">all_sp_time_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sp_times</span><span class="p">)</span>
-
-    <span class="n">reach_sp_times</span><span class="p">[</span><span class="n">i_angle</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_sp_time_list</span>
-
-    <span class="n">axes</span><span class="p">[</span><span class="n">i_angle</span><span class="p">]</span><span class="o">.</span><span class="n">eventplot</span><span class="p">(</span><span class="n">all_sp_time_list</span><span class="p">,</span> <span class="n">colors</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i_angle</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">750</span><span class="p">,</span> <span class="mi">750</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i_angle</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="c1">#xlabel = &#39;Time (ms)&#39;, </span>
-       <span class="c1">#ylabel = &#39;Trial Number&#39;,</span>
-       <span class="n">ylim</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">.7</span><span class="p">,</span> <span class="mf">10.7</span><span class="p">],</span>
-       <span class="n">yticks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
-       <span class="n">yticklabels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
-       <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">angles</span><span class="p">[</span><span class="n">i_angle</span><span class="p">]</span><span class="si">}</span><span class="s1"> degrees&#39;</span><span class="p">);</span>
-    
-    <span class="k">if</span> <span class="n">angles</span><span class="p">[</span><span class="n">i_angle</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">135</span><span class="p">:</span>
-      <span class="n">axes</span><span class="p">[</span><span class="n">i_angle</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time (ms)&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">angles</span><span class="p">[</span><span class="n">i_angle</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">angles</span><span class="p">[</span><span class="n">i_angle</span><span class="p">]</span> <span class="o">==</span> <span class="mi">180</span><span class="p">:</span>
-      <span class="n">axes</span><span class="p">[</span><span class="n">i_angle</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Trials&#39;</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/03_SpikeTriggeredAverages_30_0.png" src="../_images/03_SpikeTriggeredAverages_30_0.png" />
-</div>
-</div>
-<p><em>Figure 7: Raster plots of motor neuron response for 10 trials for each reach condition. Please note that this is faked data for illustrative purposes. The vertical line indicates the start of each reach.</em></p>
-<div class="tip dropdown admonition">
-<p class="admonition-title"><strong>Stop and think!</strong> Based on Figure 7, what directions of reach does this neuron fire a lot to? What directions of reach does it not respond for?</p>
-<p>The neuron fires a lot when the monkey is reaching at 135 and 180 degrees. It responds much less for 0 degrees and 315 degrees.```</p>
-</div>
-<p>We can summarize how the neuron responds to different reach directions by creating a tuning curve. We want to plot the overall firing rate of the neuron for each reach direction vs the reach direction.  See Figure 9 for the tuning curve based on the above rasters!</p>
-<div class="tip dropdown admonition">
-<p class="admonition-title"><strong>Stop and think!</strong> How could we get the overall firing rate of the neuron for a certain reach?</p>
-<p>We can choose some time window around reach onset. We can then count up the spikes over all trials in that time window and divide by both the number of trials and the length of the time window to get firing rate in terms of spikes per second. We choose a 500 ms time window: 250 ms before reach onset and 250 ms after. In Figure 9, we count 287 spikes in that 500 ms time window over all the trials, so the average firing rate is 287 spikes / .5 s / 10 trials = 57.4 spikes per second.```</p>
-</div>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown</span>
-
-<span class="n">i_angle</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">eventplot</span><span class="p">(</span><span class="n">reach_sp_times</span><span class="p">[</span><span class="n">i_angle</span><span class="p">],</span> <span class="n">colors</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">750</span><span class="p">,</span> <span class="mi">750</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time (ms)&#39;</span><span class="p">,</span> 
-    <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Trial Number&#39;</span><span class="p">,</span>
-    <span class="n">ylim</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">.7</span><span class="p">,</span> <span class="mf">10.7</span><span class="p">],</span>
-    <span class="n">yticks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
-    <span class="n">yticklabels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
-    <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">angles</span><span class="p">[</span><span class="n">i_angle</span><span class="p">]</span><span class="si">}</span><span class="s1"> degrees&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/03_SpikeTriggeredAverages_36_0.png" src="../_images/03_SpikeTriggeredAverages_36_0.png" />
-</div>
-</div>
-<p><em>Figure 8: Example of how to get the average firing rate for this reach condition from a raster plot. In the 500 ms time window (250 ms before reach onset, 250 ms after) denoted by red lines, there are 287 spikes over all trials. So, the average firing rate is 287 spikes / .5 s / 10 trials = 57.4 spikes per second.</em></p>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
-
-<span class="n">av_firing_rate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">angles</span><span class="p">),))</span>
-<span class="k">for</span> <span class="n">i_angle</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">angles</span><span class="p">)):</span>
-  <span class="n">all_sp_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">reach_sp_times</span><span class="p">[</span><span class="n">i_angle</span><span class="p">])</span>
-  <span class="n">sp_count</span> <span class="o">=</span> <span class="p">((</span><span class="n">all_sp_times</span> <span class="o">&gt;</span> <span class="mi">500</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">all_sp_times</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-  <span class="n">av_firing_rate</span><span class="p">[</span><span class="n">i_angle</span><span class="p">]</span> <span class="o">=</span> <span class="n">sp_count</span> <span class="o">/</span> <span class="mf">.5</span> <span class="o">/</span> <span class="n">n_trials</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">angles</span><span class="p">,</span> <span class="n">av_firing_rate</span><span class="p">,</span> <span class="s1">&#39;ok&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Angle of reach (degrees)&#39;</span><span class="p">,</span>
-       <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Firing rate (Hz)&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/03_SpikeTriggeredAverages_39_0.png" src="../_images/03_SpikeTriggeredAverages_39_0.png" />
-</div>
-</div>
-<p><em>Figure 9: Average firing rate of the neuron to each reach direction.</em></p>
-<p>As you can see from Figure 9, this plot of firing rate to each reach direction quickly helps us see the “tuning” of the neuron, or how it’s response varies across reach directions. It is responding the most to degrees around 180, with smaller responses to higher and lower angles of reach. We can summarize this information even more efficiently by doing some curve fitting. It turns out that the tuning of motor cortex neurons can be described well with a cosine curve. In particular, we can model the firing rate for each angle as:</p>
+<p>As you can see below, for each time bin (2 ms chunk of time), we have the value of the stimulus and whether a spike occurred or not. The stimulus is denoted by just a single number per time bin.</p>
+<p>So how do we start to understand what about the stimulus (if any) is causing the neuron to spike? We could simply ask <strong>what on average was the stimulus before a spike</strong>. For example, if a neuron responds to high values of the stimulus, you would expect the stimulus to have on average high values before a spike. This is the idea behind a spike-triggered average!</p>
+<p>To compute the spike-triggered average, we want to gather the stimulus chunks before each spike, and take the average of them. Let’s make that mathematical. Given spike times <span class="math notranslate nohighlight">\(t_1\)</span>, <span class="math notranslate nohighlight">\(t_2\)</span>, …, <span class="math notranslate nohighlight">\(t_n\)</span> for <span class="math notranslate nohighlight">\(n\)</span> spikes and stimulus <span class="math notranslate nohighlight">\(s\)</span>:
+$<span class="math notranslate nohighlight">\(STA(\tau) = \frac{1}{n}\sum_{i=1}^n s(t_i - \tau)\)</span>$</p>
+<p>This tells us that the spike triggered average at some <span class="math notranslate nohighlight">\(\tau\)</span> before a spike is equal to the average of the stimulus at that <span class="math notranslate nohighlight">\(\tau\)</span> before every spike.</p>
+<p><strong>STA in terms of time bins:</strong></p>
+<p>We often work within the context of time bins, as we saw in our last lecture, so let’s reframe the STA in this context, instead of thinking about continuous time. Let’s assume we have the spike counts at each time bin as <span class="math notranslate nohighlight">\(y_1\)</span>, <span class="math notranslate nohighlight">\(y_2\)</span>, …, <span class="math notranslate nohighlight">\(y_T\)</span> and the stimulus at each time bin as <span class="math notranslate nohighlight">\(s_1\)</span>, <span class="math notranslate nohighlight">\(s_2\)</span>, …, <span class="math notranslate nohighlight">\(s_T\)</span> for <span class="math notranslate nohighlight">\(T\)</span> time bins. We choose the number of time bins before a spike we want to include in our spike-triggered average - let’s say in this case we choose 5 time bins. Then, our equation becomes:</p>
 <div class="math notranslate nohighlight">
-\[f(a) = r_0 + (r_{max} - r_0) cos(a - a_{max})\]</div>
-<p><span class="math notranslate nohighlight">\(a\)</span>: reaching angle</p>
-<p><span class="math notranslate nohighlight">\(a_{max}\)</span>: reaching angle associated with highest response</p>
-<p><span class="math notranslate nohighlight">\(r_{max}\)</span>: maximum response</p>
-<p><span class="math notranslate nohighlight">\(r_0\)</span>: offset or background firing rate</p>
-<p>We fit this equation for a particular neuron by finding the values of <span class="math notranslate nohighlight">\(a_{max}\)</span>, <span class="math notranslate nohighlight">\(r_{max}\)</span>, and <span class="math notranslate nohighlight">\(r_0\)</span> that match this curve closely to the data points. We can then quickly summarize the tuning of each neuron with these fitted parameters.</p>
+\[STA = \frac{1}{n}\sum_{i = 0}^T y_i*s_{i - 5:i} \]</div>
+<p>where <span class="math notranslate nohighlight">\(s_{i - 5:i}\)</span> is a vector of the stimulus over the past 5 time bins before i. Note that for all the bins where there are zero spikes, the term <span class="math notranslate nohighlight">\(y_i*s_{i - 5:i} \)</span> will be 0 so we could speed up our computation by just focusing on bins where there are spikes.</p>
+<p>We show the computed STA for our data above in the cell below.</p>
+<p>Execute to visualize STA</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown Execute to visualize STA</span>
+<span class="c1"># Figure out how many time bins we want the STA to be</span>
+<span class="n">STA_length</span> <span class="o">=</span> <span class="mi">150</span>
+
+<span class="c1"># Figure out when spikes occur</span>
+<span class="n">spike_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">spikes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Ignore spike times less than STA length (since there won&#39;t be enough preceding stimulus)</span>
+<span class="n">spike_times</span> <span class="o">=</span> <span class="n">spike_times</span><span class="p">[</span><span class="n">spike_times</span> <span class="o">&gt;</span> <span class="n">STA_length</span><span class="p">]</span>
+
+<span class="c1"># Initialize STA</span>
+<span class="n">STA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">STA_length</span><span class="p">,))</span>
+
+<span class="c1"># Loop over spikes</span>
+<span class="k">for</span> <span class="n">i_sp</span> <span class="ow">in</span> <span class="n">spike_times</span><span class="p">:</span>
+    
+    <span class="c1"># Add preceding stimulus</span>
+    <span class="n">STA</span> <span class="o">+=</span> <span class="n">stim</span><span class="p">[</span><span class="n">i_sp</span> <span class="o">-</span> <span class="n">STA_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span> <span class="n">i_sp</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Divide by number of spikes</span>
+<span class="n">STA</span> <span class="o">=</span> <span class="n">STA</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">spike_times</span><span class="p">)</span>
+
+<span class="n">time_before_spike</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">STA_length</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_before_spike</span><span class="p">,</span> <span class="n">STA</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;STA&#39;</span><span class="p">,</span> 
+      <span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time before spike (ms)&#39;</span><span class="p">,</span>
+      <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Stimulus intensity&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1641</span><span class="o">/</span><span class="mf">4147393858.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> 
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="c1"># Figure out when spikes occur</span>
+<span class="ne">----&gt; </span><span class="mi">6</span> <span class="n">spike_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">spikes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> 
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="c1"># Ignore spike times less than STA length (since there won&#39;t be enough preceding stimulus)</span>
+
+<span class="ne">NameError</span>: name &#39;spikes&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="section-2-2-computing-stas-by-hand">
+<h2>Section 2.2: Computing STAs by hand<a class="headerlink" href="#section-2-2-computing-stas-by-hand" title="Permalink to this headline">¶</a></h2>
+<p>Let’s compute a spike-triggered average (STA) with a numerical example. Let’s say we have the following stimulus values, where each entry in the vector is the stimulus at a time bin (so the first entry is <span class="math notranslate nohighlight">\(s_1\)</span>, the second is <span class="math notranslate nohighlight">\(s_2\)</span>, and so on).</p>
+<p><span class="math notranslate nohighlight">\(s\)</span> =    [0, 1, 1, 0, 2, -1, 0, 3, 1, 0, -4]</p>
+<p>We have the following spike counts for the corresponding time bins:</p>
+<p><span class="math notranslate nohighlight">\(y\)</span> = [0, 0, 0, 1, 0,  1,  0, 1, 0, 0, 0]</p>
+<div class="tip dropdown admonition">
+<p class="admonition-title"><strong>Stop and think!</strong> What is the spike-triggered average? Let’s use 3 time bins, including the time bin that the spike occurs.</p>
+<p>Our STA is the average of those so: [0, 1, 2].```</p>
+</div>
+</div>
+<div class="section" id="section-2-3-computing-stas-in-code">
+<h2>Section 2.3: Computing STAs in code<a class="headerlink" href="#section-2-3-computing-stas-in-code" title="Permalink to this headline">¶</a></h2>
+<p>Let’s dive into some code that computes a spike-triggered average on our data. <code class="docutils literal notranslate"><span class="pre">spikes</span></code> is an array that gives the sequence of spiking events at the sampled times (every 2 ms). When an element of <code class="docutils literal notranslate"><span class="pre">spikes</span></code> is one, this indicates the presence of a spike at the corresponding time, whereas a zero value indicates no spike.</p>
+<p>The variable <code class="docutils literal notranslate"><span class="pre">stim</span></code> gives the sequence of stimulus values at the sampled times.</p>
+<p>We will compute a spike-triggered average that is 300 ms long (the 300 ms before each spike).</p>
+<p>See the cell below for code to compute a spike triggered average. We dive into more details of the steps in the text below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Step 1) Figure out how many time bins we want the STA to be</span>
+<span class="n">STA_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">300</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Step 2) Figure out when spikes occur</span>
+<span class="n">spike_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">spikes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Step 3) Ignore spike times less than STA length</span>
+<span class="n">spike_times</span> <span class="o">=</span> <span class="n">spike_times</span><span class="p">[</span><span class="n">spike_times</span> <span class="o">&gt;</span> <span class="n">STA_length</span><span class="p">]</span>
+
+<span class="c1"># Step 4) Initialize STA</span>
+<span class="n">STA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">STA_length</span><span class="p">,))</span>
+
+<span class="c1"># Step 5) Loop over spikes &amp; add preceding stimulus</span>
+<span class="k">for</span> <span class="n">i_sp</span> <span class="ow">in</span> <span class="n">spike_times</span><span class="p">:</span>
+    
+    <span class="c1"># Add preceding stimulus</span>
+    <span class="n">STA</span> <span class="o">+=</span> <span class="n">stim</span><span class="p">[</span><span class="n">i_sp</span> <span class="o">-</span> <span class="n">STA_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span> <span class="n">i_sp</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Step 6) Divide by number of spikes</span>
+<span class="n">STA</span> <span class="o">=</span> <span class="n">STA</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">spike_times</span><span class="p">)</span>
+
+<span class="c1"># Visualize</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">time_before_spike</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">STA_length</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_before_spike</span><span class="p">,</span> <span class="n">STA</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;STA&#39;</span><span class="p">,</span> 
+      <span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time before spike (ms)&#39;</span><span class="p">,</span>
+      <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Stimulus intensity&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1641</span><span class="o">/</span><span class="mf">4186795821.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> 
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="c1"># Step 2) Figure out when spikes occur</span>
+<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">spike_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">spikes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> 
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="c1"># Step 3) Ignore spike times less than STA length</span>
+
+<span class="ne">NameError</span>: name &#39;spikes&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Step 1) We first figure out how many time bins we want the STA to be - if we want it to be 300 ms and each bin is 2 ms/bin, we we want 300 ms / 2 ms/bin = 150 bins long.</p>
+<p>Step 2) We then find the bins where spikes occur. We can use <code class="docutils literal notranslate"><span class="pre">np.where</span></code> to get the indices of the entries in <code class="docutils literal notranslate"><span class="pre">spikes</span></code> that are non-zero. Our maximum spike count in <code class="docutils literal notranslate"><span class="pre">spikes</span></code> is 1 so we don’t have to worry about time bins having more than one spike (although we sometimes would!).</p>
+<p>Step 3) We will just ignore spike times that occur really early in our data, as there is not a long enough preceding stimulus to use for our averaging.</p>
+<p>Step 4) We want to initialize our STA so we can add stimulus chunks to it iteratively. We create a vector of zeros the correct length.</p>
+<p>Step 5) We loop over spike times. For each spike time, we take the preceding 150 time bins of the stimulus using <code class="docutils literal notranslate"><span class="pre">stim[i_sp</span> <span class="pre">-</span> <span class="pre">STA_length</span> <span class="pre">-1:</span> <span class="pre">i_sp</span> <span class="pre">+</span> <span class="pre">1]</span></code> and add it to the STA. The -1 and +1 is so we include the time bin of the spike.</p>
+<p>Step 6) We have summed over the stimuli before spikes but we want to average, so we need to divide by the number of spikes.</p>
+</div>
+</div>
+<div class="section" id="section-3-stas-for-higher-dimensional-stimuli">
+<h1>Section 3: STAs for higher-dimensional stimuli<a class="headerlink" href="#section-3-stas-for-higher-dimensional-stimuli" title="Permalink to this headline">¶</a></h1>
+<p>So far, we have only looked at computing STAs for a 1d stimulus over time. In other words, a stimulus that has only one data point per time bin. We can compute an STA for a stimulus for any number of dimensions. For example, let’s say the stimulus is a movie. Instead of looking at the average number that triggered a spike at certain delays before a spike (as in the case of the 1d stimulus), we want to look at the average image that triggered a spike at various time bins before the spike. So we want the average image 1 time step back, the average image 2 time steps back, and so on. This idea is conveyed in the image below. We’d end up with a spike triggered average of shape (number of time bins of STA x number of pixels x number of pixels).</p>
+<img alt="STA from movie" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Illustration_diagram_for_the_Spike-triggered_average.pdf/page1-1335px-Illustration_diagram_for_the_Spike-triggered_average.pdf.jpg" />
+<p><em>Spike triggered average with a movie stimulus from https://upload.wikimedia.org/wikipedia/commons/2/2c/Illustration_diagram_for_the_Spike-triggered_average.pdf</em></p>
+<p>We may have stimuli that aren’t images but have more than 1 dimension. We’d treat these similar to the movie, where we average over each feature (or dimension) separately. So if our stimulus is represented by 3 numbers per time bin, we would get an STA of shape (number of time bins x 3).</p>
+</div>
+<div class="section" id="section-4-interpreting-stas">
+<h1>Section 4: Interpreting STAs<a class="headerlink" href="#section-4-interpreting-stas" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="section-4-1-stas-receptive-fields">
+<h2>Section 4.1: STAs ~ receptive fields<a class="headerlink" href="#section-4-1-stas-receptive-fields" title="Permalink to this headline">¶</a></h2>
+<p>The spike-triggered average tells us what about the stimulus leads the neuron to respond, allowing us to interpret something about neural processing. In other words, the STA provides an estimate of a neuron’s linear receptive field. For example, look atLet’s take another look at our STA from our example data.</p>
+<p>Execute to visualize STA</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown Execute to visualize STA</span>
+<span class="c1"># Figure out how many time bins we want the STA to be</span>
+<span class="n">STA_length</span> <span class="o">=</span> <span class="mi">150</span>
+
+<span class="c1"># Figure out when spikes occur</span>
+<span class="n">spike_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">spikes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Ignore spike times less than STA length (since there won&#39;t be enough preceding stimulus)</span>
+<span class="n">spike_times</span> <span class="o">=</span> <span class="n">spike_times</span><span class="p">[</span><span class="n">spike_times</span> <span class="o">&gt;</span> <span class="n">STA_length</span><span class="p">]</span>
+
+<span class="c1"># Initialize STA</span>
+<span class="n">STA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">STA_length</span><span class="p">,))</span>
+
+<span class="c1"># Loop over spikes</span>
+<span class="k">for</span> <span class="n">i_sp</span> <span class="ow">in</span> <span class="n">spike_times</span><span class="p">:</span>
+    
+    <span class="c1"># Add preceding stimulus</span>
+    <span class="n">STA</span> <span class="o">+=</span> <span class="n">stim</span><span class="p">[</span><span class="n">i_sp</span> <span class="o">-</span> <span class="n">STA_length</span><span class="p">:</span> <span class="n">i_sp</span><span class="p">]</span>
+
+<span class="c1"># Divide by number of spikes</span>
+<span class="n">STA</span> <span class="o">=</span> <span class="n">STA</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">spike_times</span><span class="p">)</span>
+
+<span class="n">time_before_spike</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">STA_length</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_before_spike</span><span class="p">,</span> <span class="n">STA</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;STA&#39;</span><span class="p">,</span> 
+      <span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time before spike (ms)&#39;</span><span class="p">,</span>
+      <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Stimulus intensity&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1641</span><span class="o">/</span><span class="mf">3888993592.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> 
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="c1"># Figure out when spikes occur</span>
+<span class="ne">----&gt; </span><span class="mi">6</span> <span class="n">spike_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">spikes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> 
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="c1"># Ignore spike times less than STA length (since there won&#39;t be enough preceding stimulus)</span>
+
+<span class="ne">NameError</span>: name &#39;spikes&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="tip dropdown admonition">
+<p class="admonition-title"><strong>Stop and think!</strong> What can you interpret about this fly H1 neuron response to the visual motion stimulus from the STA?</p>
+<p>High values of the stimulus tend to prompt a neural spike around 50 milliseconds later.```</p>
+</div>
+<p>Execute to visualize another STA</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown Execute to visualize another STA</span>
+<span class="n">time_before_spike</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">STA_length</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_before_spike</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">time_before_spike</span><span class="p">),)),</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;STA&#39;</span><span class="p">,</span> 
+      <span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time before spike (ms)&#39;</span><span class="p">,</span>
+      <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Stimulus intensity&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1641</span><span class="o">/</span><span class="mf">3978451245.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># @markdown Execute to visualize another STA</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">time_before_spike</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">STA_length</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> 
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> 
+
+<span class="ne">NameError</span>: name &#39;dt&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="tip dropdown admonition">
+<p class="admonition-title"><strong>Stop and think!</strong> If you saw a completely flat STA, as above, what would you guess about the neuron?</p>
+<p>You could hypothesis that the neural response doesn’t depend on the stimulus/isn’t affected by it. You might see this if you are recording from an auditory neuron and trying to relate to a visual stimulus for example! This may not be true, the neural response may depend on the stimulus in a way that’s more complex than an STA can capture.```</p>
+</div>
+<div class="tip dropdown admonition">
+<p class="admonition-title"><strong>Stop and think!</strong> Why do we use the prior stimulus before a spike to compute the STA? Why not also use the stimulus after a spike?</p>
+<p>A neuron could not respond based on a future stimulus that it hasn’t seen yet. If we were looking at a behavioral variable, it could be useful to look at the spike-triggered average in the past and future as neurons could be firing in advance of some behavior. However, behavior doesn’t usually fulfil the input requirements for useful spike-triggered averages (detailed in next section).```</p>
+</div>
+</div>
+<div class="section" id="section-4-2-stimulus-requirements">
+<h2>Section 4.2: Stimulus requirements<a class="headerlink" href="#section-4-2-stimulus-requirements" title="Permalink to this headline">¶</a></h2>
+<p>The spike-triggered average is only meaningful to compute and interpret for certain types of stimuli. Specifically, for uncorrelated stimuli, where the values of the stimulus <strong>independent and identially distributed</strong> at each time bin. In other words, the value of the stimulus at a certain time should not depend on the values of the stimulus before or after and should be drawn at random from a probability distribution (the same distribution should be used for all time bins). <strong>White noise stimuli</strong> fulfill these requirements.</p>
+<p>So, why can’t we interpret spike-triggered averages with correlated stimuli? Imagine we had a repeating stimulus, as below. We presented this to the fly H1 neuron we’ve been working with and record the spikes. Please note, the data below is faked.</p>
+<p>Execute cell to visualize correlated stimulus and simulated responses</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown Execute cell to visualize correlated stimulus and simulated responses</span>
+
+<span class="c1"># Create repeating stimulus</span>
+<span class="n">stim_segment</span> <span class="o">=</span> <span class="o">-</span><span class="n">STA</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">STA</span>
+<span class="n">corr_stim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">stim_segment</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">stim</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">stim_segment</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+<span class="c1"># Create model for fake spikes</span>
+<span class="n">STA_stim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">stim</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],))</span>
+<span class="k">for</span> <span class="n">i_t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="n">stim</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">STA_stim</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">stim</span><span class="p">[</span><span class="n">i_t</span> <span class="o">-</span> <span class="n">STA_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span> <span class="n">i_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">STA</span><span class="p">)</span>
+
+<span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">STA_stim</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">STA_stim</span><span class="p">),</span> <span class="mi">25</span><span class="p">)</span>
+
+<span class="n">all_stim_bins</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">STA_stim</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span>
+<span class="n">spike_stim_bins</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">STA_stim</span><span class="p">[</span><span class="n">spike_times</span><span class="p">],</span> <span class="n">bins</span><span class="p">)</span>
+<span class="n">nonlin</span> <span class="o">=</span> <span class="n">spike_stim_bins</span><span class="o">/</span><span class="n">all_stim_bins</span>
+
+<span class="c1"># Create fake spikes</span>
+<span class="n">STA_stim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">stim</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],))</span>
+<span class="n">sim_spikes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">stim</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],))</span>
+<span class="n">all_nonlin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">stim</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],))</span>
+
+<span class="k">for</span> <span class="n">i_t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="n">stim</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">STA_stim</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">corr_stim</span><span class="p">[</span><span class="n">i_t</span> <span class="o">-</span> <span class="n">STA_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span> <span class="n">i_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">STA</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">STA_stim</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">bins</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">this_nonlin</span> <span class="o">=</span> <span class="n">nonlin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">STA_stim</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">bins</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+      <span class="n">this_nonlin</span> <span class="o">=</span> <span class="n">nonlin</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">nonlin_bin</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">STA_stim</span><span class="p">[</span><span class="n">i_t</span><span class="p">],</span> <span class="n">bins</span><span class="p">)</span>
+      <span class="n">this_nonlin</span> <span class="o">=</span> <span class="n">nonlin</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">nonlin_bin</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]</span>
+
+    <span class="n">all_nonlin</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_nonlin</span>
+    <span class="n">sim_spikes</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">this_nonlin</span><span class="p">)</span>
+
+<span class="c1"># Visualize</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">sharex</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">corr_stim</span><span class="p">[:</span><span class="mi">1500</span><span class="p">],</span> <span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Stimulus&#39;</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">eventplot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">sim_spikes</span><span class="p">[:</span><span class="mi">1500</span><span class="p">])[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Spikes&#39;</span><span class="p">,</span> <span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time bins&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1641</span><span class="o">/</span><span class="mf">4006575899.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> 
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># Create repeating stimulus</span>
+<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">stim_segment</span> <span class="o">=</span> <span class="o">-</span><span class="n">STA</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">STA</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">corr_stim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">stim_segment</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">stim</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">stim_segment</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> 
+
+<span class="ne">NameError</span>: name &#39;STA&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>The neuron always spikes around the same point in the pattern. This means that when we average over the stimuli before the spikes, we get unwanted structure in our STA. See the STA computed in the cell below. As we’ve seen, the neuron responds to high stimulus values about 50 ms before the spike. Because of the repeating nature of the stimulus, it looks from this STA like the neuron responds to negative values of the stimulus around .. before the spike, which is incorrect! In essence, the correlated nature of the stimulus has meant we haven’t explored enough stimulus patterns to get a good sense of the neural dependency on the stimulus. This is an especially egregious case of a correlated stimulus - we have repeating chunks - but any amount of correlation can interfere with our ability to estimate the linear receptive field with a linear filter well!</p>
+<p>Execute to visualize STA computed from correlated stimulus</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown Execute to visualize STA computed from correlated stimulus</span>
+
+<span class="c1"># Step 1) Figure out how many time bins we want the STA to be</span>
+<span class="n">STA_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">300</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Step 2) Figure out when spikes occur</span>
+<span class="n">spike_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">sim_spikes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Step 3) Ignore spike times less than STA length</span>
+<span class="n">spike_times</span> <span class="o">=</span> <span class="n">spike_times</span><span class="p">[</span><span class="n">spike_times</span> <span class="o">&gt;</span> <span class="n">STA_length</span><span class="p">]</span>
+
+<span class="c1"># Step 4) Initialize STA</span>
+<span class="n">sim_STA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">STA_length</span><span class="p">,))</span>
+
+<span class="c1"># Step 5) Loop over spikes &amp; add preceding stimulus</span>
+<span class="k">for</span> <span class="n">i_sp</span> <span class="ow">in</span> <span class="n">spike_times</span><span class="p">:</span>
+    
+    <span class="c1"># Add preceding stimulus</span>
+    <span class="n">sim_STA</span> <span class="o">+=</span> <span class="n">corr_stim</span><span class="p">[</span><span class="n">i_sp</span> <span class="o">-</span> <span class="n">STA_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span> <span class="n">i_sp</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Step 6) Divide by number of spikes</span>
+<span class="n">sim_STA</span> <span class="o">=</span> <span class="n">sim_STA</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">spike_times</span><span class="p">)</span>
+
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_before_spike</span><span class="p">,</span> <span class="n">sim_STA</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;STA&#39;</span><span class="p">,</span> 
+      <span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time before spike (ms)&#39;</span><span class="p">,</span>
+      <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Stimulus intensity&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1641</span><span class="o">/</span><span class="mf">667679788.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> 
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="c1"># Step 2) Figure out when spikes occur</span>
+<span class="ne">----&gt; </span><span class="mi">7</span> <span class="n">spike_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">sim_spikes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> 
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="c1"># Step 3) Ignore spike times less than STA length</span>
+
+<span class="ne">NameError</span>: name &#39;sim_spikes&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
