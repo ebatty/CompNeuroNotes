@@ -9,3 +9,6 @@ parts:
     - file: lectures/05_NeuralEncodingII.ipynb
     - file: lectures/06_Decoding.ipynb
     - file: lectures/07_DimensionalityReduction.ipynb
+  - caption: Recurrent neural networks & dynamical systems
+    chapters:
+    - file: lectures/MathReview.ipynb
