@@ -315,6 +315,7 @@
 <li><p>Be able to compute STA using both math and code</p></li>
 </ul>
 <p>Imports</p>
+<p>Imports</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown Imports</span>
@@ -336,6 +337,7 @@
 <div class="section" id="section-2-1-intro-to-sta">
 <h2>Section 2.1: Intro to STA<a class="headerlink" href="#section-2-1-intro-to-sta" title="Permalink to this headline">¶</a></h2>
 <p>We will first work with spike times from a single neuron, recording while a 1-dimensional stimulus was presented. We will work with data collected by Rob de Ruyter van Steveninck from a fly H1 neuron responding to an approximate white-noise visual motion stimulus (from Dayan &amp; Abbott 2001). The data was collected for 20 minutes at a sampling rate of 500 Hz.</p>
+<p>Execute this cell to download &amp; visualize data</p>
 <p>Execute this cell to download &amp; visualize data</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
@@ -362,17 +364,21 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading...
 From: https://drive.google.com/uc?id=1V2QAdFLQnAb-gdFQ9-Py1AydI7tlTifm
 To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
-
-  0%|                                               | 0.00/5.40M [00:00&lt;?, ?B/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|███████████████████████████████████████| 5.40M/5.40M [00:00&lt;00:00, 131MB/s]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0%|                                               | 0.00/5.40M [00:00&lt;?, ?B/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 10%|███▊                                   | 524k/5.40M [00:00&lt;00:01, 3.95MB/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████████████████████████████████| 5.40M/5.40M [00:00&lt;00:00, 25.0MB/s]
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Text(0.5, 1.0, &#39;Spikes&#39;), Text(0.5, 0, &#39;Time bins&#39;)]
 </pre></div>
 </div>
-<img alt="../_images/03_SpikeTriggeredAverages_8_3.png" src="../_images/03_SpikeTriggeredAverages_8_3.png" />
+<img alt="../_images/03_SpikeTriggeredAverages_10_5.png" src="../_images/03_SpikeTriggeredAverages_10_5.png" />
 </div>
 </div>
 <p>As you can see below, for each time bin (2 ms chunk of time), we have the value of the stimulus and whether a spike occurred or not. The stimulus is denoted by just a single number per time bin.</p>
@@ -387,6 +393,7 @@ To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
 \[STA = \frac{1}{n}\sum_{i = 0}^T y_i*s_{i - 5:i} \]</div>
 <p>where <span class="math notranslate nohighlight">\(s_{i - 5:i}\)</span> is a vector of the stimulus over the past 5 time bins before i. Note that for all the bins where there are zero spikes, the term <span class="math notranslate nohighlight">\(y_i*s_{i - 5:i} \)</span> will be 0 so we could speed up our computation by just focusing on bins where there are spikes.</p>
 <p>We show the computed STA for our data above in the cell below.</p>
+<p>Execute to visualize STA</p>
 <p>Execute to visualize STA</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
@@ -425,7 +432,7 @@ To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/03_SpikeTriggeredAverages_11_0.png" src="../_images/03_SpikeTriggeredAverages_11_0.png" />
+<img alt="../_images/03_SpikeTriggeredAverages_14_0.png" src="../_images/03_SpikeTriggeredAverages_14_0.png" />
 </div>
 </div>
 </div>
@@ -486,7 +493,7 @@ To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/03_SpikeTriggeredAverages_15_0.png" src="../_images/03_SpikeTriggeredAverages_15_0.png" />
+<img alt="../_images/03_SpikeTriggeredAverages_18_0.png" src="../_images/03_SpikeTriggeredAverages_18_0.png" />
 </div>
 </div>
 <p>Step 1) We first figure out how many time bins we want the STA to be - if we want it to be 300 ms and each bin is 2 ms/bin, we we want 300 ms / 2 ms/bin = 150 bins long.</p>
@@ -509,6 +516,7 @@ To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
 <div class="section" id="section-4-1-stas-receptive-fields">
 <h2>Section 4.1: STAs ~ receptive fields<a class="headerlink" href="#section-4-1-stas-receptive-fields" title="Permalink to this headline">¶</a></h2>
 <p>The spike-triggered average tells us what about the stimulus leads the neuron to respond, allowing us to interpret something about neural processing. In other words, the STA provides an estimate of a neuron’s linear receptive field. For example, look atLet’s take another look at our STA from our example data.</p>
+<p>Execute to visualize STA</p>
 <p>Execute to visualize STA</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
@@ -547,13 +555,14 @@ To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/03_SpikeTriggeredAverages_23_0.png" src="../_images/03_SpikeTriggeredAverages_23_0.png" />
+<img alt="../_images/03_SpikeTriggeredAverages_27_0.png" src="../_images/03_SpikeTriggeredAverages_27_0.png" />
 </div>
 </div>
 <div class="tip dropdown admonition">
 <p class="admonition-title"><strong>Stop and think!</strong> What can you interpret about this fly H1 neuron response to the visual motion stimulus from the STA?</p>
 <p>High values of the stimulus tend to prompt a neural spike around 50 milliseconds later.</p>
 </div>
+<p>Execute to visualize another STA</p>
 <p>Execute to visualize another STA</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
@@ -571,7 +580,7 @@ To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/03_SpikeTriggeredAverages_26_0.png" src="../_images/03_SpikeTriggeredAverages_26_0.png" />
+<img alt="../_images/03_SpikeTriggeredAverages_31_0.png" src="../_images/03_SpikeTriggeredAverages_31_0.png" />
 </div>
 </div>
 <div class="tip dropdown admonition">
@@ -587,6 +596,7 @@ To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
 <h2>Section 4.2: Stimulus requirements<a class="headerlink" href="#section-4-2-stimulus-requirements" title="Permalink to this headline">¶</a></h2>
 <p>The spike-triggered average is only meaningful to compute and interpret for certain types of stimuli. Specifically, for uncorrelated stimuli, where the values of the stimulus <strong>independent and identially distributed</strong> at each time bin. In other words, the value of the stimulus at a certain time should not depend on the values of the stimulus before or after and should be drawn at random from a probability distribution (the same distribution should be used for all time bins). <strong>White noise stimuli</strong> fulfill these requirements.</p>
 <p>So, why can’t we interpret spike-triggered averages with correlated stimuli? Imagine we had a repeating stimulus, as below. We presented this to the fly H1 neuron we’ve been working with and record the spikes. Please note, the data below is faked.</p>
+<p>Execute cell to visualize correlated stimulus and simulated responses</p>
 <p>Execute cell to visualize correlated stimulus and simulated responses</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
@@ -637,10 +647,11 @@ To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/03_SpikeTriggeredAverages_32_0.png" src="../_images/03_SpikeTriggeredAverages_32_0.png" />
+<img alt="../_images/03_SpikeTriggeredAverages_38_0.png" src="../_images/03_SpikeTriggeredAverages_38_0.png" />
 </div>
 </div>
 <p>The neuron always spikes around the same point in the pattern. This means that when we average over the stimuli before the spikes, we get unwanted structure in our STA. See the STA computed in the cell below. As we’ve seen, the neuron responds to high stimulus values about 50 ms before the spike. Because of the repeating nature of the stimulus, it looks from this STA like the neuron responds to negative values of the stimulus around .. before the spike, which is incorrect! In essence, the correlated nature of the stimulus has meant we haven’t explored enough stimulus patterns to get a good sense of the neural dependency on the stimulus. This is an especially egregious case of a correlated stimulus - we have repeating chunks - but any amount of correlation can interfere with our ability to estimate the linear receptive field with a linear filter well!</p>
+<p>Execute to visualize STA computed from correlated stimulus</p>
 <p>Execute to visualize STA computed from correlated stimulus</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
@@ -678,7 +689,7 @@ To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/03_SpikeTriggeredAverages_35_0.png" src="../_images/03_SpikeTriggeredAverages_35_0.png" />
+<img alt="../_images/03_SpikeTriggeredAverages_42_0.png" src="../_images/03_SpikeTriggeredAverages_42_0.png" />
 </div>
 </div>
 </div>
