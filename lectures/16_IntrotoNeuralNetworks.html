@@ -365,23 +365,39 @@ We could model the network using continuous time (i.e. using different equations
 <p>Let’s say we have a single output neuron getting inputs from multiple input neurons (pictured above in figure from Dayan &amp; Abbott). We will model the firing rates of the input neurons as a vector <span class="math notranslate nohighlight">\(\bar{u}\)</span>, where the first element is the firing rate of the first input neuron, the second element is the firing rate of the second input neuron, and so on. We will use <span class="math notranslate nohighlight">\(\bar{w}\)</span> to represent the weights from each input neuron: the first element of <span class="math notranslate nohighlight">\(\bar{w}\)</span> is the weight from input neuron 1, the second is the weight from input neuron 2, and so on.</p>
 <p>The total input to the output neuron is <span class="math notranslate nohighlight">\(\bar{w}\cdot\bar{u}\)</span>, the weighted sum of the input neural firing rates, where the weights are the synapse strenghs.</p>
 <p>We can then write a differential equation for the change in the firing rate of the output neuron over time:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-918d3816-5493-4224-a1e4-b73696c3f781">
-<span class="eqno">(29)<a class="headerlink" href="#equation-918d3816-5493-4224-a1e4-b73696c3f781" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-b02bc337-9f3b-4b12-841f-535f0ec96060">
+<span class="eqno">(29)<a class="headerlink" href="#equation-b02bc337-9f3b-4b12-841f-535f0ec96060" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \tau_r\frac{dv}{dt} = -v + F(\bar{w}\cdot\bar{u})
 \end{align}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\tau_r\)</span> is a time constant that controls how quickly the output firing rate changes in response to inputs and <span class="math notranslate nohighlight">\(F\)</span> is some function.</p>
 <p><strong>Stop and think!</strong> Assuming the input neural firing rates are constant over time (<span class="math notranslate nohighlight">\(\bar{u}\)</span> doesn’t change based on time), what will the steady state firing rate of the output neuron be (the firing rate it converges to)? In other words, what is the fixed point of the system?</p>
 <p>We can find the steady state firing rate by setting our differential equation equal to 0 and solving for <span class="math notranslate nohighlight">\(v\)</span>. This will give us the value of <span class="math notranslate nohighlight">\(v\)</span> for which there will be no more change (as the derivative is equal to 0). We find that🇰</p>
-<div class="amsmath math notranslate nohighlight" id="equation-45c8b89c-a57a-4b17-aaf7-0b341b744e6b">
-<span class="eqno">(30)<a class="headerlink" href="#equation-45c8b89c-a57a-4b17-aaf7-0b341b744e6b" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-444167ec-7e75-44cb-b3de-e1dca5788619">
+<span class="eqno">(30)<a class="headerlink" href="#equation-444167ec-7e75-44cb-b3de-e1dca5788619" title="Permalink to this equation">¶</a></span>\[\begin{align}
 v = F(\bar{w}\cdot\bar{u})
 \end{align}\]</div>
-<p>Let’s look at an example. Let’s say we have two input neurons and their firing rate does not change over time. The first input neuron fires at 5 Hz and the second at 2 Hz so \begin{align}\bar{u} = \begin{bmatrix}1\3\end{bmatrix}\end{align}.
-Our weight matrix is \begin{align}\bar{w} = \begin{bmatrix}.2.1\end{bmatrix}\end{align}. And our function <span class="math notranslate nohighlight">\(F\)</span> is \begin{align}F(x) = \frac{1}{1+e^{-x}}\end{align}. And our <span class="math notranslate nohighlight">\(\tau_r\)</span> will be 5 ms.</p>
+<p>Let’s look at an example. Let’s say we have two input neurons and their firing rate does not change over time. The first input neuron fires at 5 Hz and the second at 2 Hz so</p>
+<div class="amsmath math notranslate nohighlight" id="equation-5a08c24d-89b5-45ad-888c-fa902b7dabb8">
+<span class="eqno">(31)<a class="headerlink" href="#equation-5a08c24d-89b5-45ad-888c-fa902b7dabb8" title="Permalink to this equation">¶</a></span>\[\begin{align}
+\bar{u} = \begin{bmatrix}1\\3\end{bmatrix}
+\end{align}\]</div>
+<p>.
+Our weight matrix is</p>
+<div class="amsmath math notranslate nohighlight" id="equation-95233b32-f1df-4871-92b1-40064129ea88">
+<span class="eqno">(32)<a class="headerlink" href="#equation-95233b32-f1df-4871-92b1-40064129ea88" title="Permalink to this equation">¶</a></span>\[\begin{align}\bar{w} = \begin{bmatrix}.2\\.1\end{bmatrix}\end{align}\]</div>
+<p>. And our function <span class="math notranslate nohighlight">\(F\)</span> is</p>
+<div class="amsmath math notranslate nohighlight" id="equation-687379b0-e0c8-4502-a831-91be034c2dca">
+<span class="eqno">(33)<a class="headerlink" href="#equation-687379b0-e0c8-4502-a831-91be034c2dca" title="Permalink to this equation">¶</a></span>\[\begin{align}F(x) = \frac{1}{1+e^{-x}}\end{align}\]</div>
+<p>And our <span class="math notranslate nohighlight">\(\tau_r\)</span> will be 5 ms.</p>
 <p>If we plot <span class="math notranslate nohighlight">\(\frac{dv}{dt}\)</span> vs <span class="math notranslate nohighlight">\(v\)</span> for this system, we get:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set input and weight vectors</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">.2</span><span class="p">,</span> <span class="mf">.1</span><span class="p">])</span>
+<span class="n">tau</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="nb">input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
 <span class="n">F_input</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="nb">input</span><span class="p">))</span>
 
 <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">.1</span><span class="p">)</span>
@@ -395,18 +411,10 @@ Our weight matrix is \begin{align}\bar{w} = \begin{bmatrix}.2.1\end{bmatrix}\end
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2425</span><span class="o">/</span><span class="mf">2386671152.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="nb">input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">F_input</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="nb">input</span><span class="p">))</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> 
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">.1</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">dv_dt</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">v</span> <span class="o">+</span> <span class="n">F_input</span><span class="p">)</span><span class="o">/</span><span class="n">tau</span>
-
-<span class="ne">NameError</span>: name &#39;w&#39; is not defined
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Text(0.5, 0, &#39;v&#39;), Text(0, 0.5, &#39;dv_dt&#39;)]
 </pre></div>
 </div>
+<img alt="../_images/16_IntrotoNeuralNetworks_10_1.png" src="../_images/16_IntrotoNeuralNetworks_10_1.png" />
 </div>
 </div>
 <p><strong>Stop and think!</strong> What is the steady state output firing rate of our system? Is this a stable or unstable fixed point?</p>
@@ -463,8 +471,8 @@ Our weight matrix is \begin{align}\bar{w} = \begin{bmatrix}.2.1\end{bmatrix}\end
 <p>Let’s extend our model from Section 1.2 to now have multiple output neurons. We can summarize their firing rates in a vector <span class="math notranslate nohighlight">\(\bar{v}\)</span>.</p>
 <p>We now have a weight matrix instead of a weight vector, because we have multiple output neurons. The rows of <span class="math notranslate nohighlight">\(W\)</span> are just the weight vectors for each output neuron. So the entry at row i, column j of <span class="math notranslate nohighlight">\(W\)</span> is the weight from input neuron j to output neuron i.</p>
 <p>and we need to look at the evolution of the whole vector. We can write our new equation as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-63b86dd8-1eef-4fe5-967d-305f80da4206">
-<span class="eqno">(31)<a class="headerlink" href="#equation-63b86dd8-1eef-4fe5-967d-305f80da4206" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f0100198-62a5-4959-958b-ff67fd848873">
+<span class="eqno">(34)<a class="headerlink" href="#equation-f0100198-62a5-4959-958b-ff67fd848873" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \tau_r\frac{d\bar{v}}{dt} = -\bar{v} + F(W\bar{u})
 \end{align}\]</div>
 <p>If you think through the matrix-vector multiplication, you will see this works out like our single output neuron case, we just are summarizing N different output neurons using vectors and matrices.</p>
@@ -473,8 +481,8 @@ Our weight matrix is \begin{align}\bar{w} = \begin{bmatrix}.2.1\end{bmatrix}\end
 <div class="section" id="section-1-3-2-recurrent-neural-networks">
 <h2>Section 1.3.2: Recurrent neural networks<a class="headerlink" href="#section-1-3-2-recurrent-neural-networks" title="Permalink to this headline">¶</a></h2>
 <p>We may want to extend our model to account for interactions between the neurons in our output layer. We can introduce a new matrix <span class="math notranslate nohighlight">\(M\)</span>, which captures the synaptic weights between output neurons. Now each output neuron is driven by a weighted sum of the input neuron firing rates (the weights given by the relevant row of W) and the weighted sum of the output neuron firing rates (the weights given by the relevant row of M). Our equation becomes:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-66980775-3fcc-4321-937f-e6a50809699a">
-<span class="eqno">(32)<a class="headerlink" href="#equation-66980775-3fcc-4321-937f-e6a50809699a" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-898b5ad7-8fcf-480a-b2a7-04b8cdce8c99">
+<span class="eqno">(35)<a class="headerlink" href="#equation-898b5ad7-8fcf-480a-b2a7-04b8cdce8c99" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \tau_r\frac{d\bar{v}}{dt} = -\bar{v} + F(W\bar{u} + M\bar{v})
 \end{align}\]</div>
 <p>This model is shown in B in the figure above.</p>
@@ -483,13 +491,13 @@ Our weight matrix is \begin{align}\bar{w} = \begin{bmatrix}.2.1\end{bmatrix}\end
 <div class="tex2jax_ignore mathjax_ignore section" id="section-2-diving-into-recurrent-neural-networks">
 <h1>Section 2: Diving into recurrent neural networks<a class="headerlink" href="#section-2-diving-into-recurrent-neural-networks" title="Permalink to this headline">¶</a></h1>
 <p>We have our equation for our recurrent neural network evolution, given by:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2149be1a-a409-494a-9e9f-e3efe993a06c">
-<span class="eqno">(33)<a class="headerlink" href="#equation-2149be1a-a409-494a-9e9f-e3efe993a06c" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-84042d80-938a-40c4-83c7-ee1ed80d2abd">
+<span class="eqno">(36)<a class="headerlink" href="#equation-84042d80-938a-40c4-83c7-ee1ed80d2abd" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \tau\frac{d\bar{v}}{dt} = -\bar{v} + F(W\bar{u} + M\bar{v})
 \end{align}\]</div>
 <p>where:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-87b9c963-af7b-402e-b934-4e283ebdb4a1">
-<span class="eqno">(34)<a class="headerlink" href="#equation-87b9c963-af7b-402e-b934-4e283ebdb4a1" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-912e7bd5-2160-47eb-ba12-12286b81fe97">
+<span class="eqno">(37)<a class="headerlink" href="#equation-912e7bd5-2160-47eb-ba12-12286b81fe97" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \bar{v}&amp;= \text{ vector of output neuron firing rates}\\
 \bar{u}&amp;= \text{ vector of input neuron firing rates}\\
 W &amp;= \text{input weight matrix from input neurons to output neurons}\\
@@ -498,18 +506,18 @@ M &amp;= \text{recurrent weight matrix between output neurons}\\
 F &amp;= \text{some function}
 \end{align}\]</div>
 <p>We will sometimes simplify the equation to:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-10c94b02-acf2-4a25-9de9-fc69ff582c55">
-<span class="eqno">(35)<a class="headerlink" href="#equation-10c94b02-acf2-4a25-9de9-fc69ff582c55" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-7c41a7a3-71ba-4ebf-8068-08d52dbdf6eb">
+<span class="eqno">(38)<a class="headerlink" href="#equation-7c41a7a3-71ba-4ebf-8068-08d52dbdf6eb" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \tau\frac{d\bar{v}}{dt} = -\bar{v} + F(\bar{h} + M\bar{v})
 \end{align}\]</div>
 <p>where:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-201d0c21-d818-4293-8fb7-816dd0716b5d">
-<span class="eqno">(36)<a class="headerlink" href="#equation-201d0c21-d818-4293-8fb7-816dd0716b5d" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-7b12699f-fbb0-434f-9343-01f7af6fa53b">
+<span class="eqno">(39)<a class="headerlink" href="#equation-7b12699f-fbb0-434f-9343-01f7af6fa53b" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \bar{h}&amp;= W\bar{u}= \text{ vector of total input from input neurons to each output neuron}\\
 \end{align}\]</div>
 <p>We will also often work with <strong>linear recurrent neural networks</strong> where <span class="math notranslate nohighlight">\(F(x) = x\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c83901ab-d171-4235-8f12-8c1818f49f7f">
-<span class="eqno">(37)<a class="headerlink" href="#equation-c83901ab-d171-4235-8f12-8c1818f49f7f" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-eaef045e-7592-4b17-9f12-cd7937ae3cac">
+<span class="eqno">(40)<a class="headerlink" href="#equation-eaef045e-7592-4b17-9f12-cd7937ae3cac" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \tau\frac{d\bar{v}}{dt} = -\bar{v} + \bar{h} + M\bar{v}
 \end{align}\]</div>
 <div class="section" id="section-2-1-simulating-our-network">
@@ -620,45 +628,45 @@ This means that matrix <span class="math notranslate nohighlight">\(M\)</span> h
 <div class="math notranslate nohighlight">
 \[\bar{v}(t) = \sum_{i=1}^N c_i(t)\bar{e}_i\]</div>
 <p>We can derive a differential equation for each <span class="math notranslate nohighlight">\(c_j\)</span> and find that:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-0329ba70-ae1b-472e-b64d-3ad2b4e47d56">
-<span class="eqno">(38)<a class="headerlink" href="#equation-0329ba70-ae1b-472e-b64d-3ad2b4e47d56" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-c0293f73-03c0-41b7-8eb3-accd003f8e66">
+<span class="eqno">(41)<a class="headerlink" href="#equation-c0293f73-03c0-41b7-8eb3-accd003f8e66" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \tau \frac{d{c_i(t)}}{dt} &amp;= - c_i(t)(1 - \lambda_i) + \bar{h}  \cdot \bar{e}_i
 \end{align}\]</div>
 <p><strong>Derivation of above equation</strong>:
 You do not need to understand this derivation - it is here if you wish to.</p>
 <p>Let’s substitute this formula for <span class="math notranslate nohighlight">\(v(t)\)</span> into our equation for our network:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5e24a084-6788-4a91-bd4e-06658fd664f3">
-<span class="eqno">(39)<a class="headerlink" href="#equation-5e24a084-6788-4a91-bd4e-06658fd664f3" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-fdcf3a88-0685-44bc-9820-89164304be6e">
+<span class="eqno">(42)<a class="headerlink" href="#equation-fdcf3a88-0685-44bc-9820-89164304be6e" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \tau \frac{d{v}}{dt} &amp;= -\bar{v} + \bar{h} + M\bar{v}\\
 \tau \frac{d{\sum_{i=1}^N c_i(t)\bar{e}_i}}{dt} &amp;= -\sum_{i=1}^N c_i(t)\bar{e}_i + \bar{h} + M\sum_{i=1}^N c_i(t)\bar{e}_i
 \end{align}\]</div>
 <p>We can change where the sum occurs in the left-hand side of the equation (because the derivative of summed entries is the sum of their derivatives):
 $<span class="math notranslate nohighlight">\(\frac{d{\sum_{i=1}^N c_i(t)\bar{e}_i}}{dt} = \sum_{i=1}^N [\frac{d{c_i(t)}}{dt}\bar{e}_i]\)</span>$
 and rearrange the right-hand side:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ac195bf7-1a02-4242-8c44-03ad1fa7deb7">
-<span class="eqno">(40)<a class="headerlink" href="#equation-ac195bf7-1a02-4242-8c44-03ad1fa7deb7" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f1651e6d-45aa-4df0-a4b8-572c6fb5d22b">
+<span class="eqno">(43)<a class="headerlink" href="#equation-f1651e6d-45aa-4df0-a4b8-572c6fb5d22b" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \tau \sum_{i=1}^N [\frac{d{c_i(t)}}{dt}\bar{e}_i] &amp;= -\sum_{i=1}^N c_i(t) [(\bar{e}_i - M\bar{e}_i)] + \bar{h}\\
 &amp;= -\sum_{i=1}^N [c_i(t)(\bar{e}_i - \lambda_i\bar{e}_i)] + \bar{h}
 \end{align}\]</div>
 <p>In the last step, we used the fact that <span class="math notranslate nohighlight">\(\bar{e}\)</span>s are eigenvectors.
 We can now get rid of the sum by taking the dot product of both sides with <span class="math notranslate nohighlight">\(\bar{e}_j\)</span>. Let’s take the left-hand side first</p>
-<div class="amsmath math notranslate nohighlight" id="equation-0abeee96-aadb-46f5-8f69-322a8cb47d99">
-<span class="eqno">(41)<a class="headerlink" href="#equation-0abeee96-aadb-46f5-8f69-322a8cb47d99" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-ed0e20f7-b768-4f54-9063-742497f52c4a">
+<span class="eqno">(44)<a class="headerlink" href="#equation-ed0e20f7-b768-4f54-9063-742497f52c4a" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \tau \sum_{i=1}^N [\frac{d{c_i(t)}}{dt}\bar{e}_i] \cdot \bar{e_j}
 &amp;= \tau \sum_{i=1}^N [\frac{d{c_i(t)}}{dt}\bar{e}_i\cdot\bar{e_j}]\\
 &amp;= \tau \frac{d{c_j(t)}}{dt}
 \end{align}\]</div>
 <p>For the last step, remember that the eigenvectors are orthogonal and unit vectors so that the dot product of different eigenvectors is 0 and the dot product of the eigenvector with itself is 1. So the only entry of the sum that won’t be zero is when j is equal to i.</p>
 <p>Now let’s look at the right-hand side:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4a7237c5-1bee-4952-ba66-11f8d6ab107e">
-<span class="eqno">(42)<a class="headerlink" href="#equation-4a7237c5-1bee-4952-ba66-11f8d6ab107e" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-fd880dcf-6074-4a28-8daf-21e3c4a23e00">
+<span class="eqno">(45)<a class="headerlink" href="#equation-fd880dcf-6074-4a28-8daf-21e3c4a23e00" title="Permalink to this equation">¶</a></span>\[\begin{align}
 (-\sum_{i=1}^N [c_i(t)(\bar{e}_i - \lambda_i\bar{e}_i)] + \bar{h})\cdot\bar{e}_j &amp;= \sum_{i=1}^N [c_i(t)(\bar{e}_i - \lambda_i\bar{e}_i) \cdot \bar{e}_j] + \bar{h}  \cdot \bar{e}_j\\
 &amp;= -\sum_{i=1}^N [c_i(t)(\bar{e}_i\cdot \bar{e}_j - \lambda_i\bar{e}_i \cdot \bar{e}_j)] + \bar{h}  \cdot \bar{e}_j\\
 &amp;= - c_j(t)(1 - \lambda_j) + \bar{h}  \cdot \bar{e}_j\\
 \end{align}\]</div>
 <p>Now let’s put them back together to get our differential equations for the <span class="math notranslate nohighlight">\(c_i\)</span>’s:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b031e7a3-85fc-4ffd-b4c8-f4fb87129513">
-<span class="eqno">(43)<a class="headerlink" href="#equation-b031e7a3-85fc-4ffd-b4c8-f4fb87129513" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-902c03cf-768a-4a9d-b612-faedae765ad3">
+<span class="eqno">(46)<a class="headerlink" href="#equation-902c03cf-768a-4a9d-b612-faedae765ad3" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \tau \frac{d{c_j(t)}}{dt} &amp;= - c_j(t)(1 - \lambda_j) + \bar{h}  \cdot \bar{e}_j
 \end{align}\]</div>
 <p><strong>Simulation</strong></p>
@@ -759,13 +767,13 @@ We can now get rid of the sum by taking the dot product of both sides with <span
 <p>Let’s prove this.</p>
 <p>If the input neuron firing rates are constant, so <span class="math notranslate nohighlight">\(\bar{h} = W\bar{u}\)</span> is constant over time, we can find an analytical solution for the evolution of firing rate vector coordinates with respect to the eigenvectors, <span class="math notranslate nohighlight">\(c_i\)</span>’s.</p>
 <p>We will not cover the derivation of this analytical solution as it involve tough integrals, but will just give you the equation:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f82f892e-4f76-4b19-b607-da2ad70c92da">
-<span class="eqno">(44)<a class="headerlink" href="#equation-f82f892e-4f76-4b19-b607-da2ad70c92da" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-bdb29729-60ab-4fec-97d7-b6686cb73b01">
+<span class="eqno">(47)<a class="headerlink" href="#equation-bdb29729-60ab-4fec-97d7-b6686cb73b01" title="Permalink to this equation">¶</a></span>\[\begin{align}
 c_i(t) = \frac{\bar{h}\cdot\bar{e_i}}{1-\lambda_i}(1-exp(-\frac{t(1-\lambda_i)}{\tau})) + c_i(0)exp(-\frac{t(1-\lambda_i)}{\tau})
 \end{align}\]</div>
 <p>If <span class="math notranslate nohighlight">\(\lambda_1\)</span> is 0.8, what will happen to <span class="math notranslate nohighlight">\(c_1\)</span> over time?</p>
-<div class="amsmath math notranslate nohighlight" id="equation-789c9c69-0a9c-4194-b36a-3868578995c1">
-<span class="eqno">(45)<a class="headerlink" href="#equation-789c9c69-0a9c-4194-b36a-3868578995c1" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-5827f083-5f1e-406d-8540-e853e6a72adb">
+<span class="eqno">(48)<a class="headerlink" href="#equation-5827f083-5f1e-406d-8540-e853e6a72adb" title="Permalink to this equation">¶</a></span>\[\begin{align}
 exp(-\frac{t(1-\lambda_i)}{\tau}) &amp;= exp(-\frac{t(.2)}{\tau})
 \end{align}\]</div>
 <p>If we plot this, we see it goes to 0 at large values of t.</p>
@@ -777,23 +785,23 @@ exp(-\frac{t(1-\lambda_i)}{\tau}) &amp;= exp(-\frac{t(.2)}{\tau})
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f10d6e4f6d0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f77b89d9a50&gt;]
 </pre></div>
 </div>
 <img alt="../_images/16_IntrotoNeuralNetworks_34_1.png" src="../_images/16_IntrotoNeuralNetworks_34_1.png" />
 </div>
 </div>
 <p>So at large values of t, this term will equal 0 and we will get:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8e8a7b3d-473b-4167-9853-6d8663c9171c">
-<span class="eqno">(46)<a class="headerlink" href="#equation-8e8a7b3d-473b-4167-9853-6d8663c9171c" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-0ff9fdcb-a4f3-4450-a58b-2b30b4ee861c">
+<span class="eqno">(49)<a class="headerlink" href="#equation-0ff9fdcb-a4f3-4450-a58b-2b30b4ee861c" title="Permalink to this equation">¶</a></span>\[\begin{align}
 c_1(t) &amp;= \frac{\bar{h}\cdot\bar{e_1}}{1-\lambda_1}(1-exp(-\frac{t(1-\lambda_1)}{\tau})) + c_1(0)exp(-\frac{t(1-\lambda_1)}{\tau})\\
 &amp;= \frac{\bar{h}\cdot\bar{e_1}}{1-\lambda_1}(1-0) + c_1(0)*0)\\
 &amp;=\frac{\bar{h}\cdot\bar{e_1}}{1-\lambda_1}\\
 \end{align}\]</div>
 <p>The value of c will decay to a fixed point <span class="math notranslate nohighlight">\(\frac{\bar{h}\cdot\bar{e_1}}{1-\lambda_1}\)</span></p>
 <p>If <span class="math notranslate nohighlight">\(\lambda_1\)</span> is 1.2, what will happen to <span class="math notranslate nohighlight">\(c_1\)</span> over time?</p>
-<div class="amsmath math notranslate nohighlight" id="equation-0ace0700-07b4-4add-9fba-52074fec48b1">
-<span class="eqno">(47)<a class="headerlink" href="#equation-0ace0700-07b4-4add-9fba-52074fec48b1" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-872bb5fe-54f0-4ca5-b5f5-0038d31902f5">
+<span class="eqno">(50)<a class="headerlink" href="#equation-872bb5fe-54f0-4ca5-b5f5-0038d31902f5" title="Permalink to this equation">¶</a></span>\[\begin{align}
 exp(-\frac{t(1-\lambda_i)}{\tau}) &amp;= exp(-\frac{t(-.2)}{\tau})
 \end{align}\]</div>
 <p>If we plot this, we see it goes to infinity at large values of t.</p>
@@ -805,7 +813,7 @@ exp(-\frac{t(1-\lambda_i)}{\tau}) &amp;= exp(-\frac{t(-.2)}{\tau})
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f10d6dcf510&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f77b8955950&gt;]
 </pre></div>
 </div>
 <img alt="../_images/16_IntrotoNeuralNetworks_37_1.png" src="../_images/16_IntrotoNeuralNetworks_37_1.png" />
@@ -814,20 +822,20 @@ exp(-\frac{t(1-\lambda_i)}{\tau}) &amp;= exp(-\frac{t(-.2)}{\tau})
 <p>So <span class="math notranslate nohighlight">\(c_1\)</span> will blow up to positive or negative infinity. If one of the c’s blows up, <span class="math notranslate nohighlight">\(\bar{v}(t)\)</span> will too.</p>
 <p><strong>If any of the eigenvalues of matrix M are over 1, the output firing rates will blow up to positive or negative infinity - the network will explode. If all of the eigenvalues are under 1, the output firing rates will converge to some steady state values.</strong></p>
 <p><strong>Stop and think!</strong> What is the formula for the steady state value of <span class="math notranslate nohighlight">\(\bar{v}\)</span> using the eigenbasis? Assume the input neuron firing rates do not change over time and all eigenvalues are under 1.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2b81ef9a-27fd-4ab7-930e-9bd2dacaab8e">
-<span class="eqno">(48)<a class="headerlink" href="#equation-2b81ef9a-27fd-4ab7-930e-9bd2dacaab8e" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f0d0bb65-6636-40ab-bd57-abcc391431a9">
+<span class="eqno">(51)<a class="headerlink" href="#equation-f0d0bb65-6636-40ab-bd57-abcc391431a9" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \bar{v}(t) &amp;= \sum_{i=1}^N c_i(t)\bar{e}_i\\
 \tau \frac{d{c_i(t)}}{dt} &amp;= - c_i(t)(1 - \lambda_i) + \bar{h}  \cdot \bar{e}_i
 \end{align}\]</div>
 <p>We can find the steady state value of <span class="math notranslate nohighlight">\(\bar{v}\)</span> by finding the values of <span class="math notranslate nohighlight">\(c_i\)</span>’s when their derivatives are equal to 0.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-3198f049-50c0-48fb-9c27-8128164cefbb">
-<span class="eqno">(49)<a class="headerlink" href="#equation-3198f049-50c0-48fb-9c27-8128164cefbb" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-bf99ac37-6bd5-43bc-9586-6d98bd05f247">
+<span class="eqno">(52)<a class="headerlink" href="#equation-bf99ac37-6bd5-43bc-9586-6d98bd05f247" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \tau \frac{d{c_j(t)}}{dt} &amp;= - c_j(t)(1 - \lambda_j) + \bar{h}  \cdot \bar{e}_j = 0\\
 c_j(t) = \frac{\bar{h}\cdot\bar{e}_j}{1-\lambda_j}
 \end{align}\]</div>
 <p>We can then subsitute into our equation for <span class="math notranslate nohighlight">\(\bar{v}\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-3b5a4e70-bdef-4fc4-bde4-bfd5a30ab37a">
-<span class="eqno">(50)<a class="headerlink" href="#equation-3b5a4e70-bdef-4fc4-bde4-bfd5a30ab37a" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-3a8669ad-8e27-4ea5-b398-2ed5781b7a62">
+<span class="eqno">(53)<a class="headerlink" href="#equation-3a8669ad-8e27-4ea5-b398-2ed5781b7a62" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \bar{v}_{SS} &amp;= \sum_{i=1}^N c_i(t)\bar{e}_i\\
 &amp;= \sum_{i=1}^N \frac{\bar{h}\cdot\bar{e}_i}{1-\lambda_i}\bar{e}_i
 \end{align}\]</div>
@@ -835,25 +843,25 @@ c_j(t) = \frac{\bar{h}\cdot\bar{e}_j}{1-\lambda_j}
 <div class="section" id="section-2-2-4-connection-to-general-understanding-of-first-order-differential-equations">
 <h3>Section 2.2.4: Connection to general understanding of first order differential equations<a class="headerlink" href="#section-2-2-4-connection-to-general-understanding-of-first-order-differential-equations" title="Permalink to this headline">¶</a></h3>
 <p>Let’s rearrange slightly our equation for our linear recurrent neural network:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c123a2dd-4a86-4ffd-8bbf-8f38a0ae378d">
-<span class="eqno">(51)<a class="headerlink" href="#equation-c123a2dd-4a86-4ffd-8bbf-8f38a0ae378d" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-7b7f0b25-4f16-458a-807f-1b966c84bdbd">
+<span class="eqno">(54)<a class="headerlink" href="#equation-7b7f0b25-4f16-458a-807f-1b966c84bdbd" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \tau\frac{d\bar{v}}{dt} &amp;= -\bar{v} + \bar{h} + M\bar{v}\\
 \frac{d\bar{v}}{dt} &amp;= \frac{(M - 1)\bar{v} + \bar{h}}{\tau}\\
 \end{align}\]</div>
 <p>Let’s say we have no input so <span class="math notranslate nohighlight">\(\bar{h} = \bar{0}\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-c5821819-36d3-4628-8d75-87280165ace2">
-<span class="eqno">(52)<a class="headerlink" href="#equation-c5821819-36d3-4628-8d75-87280165ace2" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-6e6be968-f1f5-4b5b-b50e-76efbc3ace50">
+<span class="eqno">(55)<a class="headerlink" href="#equation-6e6be968-f1f5-4b5b-b50e-76efbc3ace50" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \frac{d\bar{v}}{dt} &amp;= \frac{(M - 1)}{\tau}\bar{v}\\
 \end{align}\]</div>
 <p>This resembles our simple first order system of differential equations from section 2.4.1 here: https://ebatty.github.io/IntroCompNeuro/lectures/MathReview.html.</p>
 <p>In particular,</p>
-<div class="amsmath math notranslate nohighlight" id="equation-de0c40dd-7d01-4d0e-a423-11c1372996a3">
-<span class="eqno">(53)<a class="headerlink" href="#equation-de0c40dd-7d01-4d0e-a423-11c1372996a3" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-7fa5329d-6f1e-44d3-b4d0-110c650e09ee">
+<span class="eqno">(56)<a class="headerlink" href="#equation-7fa5329d-6f1e-44d3-b4d0-110c650e09ee" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \frac{d\bar{v}}{dt} = A\bar{v}
 \end{align}\]</div>
 <p>where</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2fa2a823-2035-49e6-9cd2-06cfad991f51">
-<span class="eqno">(54)<a class="headerlink" href="#equation-2fa2a823-2035-49e6-9cd2-06cfad991f51" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-cfbcb807-988a-4b83-82de-c1d83b32efe4">
+<span class="eqno">(57)<a class="headerlink" href="#equation-cfbcb807-988a-4b83-82de-c1d83b32efe4" title="Permalink to this equation">¶</a></span>\[\begin{align}
 A = \frac{(M-1)}{\tau}
 \end{align}\]</div>
 <p>The eigenvalues of A are the same as the eigenvalues of M but minus 1. So what we have found syncs with our gif:</p>
