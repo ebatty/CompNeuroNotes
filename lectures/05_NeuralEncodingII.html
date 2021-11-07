@@ -398,16 +398,16 @@ y_t \sim
 <div class="math notranslate nohighlight">
 \[log(L(\lambda_t)) = \sum_{k=1}^{n}log(p(y_{t, k} | \lambda_t)) \]</div>
 <p>Let’s substitute in what <span class="math notranslate nohighlight">\(p(y_{t,k}|\lambda_t)\)</span> equals and do some simplifying:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-93cbcd03-7ba4-4dd5-b5fa-4f9a0c94539b">
-<span class="eqno">(4)<a class="headerlink" href="#equation-93cbcd03-7ba4-4dd5-b5fa-4f9a0c94539b" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-2c2375b5-e628-4f9a-b624-5fc929aaeaef">
+<span class="eqno">(4)<a class="headerlink" href="#equation-2c2375b5-e628-4f9a-b624-5fc929aaeaef" title="Permalink to this equation">¶</a></span>\[\begin{align}
 log(L(\lambda_t)) &amp;= \sum_{k=1}^{n}log(p(y_{t, k} | \lambda_t))\\
 &amp;= \sum_{k=1}^{n}log(\frac{\lambda_t^{y_{t, k}} e^{-\lambda_{t}}}{y_{t,k}!}) \\
 &amp;= \sum_{k=1}^{n} [log(\lambda_t^{y_{t,k}}) + log(e^{-\lambda_t} - log(y_{t,k}!]\\
 &amp;= \sum_{k=1}^{n} [y_{t,k}log(\lambda_t) -\lambda_t - log(y_{t,k}!]\\
 \end{align}\]</div>
 <p>We want to find the <span class="math notranslate nohighlight">\(\lambda_t\)</span> that maximizes this. The maximums and minimums of functions occur when the derivative is zero. We can compute the derivative of the log likelihood function with respect to <span class="math notranslate nohighlight">\(\lambda_t\)</span>, set it equal to 0, and solve for <span class="math notranslate nohighlight">\(\lambda_t\)</span>.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c13d26c6-c7f3-4430-9e70-f4e311b80479">
-<span class="eqno">(5)<a class="headerlink" href="#equation-c13d26c6-c7f3-4430-9e70-f4e311b80479" title="Permalink to this equation">¶</a></span>\[\begin{align} 
+<div class="amsmath math notranslate nohighlight" id="equation-855299c9-318a-48e5-9cfb-c1fb6377dd16">
+<span class="eqno">(5)<a class="headerlink" href="#equation-855299c9-318a-48e5-9cfb-c1fb6377dd16" title="Permalink to this equation">¶</a></span>\[\begin{align} 
 \frac{d log(L(\lambda_t))}{d \lambda_t} = \sum_{k=1}^n [ \frac{y_{k, t}}{\lambda_t} - 1] &amp;= 0 \\
 \sum_{k=1}^n [ \frac{y_{k, t}}{\lambda_t}] - n &amp;= 0 \\
 \sum_{k=1}^n [ \frac{y_{k, t}}{\lambda_t}] &amp;= n\\ 
@@ -420,29 +420,29 @@ log(L(\lambda_t)) &amp;= \sum_{k=1}^{n}log(p(y_{t, k} | \lambda_t))\\
 <div class="section" id="section-1-2-finding-the-linear-filter-for-data">
 <h2>Section 1.2: Finding the linear filter for data<a class="headerlink" href="#section-1-2-finding-the-linear-filter-for-data" title="Permalink to this headline">¶</a></h2>
 <p>The process of finding the linear filter based on the data from a neuron is a similar idea. We want to maximize the log likelihood of the spikes given <span class="math notranslate nohighlight">\(\lambda\)</span>. Instead of looking over trials, we will now look over time bins, we want to maximize the probability of the spike counts in multiple time bins given the <span class="math notranslate nohighlight">\(\lambda_t\)</span> in each time bin.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-bde953e0-e94a-4e29-a60d-6c3be47dfc60">
-<span class="eqno">(6)<a class="headerlink" href="#equation-bde953e0-e94a-4e29-a60d-6c3be47dfc60" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-9426cdda-243f-41a4-a148-03468405f8c2">
+<span class="eqno">(6)<a class="headerlink" href="#equation-9426cdda-243f-41a4-a148-03468405f8c2" title="Permalink to this equation">¶</a></span>\[\begin{align}
 log(L(\lambda)) &amp;= \sum_{t=1}^{T} [y_{t}log(\lambda_t) -\lambda_t - log(y_{t}!]\\
 \end{align}\]</div>
 <p>Now however, <span class="math notranslate nohighlight">\(\lambda_t\)</span> depends on our linear filter <span class="math notranslate nohighlight">\(k\)</span> and the stimulus.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7115bfe9-2f64-49fa-8830-c1d969e75e75">
-<span class="eqno">(7)<a class="headerlink" href="#equation-7115bfe9-2f64-49fa-8830-c1d969e75e75" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-8e99e32c-c9fa-4d52-98c9-e5919c024cdf">
+<span class="eqno">(7)<a class="headerlink" href="#equation-8e99e32c-c9fa-4d52-98c9-e5919c024cdf" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_t &amp;= e^{x_t \cdot k}\\
 log(L(\lambda)) &amp;= \sum_{t=1}^{T} [y_{t}log(\lambda_t) -\lambda_t - log(y_{t})!]\\
 \end{align}\]</div>
 <p>We can not set the derivative of this equal to 0 and solve for <span class="math notranslate nohighlight">\(k\)</span>, it is impossible to distangle <span class="math notranslate nohighlight">\(k\)</span> from the dot product with <span class="math notranslate nohighlight">\(x_t\)</span>.  Instead we have to use other methods to find the <span class="math notranslate nohighlight">\(k\)</span> that maximizes this quantity. Most of these methods find parameters that minimize a function, not maximize, which we can easily adhere to by finding the filter <span class="math notranslate nohighlight">\(k\)</span> that minimizes the negative log likelihood (NLL):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ff5322b2-2cdf-46cd-a998-d0e255aa76c0">
-<span class="eqno">(8)<a class="headerlink" href="#equation-ff5322b2-2cdf-46cd-a998-d0e255aa76c0" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-af69c76f-5930-4fca-bf9d-ea30eaa93093">
+<span class="eqno">(8)<a class="headerlink" href="#equation-af69c76f-5930-4fca-bf9d-ea30eaa93093" title="Permalink to this equation">¶</a></span>\[\begin{align}
 NLL &amp;= -\sum_{t=1}^{T} [y_{t}log(\lambda_t) -\lambda_t - log(y_{t}!]\\
 \end{align}\]</div>
 <p>We can get rid of the last term - we want to find the linear filter <span class="math notranslate nohighlight">\(k\)</span> that minimizes the negative log likelihood and the last term is not affected by the linear filter - it will be a constant.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-3041e349-a0f5-4f1f-895c-d66329ca082b">
-<span class="eqno">(9)<a class="headerlink" href="#equation-3041e349-a0f5-4f1f-895c-d66329ca082b" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-061c2908-820a-432f-8a3a-e6401aa77e7b">
+<span class="eqno">(9)<a class="headerlink" href="#equation-061c2908-820a-432f-8a3a-e6401aa77e7b" title="Permalink to this equation">¶</a></span>\[\begin{align}
 NLL &amp;= -\sum_{t=1}^{T} [y_{t}log(\lambda_t) -\lambda_t ]\\
 \end{align}\]</div>
 <p>We can vectorize this computation for ease of coding: if <span class="math notranslate nohighlight">\(\lambda\)</span> is a vector of our predicted firing rates over time and <span class="math notranslate nohighlight">\(y\)</span> is a vector of our spike counts over time, we can rewrite the above as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-023003a4-830c-4d7e-a154-cce24e5e23f3">
-<span class="eqno">(10)<a class="headerlink" href="#equation-023003a4-830c-4d7e-a154-cce24e5e23f3" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-3ad4884e-5f08-45df-88c0-091af8c1823e">
+<span class="eqno">(10)<a class="headerlink" href="#equation-3ad4884e-5f08-45df-88c0-091af8c1823e" title="Permalink to this equation">¶</a></span>\[\begin{align}
 NLL &amp;= - y \cdot log(\lambda) + \sum_{t=1}^T\lambda_t\\
 \end{align}\]</div>
 <p>Now that we have it simplified, how do we actually find the linear filter that minimizes this NLL? We will use gradient descent, which we will discuss in the next lecture when we focus on model fitting. Luckily, we have a python function that finds the parameters that minimize a metric for us: <code class="docutils literal notranslate"><span class="pre">scipy.optimize.minimize</span></code>. If you pass a function that computes the negative log likelihood given an input of a linear filter, it will find the minimizing linear filter. You will see this in HW 1!</p>
