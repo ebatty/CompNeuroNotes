@@ -12,3 +12,4 @@ parts:
   - caption: Recurrent neural networks & dynamical systems
     chapters:
     - file: lectures/MathReview.ipynb
+    - file: lectures/16_IntrotoNeuralNetworks.ipynb
