@@ -135,6 +135,18 @@
   </a>
  </li>
 </ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Recurrent neural networks &amp; dynamical systems
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="MathReview.html">
+   Review of relevant math
+  </a>
+ </li>
+</ul>
 
     </div>
 </nav> <!-- To handle the deprecated key -->
@@ -278,6 +290,7 @@ After lecture, students should be able to:</p>
 <li><p>Interpret information about neural response to a stimulus from a tuning curve</p></li>
 </ul>
 <p>Imports</p>
+<p>Imports</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown Imports</span>
@@ -379,7 +392,7 @@ After lecture, students should be able to:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/02_NeuralResponses&amp;TuningCurves_18_0.png" src="../_images/02_NeuralResponses&amp;TuningCurves_18_0.png" />
+<img alt="../_images/02_NeuralResponses&amp;TuningCurves_20_0.png" src="../_images/02_NeuralResponses&amp;TuningCurves_20_0.png" />
 </div>
 </div>
 <p><em>Figure 4: PSTH (bottom row) constructed from a raster plot (top row) with a bin width of 5 ms.</em></p>
@@ -436,7 +449,7 @@ After lecture, students should be able to:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/02_NeuralResponses&amp;TuningCurves_22_0.png" src="../_images/02_NeuralResponses&amp;TuningCurves_22_0.png" />
+<img alt="../_images/02_NeuralResponses&amp;TuningCurves_25_0.png" src="../_images/02_NeuralResponses&amp;TuningCurves_25_0.png" />
 </div>
 </div>
 <p><em>Figure 5: PSTH (bottom row) constructed from a raster plot (top row) with a bin width of 15 ms. This bin width is too large and you lose a lot of temporal information!</em></p>
@@ -489,7 +502,7 @@ After lecture, students should be able to:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/02_NeuralResponses&amp;TuningCurves_25_0.png" src="../_images/02_NeuralResponses&amp;TuningCurves_25_0.png" />
+<img alt="../_images/02_NeuralResponses&amp;TuningCurves_29_0.png" src="../_images/02_NeuralResponses&amp;TuningCurves_29_0.png" />
 </div>
 </div>
 <p><em>Figure 6: PSTH (bottom row) constructed from a raster plot (top row) with a bin width of .5 ms. This bin width is too small - the PSTH conveys a lot about the exact spike timings in this set of trials but doesn’t give us a sense of how the underlying firing rate is changing over time</em></p>
@@ -550,7 +563,7 @@ After lecture, students should be able to:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/02_NeuralResponses&amp;TuningCurves_30_0.png" src="../_images/02_NeuralResponses&amp;TuningCurves_30_0.png" />
+<img alt="../_images/02_NeuralResponses&amp;TuningCurves_35_0.png" src="../_images/02_NeuralResponses&amp;TuningCurves_35_0.png" />
 </div>
 </div>
 <p><em>Figure 7: Raster plots of motor neuron response for 10 trials for each reach condition. Please note that this is faked data for illustrative purposes. The vertical line indicates the start of each reach.</em></p>
@@ -584,7 +597,7 @@ After lecture, students should be able to:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/02_NeuralResponses&amp;TuningCurves_36_0.png" src="../_images/02_NeuralResponses&amp;TuningCurves_36_0.png" />
+<img alt="../_images/02_NeuralResponses&amp;TuningCurves_42_0.png" src="../_images/02_NeuralResponses&amp;TuningCurves_42_0.png" />
 </div>
 </div>
 <p><em>Figure 8: Example of how to get the average firing rate for this reach condition from a raster plot. In the 500 ms time window (250 ms before reach onset, 250 ms after) denoted by red lines, there are 287 spikes over all trials. So, the average firing rate is 287 spikes / .5 s / 10 trials = 57.4 spikes per second.</em></p>
@@ -607,7 +620,7 @@ After lecture, students should be able to:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/02_NeuralResponses&amp;TuningCurves_39_0.png" src="../_images/02_NeuralResponses&amp;TuningCurves_39_0.png" />
+<img alt="../_images/02_NeuralResponses&amp;TuningCurves_46_0.png" src="../_images/02_NeuralResponses&amp;TuningCurves_46_0.png" />
 </div>
 </div>
 <p><em>Figure 9: Average firing rate of the neuron to each reach direction.</em></p>

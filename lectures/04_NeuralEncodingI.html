@@ -135,6 +135,18 @@
   </a>
  </li>
 </ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Recurrent neural networks &amp; dynamical systems
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="MathReview.html">
+   Review of relevant math
+  </a>
+ </li>
+</ul>
 
     </div>
 </nav> <!-- To handle the deprecated key -->
@@ -465,22 +477,22 @@ y_t \sim
 <p>We are using an exponential nonlinearity.</p>
 <div class="tip dropdown admonition">
 <p class="admonition-title"><strong>Stop and think!</strong> What is the predicted firing rate, <span class="math notranslate nohighlight">\(\lambda\)</span> for time bins 3 and after based on the above numbers? </p>
-<div class="amsmath math notranslate nohighlight" id="equation-a03eebf7-c1c7-426b-b41a-a586b05814c9">
-<span class="eqno">(1)<a class="headerlink" href="#equation-a03eebf7-c1c7-426b-b41a-a586b05814c9" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-a8252356-83cf-47f0-8fba-3060a55dddcf">
+<span class="eqno">(1)<a class="headerlink" href="#equation-a8252356-83cf-47f0-8fba-3060a55dddcf" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_3 &amp;= e^{x_3 \cdot k}\\
 &amp;= e^{[5, -1, 4] \cdot [.3, 1, .4]}\\
 &amp;= e^{2.1} \\
 &amp;= 8.16
 \end{align}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-bf477966-8e53-40f4-a54c-61e292c9c5b5">
-<span class="eqno">(2)<a class="headerlink" href="#equation-bf477966-8e53-40f4-a54c-61e292c9c5b5" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-a0d73836-a92e-428d-a4ad-d136c25d0f75">
+<span class="eqno">(2)<a class="headerlink" href="#equation-a0d73836-a92e-428d-a4ad-d136c25d0f75" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_4 &amp;= e^{x_4 \cdot k}\\
 &amp;= e^{[-1, 4, 0] \cdot [.3, 1, .4]}\\
 &amp;= e^{3.7} \\
 &amp;= 40.45
 \end{align}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-a7a3caee-af64-4e15-8b57-36b6db368f3e">
-<span class="eqno">(3)<a class="headerlink" href="#equation-a7a3caee-af64-4e15-8b57-36b6db368f3e" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-b9db80a1-b493-457e-950b-cea17d82cac9">
+<span class="eqno">(3)<a class="headerlink" href="#equation-b9db80a1-b493-457e-950b-cea17d82cac9" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_5 &amp;= e^{x_4 \cdot k}\\
 &amp;= e^{[4, 0, 2] \cdot [.3, 1, .4]}\\
 &amp;= e^{2} \\
