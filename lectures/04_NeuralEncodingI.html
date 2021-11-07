@@ -22,8 +22,8 @@
       
 
     
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
@@ -33,21 +33,21 @@
     
   <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
 
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/togglebutton.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
+    <script>
         const thebe_selector = ".thebe,.cell"
         const thebe_selector_input = "pre,.cell_input div.highlight"
         const thebe_selector_output = ".output,.cell_output"
@@ -98,7 +98,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p class="caption" role="heading">
  <span class="caption-text">
   Neural Coding
  </span>
@@ -295,7 +295,7 @@
               <div>
                 
   <p><a href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/lectures/04_NeuralEncodingI.ipynb" target="_blank"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
-<div class="section" id="neural-encoding-i">
+<div class="tex2jax_ignore mathjax_ignore section" id="neural-encoding-i">
 <h1>04 - Neural Encoding I<a class="headerlink" href="#neural-encoding-i" title="Permalink to this headline">¶</a></h1>
 <p>Learning objectives of lecture/notes: After lecture, students should be able to:</p>
 <ul class="simple">
@@ -315,13 +315,13 @@
 </div>
 </div>
 </div>
-<div class="section" id="section-1-encoding-models">
+<div class="tex2jax_ignore mathjax_ignore section" id="section-1-encoding-models">
 <h1>Section 1: Encoding models<a class="headerlink" href="#section-1-encoding-models" title="Permalink to this headline">¶</a></h1>
 <img alt="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/NeuralCoding.jpg" src="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/NeuralCoding.jpg" />
 <p>In order to build a neural encoding model, we want to be able to predict the spikes of a neuron given the stimulus or behavior. So far, with tuning curves and spike triggered averages, we have explored how to understand more about the relationship between stimulus and neural response, but we have not yet built a full encoding model that allows us to predict spikes.</p>
 <p>The idea behind an encoding model is that you determine the general structure, basically a set of equations of how the stimulus is converted in to the spikes of the neuron. These equations involve learnable variables, or parameters. You learn these parameters from neural data to fit your encoding model. We’ll touch much more on model fitting in future days. For now, we will focus on the structure of the most common type of encoding model: the linear-nonlinear-Poisson model.</p>
 </div>
-<div class="section" id="section-2-linear-nonlinear-poisson-models">
+<div class="tex2jax_ignore mathjax_ignore section" id="section-2-linear-nonlinear-poisson-models">
 <h1>Section 2: Linear-nonlinear-Poisson models<a class="headerlink" href="#section-2-linear-nonlinear-poisson-models" title="Permalink to this headline">¶</a></h1>
 <p>Linear-nonlinear-Poisson (LNP) models consist of a linear filtering stage of the stimulus, then a point-wise nonlinearity, then draws of spikes from the predicted firing rate, assuming a Poisson distribution. The schematic below outlines these steps. The LNP model can also be described with the following equations:</p>
 <div class="math notranslate nohighlight">
@@ -464,23 +464,23 @@ y_t \sim
 <p>k = [.3, 1, .4]</p>
 <p>We are using an exponential nonlinearity.</p>
 <div class="tip dropdown admonition">
-<p class="admonition-title"><strong>Stop and think!</strong> What is the predicted firing rate, <span class="math notranslate nohighlight">\(\lambda\)</span> for time bins 3 and after based on the above numbers?</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dfae0883-508f-4495-9aeb-67a987afe5ee">
-<span class="eqno">(1)<a class="headerlink" href="#equation-dfae0883-508f-4495-9aeb-67a987afe5ee" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<p class="admonition-title"><strong>Stop and think!</strong> What is the predicted firing rate, <span class="math notranslate nohighlight">\(\lambda\)</span> for time bins 3 and after based on the above numbers? </p>
+<div class="amsmath math notranslate nohighlight" id="equation-135bfdc6-0b93-48fc-80fa-cf799185f25d">
+<span class="eqno">(1)<a class="headerlink" href="#equation-135bfdc6-0b93-48fc-80fa-cf799185f25d" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_3 &amp;= e^{x_3 \cdot k}\\
 &amp;= e^{[5, -1, 4] \cdot [.3, 1, .4]}\\
 &amp;= e^{2.1} \\
 &amp;= 8.16
 \end{align}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-8eaf98fa-e0e7-4711-bb87-387707e9c3b4">
-<span class="eqno">(2)<a class="headerlink" href="#equation-8eaf98fa-e0e7-4711-bb87-387707e9c3b4" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-cf31f772-2022-4fe5-8094-6af3906fbd4b">
+<span class="eqno">(2)<a class="headerlink" href="#equation-cf31f772-2022-4fe5-8094-6af3906fbd4b" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_4 &amp;= e^{x_4 \cdot k}\\
 &amp;= e^{[-1, 4, 0] \cdot [.3, 1, .4]}\\
 &amp;= e^{3.7} \\
 &amp;= 40.45
 \end{align}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-aca8c126-36fa-49cf-b927-c091bf1658a1">
-<span class="eqno">(3)<a class="headerlink" href="#equation-aca8c126-36fa-49cf-b927-c091bf1658a1" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-8a6f10c9-2d67-485f-9756-890540be107b">
+<span class="eqno">(3)<a class="headerlink" href="#equation-8a6f10c9-2d67-485f-9756-890540be107b" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_5 &amp;= e^{x_4 \cdot k}\\
 &amp;= e^{[4, 0, 2] \cdot [.3, 1, .4]}\\
 &amp;= e^{2} \\
@@ -541,11 +541,11 @@ y_t \sim
 </div>
 </div>
 </div>
-<div class="section" id="summary">
+<div class="tex2jax_ignore mathjax_ignore section" id="summary">
 <h1>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h1>
 <p>We now have a model that takes in the stimulus and predicts spikes. In the next lecture, we will cover why this model is popular, how to fit it to data (learn what the linear filter is), and how to use it to learn about neural processing.</p>
 </div>
-<div class="section" id="optional-reading">
+<div class="tex2jax_ignore mathjax_ignore section" id="optional-reading">
 <h1>Optional Reading<a class="headerlink" href="#optional-reading" title="Permalink to this headline">¶</a></h1>
 <p>Notes on Generalized Linear Models (LNPs): https://arxiv.org/pdf/1404.1999.pdf</p>
 <p>Video diving further into these types of models:  https://youtube.com/watch?v=NXVG9ORBYXQ</p>

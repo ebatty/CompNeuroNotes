@@ -22,8 +22,8 @@
       
 
     
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
@@ -33,21 +33,21 @@
     
   <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
 
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/togglebutton.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
+    <script>
         const thebe_selector = ".thebe,.cell"
         const thebe_selector_input = "pre,.cell_input div.highlight"
         const thebe_selector_output = ".output,.cell_output"
@@ -98,7 +98,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p class="caption" role="heading">
  <span class="caption-text">
   Neural Coding
  </span>
@@ -295,7 +295,7 @@
               <div>
                 
   <p><a href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/lectures/05_NeuralEncodingII.ipynb" target="_blank"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
-<div class="section" id="neural-encoding-ii">
+<div class="tex2jax_ignore mathjax_ignore section" id="neural-encoding-ii">
 <h1>05 - Neural Encoding II<a class="headerlink" href="#neural-encoding-ii" title="Permalink to this headline">¶</a></h1>
 <p>Learning objectives of lecture/notes: After lecture, students should be able to:</p>
 <ul class="simple">
@@ -316,7 +316,7 @@
 </div>
 </div>
 </div>
-<div class="section" id="section-1-fitting-lnps-to-data">
+<div class="tex2jax_ignore mathjax_ignore section" id="section-1-fitting-lnps-to-data">
 <h1>Section 1: Fitting LNPs to data<a class="headerlink" href="#section-1-fitting-lnps-to-data" title="Permalink to this headline">¶</a></h1>
 <p>First, let’s recap the equations of an LNP model:</p>
 <div class="math notranslate nohighlight">
@@ -398,16 +398,16 @@ y_t \sim
 <div class="math notranslate nohighlight">
 \[log(L(\lambda_t)) = \sum_{k=1}^{n}log(p(y_{t, k} | \lambda_t)) \]</div>
 <p>Let’s substitute in what <span class="math notranslate nohighlight">\(p(y_{t,k}|\lambda_t)\)</span> equals and do some simplifying:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-aa4f1c0d-f0aa-406d-8721-cc8977838ab7">
-<span class="eqno">(4)<a class="headerlink" href="#equation-aa4f1c0d-f0aa-406d-8721-cc8977838ab7" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f8050117-737e-4a0d-b5ac-360000b08ce3">
+<span class="eqno">(4)<a class="headerlink" href="#equation-f8050117-737e-4a0d-b5ac-360000b08ce3" title="Permalink to this equation">¶</a></span>\[\begin{align}
 log(L(\lambda_t)) &amp;= \sum_{k=1}^{n}log(p(y_{t, k} | \lambda_t))\\
 &amp;= \sum_{k=1}^{n}log(\frac{\lambda_t^{y_{t, k}} e^{-\lambda_{t}}}{y_{t,k}!}) \\
 &amp;= \sum_{k=1}^{n} [log(\lambda_t^{y_{t,k}}) + log(e^{-\lambda_t} - log(y_{t,k}!]\\
 &amp;= \sum_{k=1}^{n} [y_{t,k}log(\lambda_t) -\lambda_t - log(y_{t,k}!]\\
 \end{align}\]</div>
 <p>We want to find the <span class="math notranslate nohighlight">\(\lambda_t\)</span> that maximizes this. The maximums and minimums of functions occur when the derivative is zero. We can compute the derivative of the log likelihood function with respect to <span class="math notranslate nohighlight">\(\lambda_t\)</span>, set it equal to 0, and solve for <span class="math notranslate nohighlight">\(\lambda_t\)</span>.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9f55600c-73e1-4a7e-89ad-d11f0e403840">
-<span class="eqno">(5)<a class="headerlink" href="#equation-9f55600c-73e1-4a7e-89ad-d11f0e403840" title="Permalink to this equation">¶</a></span>\[\begin{align} 
+<div class="amsmath math notranslate nohighlight" id="equation-388c8cd1-79a0-458e-b0d7-92bc95dccaa4">
+<span class="eqno">(5)<a class="headerlink" href="#equation-388c8cd1-79a0-458e-b0d7-92bc95dccaa4" title="Permalink to this equation">¶</a></span>\[\begin{align} 
 \frac{d log(L(\lambda_t))}{d \lambda_t} = \sum_{k=1}^n [ \frac{y_{k, t}}{\lambda_t} - 1] &amp;= 0 \\
 \sum_{k=1}^n [ \frac{y_{k, t}}{\lambda_t}] - n &amp;= 0 \\
 \sum_{k=1}^n [ \frac{y_{k, t}}{\lambda_t}] &amp;= n\\ 
@@ -420,29 +420,29 @@ log(L(\lambda_t)) &amp;= \sum_{k=1}^{n}log(p(y_{t, k} | \lambda_t))\\
 <div class="section" id="section-1-2-finding-the-linear-filter-for-data">
 <h2>Section 1.2: Finding the linear filter for data<a class="headerlink" href="#section-1-2-finding-the-linear-filter-for-data" title="Permalink to this headline">¶</a></h2>
 <p>The process of finding the linear filter based on the data from a neuron is a similar idea. We want to maximize the log likelihood of the spikes given <span class="math notranslate nohighlight">\(\lambda\)</span>. Instead of looking over trials, we will now look over time bins, we want to maximize the probability of the spike counts in multiple time bins given the <span class="math notranslate nohighlight">\(\lambda_t\)</span> in each time bin.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-778ca442-1884-4a12-aa1b-1a7feea2b655">
-<span class="eqno">(6)<a class="headerlink" href="#equation-778ca442-1884-4a12-aa1b-1a7feea2b655" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-7b74aa2a-7f1a-48c7-be52-0d3ffb1d0a76">
+<span class="eqno">(6)<a class="headerlink" href="#equation-7b74aa2a-7f1a-48c7-be52-0d3ffb1d0a76" title="Permalink to this equation">¶</a></span>\[\begin{align}
 log(L(\lambda)) &amp;= \sum_{t=1}^{T} [y_{t}log(\lambda_t) -\lambda_t - log(y_{t}!]\\
 \end{align}\]</div>
 <p>Now however, <span class="math notranslate nohighlight">\(\lambda_t\)</span> depends on our linear filter <span class="math notranslate nohighlight">\(k\)</span> and the stimulus.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5e584dc9-f1e9-43cc-a17d-25ddfe0078e9">
-<span class="eqno">(7)<a class="headerlink" href="#equation-5e584dc9-f1e9-43cc-a17d-25ddfe0078e9" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-95f0aec3-d64c-4e82-bea0-87f288bb1bb4">
+<span class="eqno">(7)<a class="headerlink" href="#equation-95f0aec3-d64c-4e82-bea0-87f288bb1bb4" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_t &amp;= e^{x_t \cdot k}\\
 log(L(\lambda)) &amp;= \sum_{t=1}^{T} [y_{t}log(\lambda_t) -\lambda_t - log(y_{t})!]\\
 \end{align}\]</div>
 <p>We can not set the derivative of this equal to 0 and solve for <span class="math notranslate nohighlight">\(k\)</span>, it is impossible to distangle <span class="math notranslate nohighlight">\(k\)</span> from the dot product with <span class="math notranslate nohighlight">\(x_t\)</span>.  Instead we have to use other methods to find the <span class="math notranslate nohighlight">\(k\)</span> that maximizes this quantity. Most of these methods find parameters that minimize a function, not maximize, which we can easily adhere to by finding the filter <span class="math notranslate nohighlight">\(k\)</span> that minimizes the negative log likelihood (NLL):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f6e27fe3-07d8-4faa-9f6e-5f2976f61161">
-<span class="eqno">(8)<a class="headerlink" href="#equation-f6e27fe3-07d8-4faa-9f6e-5f2976f61161" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-840a959a-cf71-4039-a63f-b8993160eca9">
+<span class="eqno">(8)<a class="headerlink" href="#equation-840a959a-cf71-4039-a63f-b8993160eca9" title="Permalink to this equation">¶</a></span>\[\begin{align}
 NLL &amp;= -\sum_{t=1}^{T} [y_{t}log(\lambda_t) -\lambda_t - log(y_{t}!]\\
 \end{align}\]</div>
 <p>We can get rid of the last term - we want to find the linear filter <span class="math notranslate nohighlight">\(k\)</span> that minimizes the negative log likelihood and the last term is not affected by the linear filter - it will be a constant.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e76fea00-5d15-4b15-a918-26e2f2d6e542">
-<span class="eqno">(9)<a class="headerlink" href="#equation-e76fea00-5d15-4b15-a918-26e2f2d6e542" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-bca0d0d9-9482-42d6-8842-105ab6f74f9e">
+<span class="eqno">(9)<a class="headerlink" href="#equation-bca0d0d9-9482-42d6-8842-105ab6f74f9e" title="Permalink to this equation">¶</a></span>\[\begin{align}
 NLL &amp;= -\sum_{t=1}^{T} [y_{t}log(\lambda_t) -\lambda_t ]\\
 \end{align}\]</div>
 <p>We can vectorize this computation for ease of coding: if <span class="math notranslate nohighlight">\(\lambda\)</span> is a vector of our predicted firing rates over time and <span class="math notranslate nohighlight">\(y\)</span> is a vector of our spike counts over time, we can rewrite the above as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dca8d54e-4354-41fe-81a6-9dd8c186b106">
-<span class="eqno">(10)<a class="headerlink" href="#equation-dca8d54e-4354-41fe-81a6-9dd8c186b106" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-9d3fd63b-d5bf-40e5-88a9-d8e29d7a95fa">
+<span class="eqno">(10)<a class="headerlink" href="#equation-9d3fd63b-d5bf-40e5-88a9-d8e29d7a95fa" title="Permalink to this equation">¶</a></span>\[\begin{align}
 NLL &amp;= - y \cdot log(\lambda) + \sum_{t=1}^T\lambda_t\\
 \end{align}\]</div>
 <p>Now that we have it simplified, how do we actually find the linear filter that minimizes this NLL? We will use gradient descent, which we will discuss in the next lecture when we focus on model fitting. Luckily, we have a python function that finds the parameters that minimize a metric for us: <code class="docutils literal notranslate"><span class="pre">scipy.optimize.minimize</span></code>. If you pass a function that computes the negative log likelihood given an input of a linear filter, it will find the minimizing linear filter. You will see this in HW 1!</p>
@@ -452,7 +452,7 @@ NLL &amp;= - y \cdot log(\lambda) + \sum_{t=1}^T\lambda_t\\
 <p>If your stimuli is a white noise stimuli, the STA is a pretty good estimate for <span class="math notranslate nohighlight">\(k\)</span>. You can then find the nonlinearity as described in “Characterizing the Nonlinearity” in https://jov.arvojournals.org/article.aspx?articleid=2192881?</p>
 </div>
 </div>
-<div class="section" id="section-2-benefits-drawbacks-of-lnps">
+<div class="tex2jax_ignore mathjax_ignore section" id="section-2-benefits-drawbacks-of-lnps">
 <h1>Section 2: Benefits/drawbacks of LNPs<a class="headerlink" href="#section-2-benefits-drawbacks-of-lnps" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="section-2-1-benefits">
 <h2>Section 2.1: Benefits<a class="headerlink" href="#section-2-1-benefits" title="Permalink to this headline">¶</a></h2>
@@ -472,7 +472,7 @@ NLL &amp;= - y \cdot log(\lambda) + \sum_{t=1}^T\lambda_t\\
 </ul>
 </div>
 </div>
-<div class="section" id="section-3-model-comparison-analysis">
+<div class="tex2jax_ignore mathjax_ignore section" id="section-3-model-comparison-analysis">
 <h1>Section 3: Model comparison analysis<a class="headerlink" href="#section-3-model-comparison-analysis" title="Permalink to this headline">¶</a></h1>
 <p>How do we make conclusions from linear-nonlinear-Poisson models? One way is to do <strong>model comparison analysis</strong>: we fit models with different inputs or structures and compare which best predict the neuron.</p>
 <p>Let’s say we’re trying to figure out if a neuron is responding to an auditory stimulus or a visual stimulus. We can fit an LNP model with the auditory stimulus as input, a model with the visual stimulus as input, and one with both auditory and visual stimulus as input. We then evalute the model performance on <strong>held-out data</strong>, or data we have not used to learn the best linear filter. We will see next lecture why this is important.</p>
@@ -480,11 +480,11 @@ NLL &amp;= - y \cdot log(\lambda) + \sum_{t=1}^T\lambda_t\\
 <p>In class, we talked about the model comparison analysis approach done in this paper: https://www-nature-com.ezp-prod1.hul.harvard.edu/articles/s41593-019-0502-4. In this paper, they fit encoding models with various inputs related to the task the mouse was performing and movements of the mouse (moving its whiskers, legs, etc). They found that movements of the animal were important for predicting neural responses across the brain, even outside of motor cortices!</p>
 <p>We can also change the structure of the model. Researchers added the trial-specific spiking responses of neighboring neurons to help predict the spiking responses of a neuron in this study: https://www.nature.com/articles/nature07140 . This improved prediction, so they concluded that the neurons were correlated beyond their dependence on the stimulus.</p>
 </div>
-<div class="section" id="summary">
+<div class="tex2jax_ignore mathjax_ignore section" id="summary">
 <h1>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h1>
 <p>LNPs are easily fit to data by finding the linear filter that minimizes the negative log likelihood of the spikes given the predicted firing rate. They are a simple descriptive encoding model that can be used to generate insights into what the neurons are responding to, and how.</p>
 </div>
-<div class="section" id="optional-reading">
+<div class="tex2jax_ignore mathjax_ignore section" id="optional-reading">
 <h1>Optional Reading<a class="headerlink" href="#optional-reading" title="Permalink to this headline">¶</a></h1>
 <p>Content:</p>
 <p>Notes on Generalized Linear Models (LNPs): https://arxiv.org/pdf/1404.1999.pdf (Links to an external site.)</p>

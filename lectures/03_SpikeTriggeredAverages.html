@@ -22,8 +22,8 @@
       
 
     
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
@@ -33,21 +33,21 @@
     
   <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
 
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/togglebutton.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
+    <script>
         const thebe_selector = ".thebe,.cell"
         const thebe_selector_input = "pre,.cell_input div.highlight"
         const thebe_selector_output = ".output,.cell_output"
@@ -98,7 +98,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p class="caption" role="heading">
  <span class="caption-text">
   Neural Coding
  </span>
@@ -295,7 +295,7 @@
               <div>
                 
   <p><a href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/lectures/03_SpikeTriggeredAverages.ipynb" target="_blank"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
-<div class="section" id="spike-triggered-averages">
+<div class="tex2jax_ignore mathjax_ignore section" id="spike-triggered-averages">
 <h1>03 - Spike Triggered Averages<a class="headerlink" href="#spike-triggered-averages" title="Permalink to this headline">¶</a></h1>
 <p>Learning objectives of lecture/notes: After lecture, students should be able to:</p>
 <ul class="simple">
@@ -315,11 +315,11 @@
 </div>
 </div>
 </div>
-<div class="section" id="section-1-why-do-we-need-to-move-beyond-tuning-curves">
+<div class="tex2jax_ignore mathjax_ignore section" id="section-1-why-do-we-need-to-move-beyond-tuning-curves">
 <h1>Section 1: Why do we need to move beyond tuning curves?<a class="headerlink" href="#section-1-why-do-we-need-to-move-beyond-tuning-curves" title="Permalink to this headline">¶</a></h1>
 <p>In the last lecture, we saw the use of tuning curves as a way to understand the relationship between a stimulus and the responses of a neuron. However, this approch is pretty limited. Tuning curves are very simple: you can’t use them to capture responses to complex or multiple features. You can only use them to look at average firing rate to discrete options of a stimulus that you choose (like different reaches).  Additionally, they don’t consider timing information present in neural responses. Neurons tend to respond to aspects of the stimuli in a recent window in the past, essentially integrating over the recent past. They also respond in a time-varying manner to different stimuli. So, we need to move beyond tuning curves to more sophisticated methods of observing the relationship between stimulus and neural response.</p>
 </div>
-<div class="section" id="section-2-one-dimensional-spike-triggered-average-sta">
+<div class="tex2jax_ignore mathjax_ignore section" id="section-2-one-dimensional-spike-triggered-average-sta">
 <h1>Section 2: One-dimensional spike triggered average (STA)<a class="headerlink" href="#section-2-one-dimensional-spike-triggered-average-sta" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="section-2-1-intro-to-sta">
 <h2>Section 2.1: Intro to STA<a class="headerlink" href="#section-2-1-intro-to-sta" title="Permalink to this headline">¶</a></h2>
@@ -350,14 +350,12 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading...
 From: https://drive.google.com/uc?id=1V2QAdFLQnAb-gdFQ9-Py1AydI7tlTifm
 To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
-
-0.00B [00:00, ?B/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.57MB [00:00, 14.7MB/s]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0%|                                               | 0.00/5.40M [00:00&lt;?, ?B/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5.40MB [00:00, 39.0MB/s]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|███████████████████████████████████████| 5.40M/5.40M [00:00&lt;00:00, 181MB/s]
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Text(0.5, 1.0, &#39;Spikes&#39;), Text(0.5, 0, &#39;Time bins&#39;)]
@@ -488,14 +486,14 @@ To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
 <p>Step 6) We have summed over the stimuli before spikes but we want to average, so we need to divide by the number of spikes.</p>
 </div>
 </div>
-<div class="section" id="section-3-stas-for-higher-dimensional-stimuli">
+<div class="tex2jax_ignore mathjax_ignore section" id="section-3-stas-for-higher-dimensional-stimuli">
 <h1>Section 3: STAs for higher-dimensional stimuli<a class="headerlink" href="#section-3-stas-for-higher-dimensional-stimuli" title="Permalink to this headline">¶</a></h1>
 <p>So far, we have only looked at computing STAs for a 1d stimulus over time. In other words, a stimulus that has only one data point per time bin. We can compute an STA for a stimulus for any number of dimensions. For example, let’s say the stimulus is a movie. Instead of looking at the average number that triggered a spike at certain delays before a spike (as in the case of the 1d stimulus), we want to look at the average image that triggered a spike at various time bins before the spike. So we want the average image 1 time step back, the average image 2 time steps back, and so on. This idea is conveyed in the image below. We’d end up with a spike triggered average of shape (number of time bins of STA x number of pixels x number of pixels).</p>
 <img alt="STA from movie" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Illustration_diagram_for_the_Spike-triggered_average.pdf/page1-1335px-Illustration_diagram_for_the_Spike-triggered_average.pdf.jpg" />
 <p><em>Spike triggered average with a movie stimulus from https://upload.wikimedia.org/wikipedia/commons/2/2c/Illustration_diagram_for_the_Spike-triggered_average.pdf</em></p>
 <p>We may have stimuli that aren’t images but have more than 1 dimension. We’d treat these similar to the movie, where we average over each feature (or dimension) separately. So if our stimulus is represented by 3 numbers per time bin, we would get an STA of shape (number of time bins x 3).</p>
 </div>
-<div class="section" id="section-4-interpreting-stas">
+<div class="tex2jax_ignore mathjax_ignore section" id="section-4-interpreting-stas">
 <h1>Section 4: Interpreting STAs<a class="headerlink" href="#section-4-interpreting-stas" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="section-4-1-stas-receptive-fields">
 <h2>Section 4.1: STAs ~ receptive fields<a class="headerlink" href="#section-4-1-stas-receptive-fields" title="Permalink to this headline">¶</a></h2>
@@ -674,7 +672,7 @@ To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/lectures/c1p8.mat
 </div>
 </div>
 </div>
-<div class="section" id="optional-reading">
+<div class="tex2jax_ignore mathjax_ignore section" id="optional-reading">
 <h1>Optional Reading<a class="headerlink" href="#optional-reading" title="Permalink to this headline">¶</a></h1>
 <p>Dayan &amp; Abbott cover spike triggered averages in Chapter 1: http://www.gatsby.ucl.ac.uk/~lmate/biblio/dayanabbott.pdf</p>
 <p>More advanced than we go, but a very thorough review of spike-triggered neural characterization: https://jov.arvojournals.org/article.aspx?articleid=2192881</p>
