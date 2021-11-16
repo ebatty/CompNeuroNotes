@@ -323,6 +323,7 @@
 <li><p>Explain how to determine whether a neuron is Poisson-like</p></li>
 </ul>
 <p>Imports</p>
+<p>Imports</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown Imports</span>
@@ -367,6 +368,7 @@ y_t \sim
 <p>Dot products give a rough sense of similarity between the linear filter and the stimulus.  To see why, we’ll pretend we’re predicting the neural response at a time bin <span class="math notranslate nohighlight">\(t\)</span> based on the 1d stimulus at the preceding time step <span class="math notranslate nohighlight">\(s_{t-1}\)</span> and at the current time step <span class="math notranslate nohighlight">\(s_{t}\)</span>. This means our linear filter <span class="math notranslate nohighlight">\(k\)</span> has two entries. We already know our linear filter: <span class="math notranslate nohighlight">\(k = [1, 1]\)</span>. We want to predict whether a certain two time steps of the stimulus are likely to result in the neuron spiking. Remember, we want to look at whether that chunk of stimulus is similar to the linear filter.</p>
 <p>Below, I plot our stimulus data. Each dot corresponds to a different two time step chunk of the stimulus: the prior time step is the x axis and the current time step is the y axis. We represent the linear filter <span class="math notranslate nohighlight">\(k\)</span> on this plot as well, in red.</p>
 <p>Execute to visualize data</p>
+<p>Execute to visualize data</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown Execute to visualize data</span>
@@ -391,7 +393,7 @@ y_t \sim
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/04_NeuralEncodingI_13_0.png" src="../_images/04_NeuralEncodingI_13_0.png" />
+<img alt="../_images/04_NeuralEncodingI_15_0.png" src="../_images/04_NeuralEncodingI_15_0.png" />
 </div>
 </div>
 <p>If you recall, another way of defining the dot product of two vectors, in this case <span class="math notranslate nohighlight">\(x_t\)</span> and <span class="math notranslate nohighlight">\(k\)</span>, is as the length of the first multiplied with the length of the second, multiplied with the angle between them:</p>
@@ -400,6 +402,7 @@ y_t \sim
 <p>The length of <span class="math notranslate nohighlight">\(k\)</span> would be constant for every time bin/new stimulus we look at, so we can basically ignore it. The dot product basically then depends on the length of the stimulus vector and the cosine of the angle between them.</p>
 <p>The cosine of the angle between two vectors is a measure of their similarity. If the angle is 0, the two vectors lie in the same direction so are very similar and the cosine of that angle is 1. If the angle is 180, the two vectors point in opposite directions and are very dissimilar: in this case the cosine of this angle is -1. In between these two extremes, the cosine of the angle moves between 1 and -1 as the angle between vectors grows larger.</p>
 <p>So, the dot product is basically a measure of similarity (the cosine of the angle between vectors) times the length of the vector <span class="math notranslate nohighlight">\(x_t\)</span>. So it is not exactly a measure of similarity, because of this last term, but is close to one.</p>
+<p>Execute to visualize vectors</p>
 <p>Execute to visualize vectors</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
@@ -421,11 +424,12 @@ y_t \sim
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/04_NeuralEncodingI_16_0.png" src="../_images/04_NeuralEncodingI_16_0.png" />
+<img alt="../_images/04_NeuralEncodingI_19_0.png" src="../_images/04_NeuralEncodingI_19_0.png" />
 </div>
 </div>
 <p>Another way to think of this computation is as the scalar projection of the data points onto the linear filter vector. Let’s define the data point <span class="math notranslate nohighlight">\(x_t\)</span> as the addition of two vectors: one along the linear filter direction (green vector below) and the other perpendicular to that (purple vector below). The scalar projection is then the length of the first vector (green vector) along the linear filter direction. The diagram below will probably make this clearer.</p>
 <p>The scalar projection of <span class="math notranslate nohighlight">\(x_t\)</span> onto <span class="math notranslate nohighlight">\(k\)</span> is equal to the length of <span class="math notranslate nohighlight">\(x_t\)</span> times the cosine of the angle <span class="math notranslate nohighlight">\(\theta\)</span>. In other words, the dot product of <span class="math notranslate nohighlight">\(x_t\)</span> with <span class="math notranslate nohighlight">\(k\)</span>, divided by the length of <span class="math notranslate nohighlight">\(k\)</span>. Since we are ignoring the length of <span class="math notranslate nohighlight">\(k\)</span> as that will remain constant, the dot product is basically computing the scalar projection!</p>
+<p>Execute to visualize vectors</p>
 <p>Execute to visualize vectors</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
@@ -453,7 +457,7 @@ y_t \sim
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/04_NeuralEncodingI_19_0.png" src="../_images/04_NeuralEncodingI_19_0.png" />
+<img alt="../_images/04_NeuralEncodingI_23_0.png" src="../_images/04_NeuralEncodingI_23_0.png" />
 </div>
 </div>
 </div>
@@ -485,22 +489,22 @@ y_t \sim
 <p>We are using an exponential nonlinearity.</p>
 <div class="tip dropdown admonition">
 <p class="admonition-title"><strong>Stop and think!</strong> What is the predicted firing rate, <span class="math notranslate nohighlight">\(\lambda\)</span> for time bins 3 and after based on the above numbers? </p>
-<div class="amsmath math notranslate nohighlight" id="equation-badab70e-2565-476f-8390-fe65f6c2e703">
-<span class="eqno">(1)<a class="headerlink" href="#equation-badab70e-2565-476f-8390-fe65f6c2e703" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-782d23b9-1ace-47a5-9108-d2a0094207b9">
+<span class="eqno">(1)<a class="headerlink" href="#equation-782d23b9-1ace-47a5-9108-d2a0094207b9" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_3 &amp;= e^{x_3 \cdot k}\\
 &amp;= e^{[5, -1, 4] \cdot [.3, 1, .4]}\\
 &amp;= e^{2.1} \\
 &amp;= 8.16
 \end{align}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-973c48d4-b52d-41d2-879e-3182522f00d5">
-<span class="eqno">(2)<a class="headerlink" href="#equation-973c48d4-b52d-41d2-879e-3182522f00d5" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-a7e3ba40-40f9-4082-a9d0-02869cffedc4">
+<span class="eqno">(2)<a class="headerlink" href="#equation-a7e3ba40-40f9-4082-a9d0-02869cffedc4" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_4 &amp;= e^{x_4 \cdot k}\\
 &amp;= e^{[-1, 4, 0] \cdot [.3, 1, .4]}\\
 &amp;= e^{3.7} \\
 &amp;= 40.45
 \end{align}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-33131561-3e75-4aba-9832-c9ec2be7fcdb">
-<span class="eqno">(3)<a class="headerlink" href="#equation-33131561-3e75-4aba-9832-c9ec2be7fcdb" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-53ad8c78-48e9-4f02-97b8-a3a4660a019b">
+<span class="eqno">(3)<a class="headerlink" href="#equation-53ad8c78-48e9-4f02-97b8-a3a4660a019b" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_5 &amp;= e^{x_4 \cdot k}\\
 &amp;= e^{[4, 0, 2] \cdot [.3, 1, .4]}\\
 &amp;= e^{2} \\
