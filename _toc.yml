@@ -13,4 +13,4 @@ parts:
     chapters:
     - file: lectures/MathReview.ipynb
     - file: lectures/16_IntrotoNeuralNetworks.ipynb
-    - file: lectures/20 - HebbianLearning.ipynb
+    - file: lectures/20_HebbianLearning.ipynb
