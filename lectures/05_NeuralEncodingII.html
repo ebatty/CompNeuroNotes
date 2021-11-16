@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>05 - Neural Encoding II &#8212; Introductory Computational Neuroscience</title>
     
-  <link href="../_static/css/theme.css" rel="stylesheet" />
-  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -31,7 +31,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -44,7 +44,7 @@
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script>
@@ -59,7 +59,10 @@
     <link rel="next" title="06 - Decoding" href="06_Decoding.html" />
     <link rel="prev" title="04 - Neural Encoding I" href="04_NeuralEncodingI.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
     
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -98,7 +101,7 @@
   </a>
  </li>
 </ul>
-<p class="caption" role="heading">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Neural Coding
  </span>
@@ -135,7 +138,7 @@
   </a>
  </li>
 </ul>
-<p class="caption" role="heading">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Recurrent neural networks &amp; dynamical systems
  </span>
@@ -415,16 +418,16 @@ y_t \sim
 <div class="math notranslate nohighlight">
 \[log(L(\lambda_t)) = \sum_{k=1}^{n}log(p(y_{t, k} | \lambda_t)) \]</div>
 <p>Let’s substitute in what <span class="math notranslate nohighlight">\(p(y_{t,k}|\lambda_t)\)</span> equals and do some simplifying:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-fec4e5c7-d9a3-49cb-9478-6d9a2b9408cd">
-<span class="eqno">(4)<a class="headerlink" href="#equation-fec4e5c7-d9a3-49cb-9478-6d9a2b9408cd" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-007f88af-aac4-47b4-aac9-70d15454c0fb">
+<span class="eqno">(4)<a class="headerlink" href="#equation-007f88af-aac4-47b4-aac9-70d15454c0fb" title="Permalink to this equation">¶</a></span>\[\begin{align}
 log(L(\lambda_t)) &amp;= \sum_{k=1}^{n}log(p(y_{t, k} | \lambda_t))\\
 &amp;= \sum_{k=1}^{n}log(\frac{\lambda_t^{y_{t, k}} e^{-\lambda_{t}}}{y_{t,k}!}) \\
 &amp;= \sum_{k=1}^{n} [log(\lambda_t^{y_{t,k}}) + log(e^{-\lambda_t} - log(y_{t,k}!]\\
 &amp;= \sum_{k=1}^{n} [y_{t,k}log(\lambda_t) -\lambda_t - log(y_{t,k}!]\\
 \end{align}\]</div>
 <p>We want to find the <span class="math notranslate nohighlight">\(\lambda_t\)</span> that maximizes this. The maximums and minimums of functions occur when the derivative is zero. We can compute the derivative of the log likelihood function with respect to <span class="math notranslate nohighlight">\(\lambda_t\)</span>, set it equal to 0, and solve for <span class="math notranslate nohighlight">\(\lambda_t\)</span>.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e5d8aaf7-038f-426d-9681-c1ce0f3fee3f">
-<span class="eqno">(5)<a class="headerlink" href="#equation-e5d8aaf7-038f-426d-9681-c1ce0f3fee3f" title="Permalink to this equation">¶</a></span>\[\begin{align} 
+<div class="amsmath math notranslate nohighlight" id="equation-a9754b5f-d614-4f9d-a57d-7ce259de88c5">
+<span class="eqno">(5)<a class="headerlink" href="#equation-a9754b5f-d614-4f9d-a57d-7ce259de88c5" title="Permalink to this equation">¶</a></span>\[\begin{align} 
 \frac{d log(L(\lambda_t))}{d \lambda_t} = \sum_{k=1}^n [ \frac{y_{k, t}}{\lambda_t} - 1] &amp;= 0 \\
 \sum_{k=1}^n [ \frac{y_{k, t}}{\lambda_t}] - n &amp;= 0 \\
 \sum_{k=1}^n [ \frac{y_{k, t}}{\lambda_t}] &amp;= n\\ 
@@ -437,29 +440,29 @@ log(L(\lambda_t)) &amp;= \sum_{k=1}^{n}log(p(y_{t, k} | \lambda_t))\\
 <div class="section" id="section-1-2-finding-the-linear-filter-for-data">
 <h2>Section 1.2: Finding the linear filter for data<a class="headerlink" href="#section-1-2-finding-the-linear-filter-for-data" title="Permalink to this headline">¶</a></h2>
 <p>The process of finding the linear filter based on the data from a neuron is a similar idea. We want to maximize the log likelihood of the spikes given <span class="math notranslate nohighlight">\(\lambda\)</span>. Instead of looking over trials, we will now look over time bins, we want to maximize the probability of the spike counts in multiple time bins given the <span class="math notranslate nohighlight">\(\lambda_t\)</span> in each time bin.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-434ee4d2-9984-449d-93c9-4fd2ebe3cd0d">
-<span class="eqno">(6)<a class="headerlink" href="#equation-434ee4d2-9984-449d-93c9-4fd2ebe3cd0d" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-c42be7fa-9e49-49f3-8b12-a086c93006ad">
+<span class="eqno">(6)<a class="headerlink" href="#equation-c42be7fa-9e49-49f3-8b12-a086c93006ad" title="Permalink to this equation">¶</a></span>\[\begin{align}
 log(L(\lambda)) &amp;= \sum_{t=1}^{T} [y_{t}log(\lambda_t) -\lambda_t - log(y_{t}!]\\
 \end{align}\]</div>
 <p>Now however, <span class="math notranslate nohighlight">\(\lambda_t\)</span> depends on our linear filter <span class="math notranslate nohighlight">\(k\)</span> and the stimulus.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c5e5af9c-6d58-4582-b754-85a95af81b94">
-<span class="eqno">(7)<a class="headerlink" href="#equation-c5e5af9c-6d58-4582-b754-85a95af81b94" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-6e2278fe-d08b-4364-ae1a-4e9ec5904494">
+<span class="eqno">(7)<a class="headerlink" href="#equation-6e2278fe-d08b-4364-ae1a-4e9ec5904494" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_t &amp;= e^{x_t \cdot k}\\
 log(L(\lambda)) &amp;= \sum_{t=1}^{T} [y_{t}log(\lambda_t) -\lambda_t - log(y_{t})!]\\
 \end{align}\]</div>
 <p>We can not set the derivative of this equal to 0 and solve for <span class="math notranslate nohighlight">\(k\)</span>, it is impossible to distangle <span class="math notranslate nohighlight">\(k\)</span> from the dot product with <span class="math notranslate nohighlight">\(x_t\)</span>.  Instead we have to use other methods to find the <span class="math notranslate nohighlight">\(k\)</span> that maximizes this quantity. Most of these methods find parameters that minimize a function, not maximize, which we can easily adhere to by finding the filter <span class="math notranslate nohighlight">\(k\)</span> that minimizes the negative log likelihood (NLL):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-3f0b71df-67e6-4160-af11-0126973a9660">
-<span class="eqno">(8)<a class="headerlink" href="#equation-3f0b71df-67e6-4160-af11-0126973a9660" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-801fca84-b39f-4ff4-bb89-8eda7553f1ec">
+<span class="eqno">(8)<a class="headerlink" href="#equation-801fca84-b39f-4ff4-bb89-8eda7553f1ec" title="Permalink to this equation">¶</a></span>\[\begin{align}
 NLL &amp;= -\sum_{t=1}^{T} [y_{t}log(\lambda_t) -\lambda_t - log(y_{t}!]\\
 \end{align}\]</div>
 <p>We can get rid of the last term - we want to find the linear filter <span class="math notranslate nohighlight">\(k\)</span> that minimizes the negative log likelihood and the last term is not affected by the linear filter - it will be a constant.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-48c74637-1ad3-44a2-8505-2e473260a17b">
-<span class="eqno">(9)<a class="headerlink" href="#equation-48c74637-1ad3-44a2-8505-2e473260a17b" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-5436dc32-5345-4061-941e-d14c5ab6dd0b">
+<span class="eqno">(9)<a class="headerlink" href="#equation-5436dc32-5345-4061-941e-d14c5ab6dd0b" title="Permalink to this equation">¶</a></span>\[\begin{align}
 NLL &amp;= -\sum_{t=1}^{T} [y_{t}log(\lambda_t) -\lambda_t ]\\
 \end{align}\]</div>
 <p>We can vectorize this computation for ease of coding: if <span class="math notranslate nohighlight">\(\lambda\)</span> is a vector of our predicted firing rates over time and <span class="math notranslate nohighlight">\(y\)</span> is a vector of our spike counts over time, we can rewrite the above as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-acec4d7e-95f5-4aba-bfce-8a2d82c19f1a">
-<span class="eqno">(10)<a class="headerlink" href="#equation-acec4d7e-95f5-4aba-bfce-8a2d82c19f1a" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-3b952068-018f-49c9-90ad-b2175b956fb5">
+<span class="eqno">(10)<a class="headerlink" href="#equation-3b952068-018f-49c9-90ad-b2175b956fb5" title="Permalink to this equation">¶</a></span>\[\begin{align}
 NLL &amp;= - y \cdot log(\lambda) + \sum_{t=1}^T\lambda_t\\
 \end{align}\]</div>
 <p>Now that we have it simplified, how do we actually find the linear filter that minimizes this NLL? We will use gradient descent, which we will discuss in the next lecture when we focus on model fitting. Luckily, we have a python function that finds the parameters that minimize a metric for us: <code class="docutils literal notranslate"><span class="pre">scipy.optimize.minimize</span></code>. If you pass a function that computes the negative log likelihood given an input of a linear filter, it will find the minimizing linear filter. You will see this in HW 1!</p>
@@ -536,31 +539,22 @@ NLL &amp;= - y \cdot log(\lambda) + \sum_{t=1}^T\lambda_t\\
               </div>
               
         
-            
-
-
-
-<div class='prev-next-bottom'>
-    
-    <div id="prev">
-        <a class="left-prev" href="04_NeuralEncodingI.html" title="previous page">
-            <i class="prevnext-label fas fa-angle-left"></i>
-            <div class="prevnext-info">
-                <p class="prevnext-label">previous</p>
-                <p class="prevnext-title">04 - Neural Encoding I</p>
-            </div>
-        </a>
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="04_NeuralEncodingI.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">04 - Neural Encoding I</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="06_Decoding.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">06 - Decoding</p>
     </div>
-     <div id="next">
-        <a class="right-next" href="06_Decoding.html" title="next page">
-            <div class="prevnext-info">
-                <p class="prevnext-label">next</p>
-                <p class="prevnext-title">06 - Decoding</p>
-            </div>
-            <i class="prevnext-label fas fa-angle-right"></i>
-        </a>
-     </div>
-
+    <i class="fas fa-angle-right"></i>
+    </a>
 </div>
         
         </div>
@@ -581,8 +575,7 @@ NLL &amp;= - y \cdot log(\lambda) + \sum_{t=1}^T\lambda_t\\
       </div>
     </div>
   
-  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
 
-  
   </body>
 </html>

@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>04 - Neural Encoding I &#8212; Introductory Computational Neuroscience</title>
     
-  <link href="../_static/css/theme.css" rel="stylesheet" />
-  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -31,7 +31,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -44,7 +44,7 @@
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script>
@@ -59,7 +59,10 @@
     <link rel="next" title="05 - Neural Encoding II" href="05_NeuralEncodingII.html" />
     <link rel="prev" title="03 - Spike Triggered Averages" href="03_SpikeTriggeredAverages.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
     
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -98,7 +101,7 @@
   </a>
  </li>
 </ul>
-<p class="caption" role="heading">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Neural Coding
  </span>
@@ -135,7 +138,7 @@
   </a>
  </li>
 </ul>
-<p class="caption" role="heading">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Recurrent neural networks &amp; dynamical systems
  </span>
@@ -482,22 +485,22 @@ y_t \sim
 <p>We are using an exponential nonlinearity.</p>
 <div class="tip dropdown admonition">
 <p class="admonition-title"><strong>Stop and think!</strong> What is the predicted firing rate, <span class="math notranslate nohighlight">\(\lambda\)</span> for time bins 3 and after based on the above numbers? </p>
-<div class="amsmath math notranslate nohighlight" id="equation-940b0904-68aa-452d-8fb5-b3b7a55e0ce4">
-<span class="eqno">(1)<a class="headerlink" href="#equation-940b0904-68aa-452d-8fb5-b3b7a55e0ce4" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-e69f9738-47f3-4684-b0fc-ef0fd78ba63d">
+<span class="eqno">(1)<a class="headerlink" href="#equation-e69f9738-47f3-4684-b0fc-ef0fd78ba63d" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_3 &amp;= e^{x_3 \cdot k}\\
 &amp;= e^{[5, -1, 4] \cdot [.3, 1, .4]}\\
 &amp;= e^{2.1} \\
 &amp;= 8.16
 \end{align}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-b0ca80c5-4d9c-4587-82aa-c2238bfe8f32">
-<span class="eqno">(2)<a class="headerlink" href="#equation-b0ca80c5-4d9c-4587-82aa-c2238bfe8f32" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-662b773f-132f-4c03-b3e3-45fc05ec0381">
+<span class="eqno">(2)<a class="headerlink" href="#equation-662b773f-132f-4c03-b3e3-45fc05ec0381" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_4 &amp;= e^{x_4 \cdot k}\\
 &amp;= e^{[-1, 4, 0] \cdot [.3, 1, .4]}\\
 &amp;= e^{3.7} \\
 &amp;= 40.45
 \end{align}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-9fcc2b22-6a56-4bba-8427-a798faa8788c">
-<span class="eqno">(3)<a class="headerlink" href="#equation-9fcc2b22-6a56-4bba-8427-a798faa8788c" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-cb2b324c-4b96-475a-8603-e7768c9819e5">
+<span class="eqno">(3)<a class="headerlink" href="#equation-cb2b324c-4b96-475a-8603-e7768c9819e5" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \lambda_5 &amp;= e^{x_4 \cdot k}\\
 &amp;= e^{[4, 0, 2] \cdot [.3, 1, .4]}\\
 &amp;= e^{2} \\
@@ -591,31 +594,22 @@ y_t \sim
               </div>
               
         
-            
-
-
-
-<div class='prev-next-bottom'>
-    
-    <div id="prev">
-        <a class="left-prev" href="03_SpikeTriggeredAverages.html" title="previous page">
-            <i class="prevnext-label fas fa-angle-left"></i>
-            <div class="prevnext-info">
-                <p class="prevnext-label">previous</p>
-                <p class="prevnext-title">03 - Spike Triggered Averages</p>
-            </div>
-        </a>
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="03_SpikeTriggeredAverages.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">03 - Spike Triggered Averages</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="05_NeuralEncodingII.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">05 - Neural Encoding II</p>
     </div>
-     <div id="next">
-        <a class="right-next" href="05_NeuralEncodingII.html" title="next page">
-            <div class="prevnext-info">
-                <p class="prevnext-label">next</p>
-                <p class="prevnext-title">05 - Neural Encoding II</p>
-            </div>
-            <i class="prevnext-label fas fa-angle-right"></i>
-        </a>
-     </div>
-
+    <i class="fas fa-angle-right"></i>
+    </a>
 </div>
         
         </div>
@@ -636,8 +630,7 @@ y_t \sim
       </div>
     </div>
   
-  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
 
-  
   </body>
 </html>
