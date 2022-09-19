@@ -135,6 +135,8 @@ def make_coding_corners(content):
 
     i_updated_cell = 0
     for i_cell, cell in enumerate(cells):
+        if len(cell['source']) == 0:
+            continue
         if cell['source'][0].startswith("**Coding Corner!**") or cell['source'][0].startswith("**Advanced Coding Challenge!**"):
 
             # Get next cell containing Python code
