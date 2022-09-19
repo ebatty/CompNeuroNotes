@@ -43,6 +43,8 @@ def make_stop_and_thinks(content):
 
     i_updated_cell = 0
     for i_cell, cell in enumerate(cells):
+        if len(cell['source']) == 0:
+            continue
         if cell['source'][0].startswith("**Stop and think!**"):
             question = cell['source'][0]
             for jj in range(1, len(cell['source'])):
