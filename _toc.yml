@@ -5,7 +5,6 @@ parts:
     chapters:
     - file: Notes/VisualizingNeuralResponses.ipynb
     - file: Notes/TuningCurves.ipynb
-    - file: Notes/SpikeTriggeredAverages.ipynb
     - file: Notes/Decoding_LinearRegression.ipynb
     - file: Notes/SpikeTriggeredAverages.ipynb
     - file: Notes/NeuralEncodingI.ipynb
