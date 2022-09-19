@@ -3,14 +3,12 @@ root: intro
 parts:
   - caption: Neural Coding
     chapters:
-    - file: lectures/02_NeuralResponses&TuningCurves.ipynb
-    - file: lectures/03_SpikeTriggeredAverages.ipynb
-    - file: lectures/04_NeuralEncodingI.ipynb
-    - file: lectures/05_NeuralEncodingII.ipynb
-    - file: lectures/06_Decoding.ipynb
-    - file: lectures/07_DimensionalityReduction.ipynb
-  - caption: Recurrent neural networks & dynamical systems
-    chapters:
-    - file: lectures/MathReview.ipynb
-    - file: lectures/16_IntrotoNeuralNetworks.ipynb
-    - file: lectures/20_HebbianLearning.ipynb
+    - file: Notes/VisualizingNeuralResponses.ipynb
+    - file: Notes/TuningCurves.ipynb
+    - file: Notes/SpikeTriggeredAverages.ipynb
+    - file: Notes/Decoding_LinearRegression.ipynb
+    - file: Notes/Decoding_LogisticRegression.ipynb
+    - file: Notes/SpikeTriggeredAverages.ipynb
+    - file: Notes/NeuralEncodingI.ipynb
+    - file: Notes/NeuralEncodingII.ipynb
+
