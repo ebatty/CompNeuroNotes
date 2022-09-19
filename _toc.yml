@@ -8,5 +8,4 @@ parts:
     - file: Notes/Decoding_LinearRegression.ipynb
     - file: Notes/SpikeTriggeredAverages.ipynb
     - file: Notes/NeuralEncodingI.ipynb
-    - file: Notes/NeuralEncodingII.ipynb
 
