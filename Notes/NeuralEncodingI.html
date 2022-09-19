@@ -1,0 +1,793 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Neural Encoding I &#8212; Introductory Computational Neuroscience</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="../_static/NeuroImage.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Spike Triggered Averages" href="SpikeTriggeredAverages.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/NeuroImage.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Introductory Computational Neuroscience</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Neural Coding
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="VisualizingNeuralResponses.html">
+   Visualizing Neural Responses
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="TuningCurves.html">
+   Tuning Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Decoding_LinearRegression.html">
+   Decoding: Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="SpikeTriggeredAverages.html">
+   Spike Triggered Averages
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Neural Encoding I
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/Notes/NeuralEncodingI.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="initThebeSBT()"
+  class="headerbtn headerbtn-launch-thebe"
+  data-toggle="tooltip"
+data-placement="left"
+title="Launch Thebe"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="headerbtn__text-container">Live Code</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/Notes/NeuralEncodingI.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Neural Encoding I
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-1-encoding-models">
+   Section 1: Encoding models
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-2-linear-nonlinear-poisson-models">
+   Section 2: Linear-nonlinear-Poisson models
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-1-linear-filtering">
+     Section 2.1: Linear filtering
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-1-1-dot-product-as-neural-computation">
+       Section 2.1.1: Dot product as neural computation
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-1-2-dot-product-as-measure-of-similarity">
+       Section 2.1.2: Dot product as measure of similarity
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-1-2-filtering-over-time-or-stimulus-behavior-features">
+       Section 2.1.2: Filtering over time or stimulus/behavior features
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-2-nonlinearity">
+     Section 2.2 Nonlinearity
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-3-poisson-stage">
+     Section 2.3: Poisson stage
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary">
+   Summary
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optional-reading">
+   Optional Reading
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Neural Encoding I</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Neural Encoding I
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-1-encoding-models">
+   Section 1: Encoding models
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-2-linear-nonlinear-poisson-models">
+   Section 2: Linear-nonlinear-Poisson models
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-1-linear-filtering">
+     Section 2.1: Linear filtering
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-1-1-dot-product-as-neural-computation">
+       Section 2.1.1: Dot product as neural computation
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-1-2-dot-product-as-measure-of-similarity">
+       Section 2.1.2: Dot product as measure of similarity
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-1-2-filtering-over-time-or-stimulus-behavior-features">
+       Section 2.1.2: Filtering over time or stimulus/behavior features
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-2-nonlinearity">
+     Section 2.2 Nonlinearity
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-3-poisson-stage">
+     Section 2.3: Poisson stage
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary">
+   Summary
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optional-reading">
+   Optional Reading
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <p><a href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/Notes/NeuralEncodingI.ipynb" target="_blank"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="neural-encoding-i">
+<h1>Neural Encoding I<a class="headerlink" href="#neural-encoding-i" title="Permalink to this headline">#</a></h1>
+<p>Learning objectives of notes: After reading the notes, students should be able to:</p>
+<ul class="simple">
+<li><p>Describe structure of linear-nonlinear-Poisson model</p></li>
+<li><p>Explain how to determine whether a neuron is Poisson-like</p></li>
+</ul>
+<p>Imports</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown Imports</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="section-1-encoding-models">
+<h1>Section 1: Encoding models<a class="headerlink" href="#section-1-encoding-models" title="Permalink to this headline">#</a></h1>
+<img alt="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/NeuralCoding.jpg" src="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/NeuralCoding.jpg" />
+<p>In order to build a neural encoding model, we want to be able to predict the spikes of a neuron given the stimulus or behavior. So far, with tuning curves and spike triggered averages, we have explored how to understand more about the relationship between stimulus and neural response, but we have not yet built a full encoding model that allows us to predict spikes.</p>
+<p>The idea behind an encoding model is that you determine the general structure, basically a set of equations of how the stimulus is converted in to the spikes of the neuron. These equations involve learnable variables, or parameters. You learn these parameters from neural data to fit your encoding model. We’ll touch much more on model fitting in future days. For now, we will focus on the structure of the most common type of encoding model: the linear-nonlinear-Poisson model.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="section-2-linear-nonlinear-poisson-models">
+<h1>Section 2: Linear-nonlinear-Poisson models<a class="headerlink" href="#section-2-linear-nonlinear-poisson-models" title="Permalink to this headline">#</a></h1>
+<p>Linear-nonlinear-Poisson (LNP) models consist of a linear filtering stage of the stimulus, then a point-wise nonlinearity, then draws of spikes from the predicted firing rate, assuming a Poisson distribution. The schematic below outlines these steps. The LNP model can also be described with the following equations:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\lambda_t = f(x_t \cdot k) \\
+y_t \sim
+ Poiss(\lambda_t)\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(x_t\)</span> is the stimulus we want to use to predict the neural reponse at time bin <span class="math notranslate nohighlight">\(t\)</span>, <span class="math notranslate nohighlight">\(k\)</span> is the linear filter, <span class="math notranslate nohighlight">\(\lambda_t\)</span> is the firing rate of the neuron in spikes per second, <span class="math notranslate nohighlight">\(y_t\)</span> is the spike count at time bin <span class="math notranslate nohighlight">\(t\)</span>, and <span class="math notranslate nohighlight">\(f\)</span> is some nonlinearity.</p>
+<p>We will dive into each of these stages in the following sections.</p>
+<img alt="STA from movie" src="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/LNP.png" />
+<section id="section-2-1-linear-filtering">
+<h2>Section 2.1: Linear filtering<a class="headerlink" href="#section-2-1-linear-filtering" title="Permalink to this headline">#</a></h2>
+<p>Let’s return to our spike-triggered average from the last lecture. Once you compute the spike-triggered average, can you use it to start to predict whether the neuron will fire or not? Remember that the spike-triggered average is the average stimulus that triggers a spike. Intuitively, if a chunk of stimulus is more like the spike-triggered average, the neuron is more likely to fire. If it very dissimilar to the spike-triggered average, the neuron will probably not fire.</p>
+<p>So we need a way to compute how similar a chunk of stimulus is to the spike-triggered average. We will do this using the <strong>dot product</strong> between that chunk of stimulus and the spike-triggered average. We will compute <span class="math notranslate nohighlight">\(x_t \cdot STA\)</span> where <span class="math notranslate nohighlight">\(x_t\)</span> is whatever you are using to predict the neural response at time bin <span class="math notranslate nohighlight">\(t\)</span>, in this case the the stimulus from let’s say 10 bins before <span class="math notranslate nohighlight">\(t\)</span> to time bin <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>We have motivated this using the spike-triggered average, but for now let’s return to referring to our general linear filter <span class="math notranslate nohighlight">\(k\)</span>. This linear filter <span class="math notranslate nohighlight">\(k\)</span> is what we will learn from data - it’s the estimate of the neuron’s linear receptive field within the context of this encoding model. You can think of this as similar to the STA - in fact, for some stimuli, the STA is a pretty good estimate for this linear filter! However, it isn’t always so they are distinct concepts. So once we learn our linear filter from data(which we will cover next class), the first stage to predicting our neural spikes is to take the dot product of this linear filter with the relevant stimulus features: <span class="math notranslate nohighlight">\(x_t \cdot k\)</span>.</p>
+<p>In Sections 2.1.1 and 2.1.2 below, we dive into why we use the dot product for this. In Section 2.1.3, we dive further into what <span class="math notranslate nohighlight">\(x_t\)</span> could be (stimulus over time and/or different stimulus features).</p>
+<section id="section-2-1-1-dot-product-as-neural-computation">
+<h3>Section 2.1.1: Dot product as neural computation<a class="headerlink" href="#section-2-1-1-dot-product-as-neural-computation" title="Permalink to this headline">#</a></h3>
+<p>Why do we use the dot product for this linear filtering stage?  One simple reason is that neurons are essentially computing dot products of inputs - a model of how neural processing works is probably better if it takes into account how that processing can occur!</p>
+<p>Let’s look at the example of a retinal ganglion cell - a neuron in the retina (the back of the eye). Note that the following description is quite a bit of an oversimplification for illustrative purposes. Retinal ganglion cells receive inputs from photoreceptors. Each photoreceptor responds more when there is light in a particular part of the visual field - the receptive field of that photoreceptor. The photoreceptor response is thus kind of like the value of a pixel in an grayscale image: higher values indicate white, lower values indicate black. Axons from multiple photoreceptors synapse onto a single retinal ganglion cell. The response of that retinal ganglion cell is basically a weighted sum of the photoreceptor responses, where the weights are the strengths of the synapses from each photoreceptor. In other words, the retinal ganglion cell is computing the dot product between a vector of its synapse weights and a vector of the photoreceptor responses for a certain image. Similarly, in our linear filtering stage, we could have <span class="math notranslate nohighlight">\(x_t\)</span> include the intensities of various pixels in an image, and the linear filter <span class="math notranslate nohighlight">\(k\)</span> is essentially the weight from each pixel, a very similar computation.</p>
+</section>
+<section id="section-2-1-2-dot-product-as-measure-of-similarity">
+<h3>Section 2.1.2: Dot product as measure of similarity<a class="headerlink" href="#section-2-1-2-dot-product-as-measure-of-similarity" title="Permalink to this headline">#</a></h3>
+<p>Dot products give a rough sense of similarity between the linear filter and the stimulus.  To see why, we’ll pretend we’re predicting the neural response at a time bin <span class="math notranslate nohighlight">\(t\)</span> based on the 1d stimulus at the preceding time step <span class="math notranslate nohighlight">\(s_{t-1}\)</span> and at the current time step <span class="math notranslate nohighlight">\(s_{t}\)</span>. This means our linear filter <span class="math notranslate nohighlight">\(k\)</span> has two entries. We already know our linear filter: <span class="math notranslate nohighlight">\(k = [1, 1]\)</span>. We want to predict whether a certain two time steps of the stimulus are likely to result in the neuron spiking. Remember, we want to look at whether that chunk of stimulus is similar to the linear filter.</p>
+<p>Below, I plot our stimulus data. Each dot corresponds to a different two time step chunk of the stimulus: the prior time step is the x axis and the current time step is the y axis. We represent the linear filter <span class="math notranslate nohighlight">\(k\)</span> on this plot as well, in red.</p>
+<p>Execute to visualize data</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown Execute to visualize data</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;ob&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Data (x)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Linear filter (k)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_frame_on</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">yticks</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">yticklabels</span> <span class="o">=</span> <span class="p">[],</span>
+       <span class="n">xticks</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">xticklabels</span> <span class="o">=</span> <span class="p">[]);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$s_t$&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$s_{t-1}$&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">.1</span><span class="p">));</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/NeuralEncodingI_13_0.png" src="../_images/NeuralEncodingI_13_0.png" />
+</div>
+</div>
+<p>If you recall, another way of defining the dot product of two vectors, in this case <span class="math notranslate nohighlight">\(x_t\)</span> and <span class="math notranslate nohighlight">\(k\)</span>, is as the length of the first multiplied with the length of the second, multiplied with the angle between them:</p>
+<div class="math notranslate nohighlight">
+\[x_t \cdot k = ||x_t|| ||k|| cos(\theta) \]</div>
+<p>The length of <span class="math notranslate nohighlight">\(k\)</span> would be constant for every time bin/new stimulus we look at, so we can basically ignore it. The dot product basically then depends on the length of the stimulus vector and the cosine of the angle between them.</p>
+<p>The cosine of the angle between two vectors is a measure of their similarity. If the angle is 0, the two vectors lie in the same direction so are very similar and the cosine of that angle is 1. If the angle is 180, the two vectors point in opposite directions and are very dissimilar: in this case the cosine of this angle is -1. In between these two extremes, the cosine of the angle moves between 1 and -1 as the angle between vectors grows larger.</p>
+<p>So, the dot product is basically a measure of similarity (the cosine of the angle between vectors) times the length of the vector <span class="math notranslate nohighlight">\(x_t\)</span>. So it is not exactly a measure of similarity, because of this last term, but is close to one.</p>
+<p>Execute to visualize vectors</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown Execute to visualize vectors</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;-ob&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Data (x)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;-ro&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Linear filter (k)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_frame_on</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">yticks</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">yticklabels</span> <span class="o">=</span> <span class="p">[],</span>
+       <span class="n">xticks</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">xticklabels</span> <span class="o">=</span> <span class="p">[]);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$s_t$&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$s_{t-1}$&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">.1</span><span class="p">));</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\theta$&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">.1</span><span class="p">,</span> <span class="mf">.5</span><span class="p">));</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/NeuralEncodingI_16_0.png" src="../_images/NeuralEncodingI_16_0.png" />
+</div>
+</div>
+<p>Another way to think of this computation is as the scalar projection of the data points onto the linear filter vector. Let’s define the data point <span class="math notranslate nohighlight">\(x_t\)</span> as the addition of two vectors: one along the linear filter direction (green vector below) and the other perpendicular to that (purple vector below). The scalar projection is then the length of the first vector (green vector) along the linear filter direction. The diagram below will probably make this clearer.</p>
+<p>The scalar projection of <span class="math notranslate nohighlight">\(x_t\)</span> onto <span class="math notranslate nohighlight">\(k\)</span> is equal to the length of <span class="math notranslate nohighlight">\(x_t\)</span> times the cosine of the angle <span class="math notranslate nohighlight">\(\theta\)</span>. In other words, the dot product of <span class="math notranslate nohighlight">\(x_t\)</span> with <span class="math notranslate nohighlight">\(k\)</span>, divided by the length of <span class="math notranslate nohighlight">\(k\)</span>. Since we are ignoring the length of <span class="math notranslate nohighlight">\(k\)</span> as that will remain constant, the dot product is basically computing the scalar projection!</p>
+<p>Execute to visualize vectors</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown Execute to visualize vectors</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;-ob&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Data (x)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;-ro&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Linear filter (k)&#39;</span><span class="p">)</span>
+<span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">scalar_proj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="n">vec_proj</span> <span class="o">=</span> <span class="n">scalar_proj</span> <span class="o">*</span> <span class="n">k</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">vec_proj</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">vec_proj</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;-go&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">vec_proj</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">vec_proj</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;purple&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_frame_on</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">yticks</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">yticklabels</span> <span class="o">=</span> <span class="p">[],</span>
+       <span class="n">xticks</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">xticklabels</span> <span class="o">=</span> <span class="p">[]);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$s_t$&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$s_{t-1}$&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">.1</span><span class="p">));</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\theta$&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">.1</span><span class="p">,</span> <span class="mf">.5</span><span class="p">));</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/NeuralEncodingI_19_0.png" src="../_images/NeuralEncodingI_19_0.png" />
+</div>
+</div>
+</section>
+<section id="section-2-1-2-filtering-over-time-or-stimulus-behavior-features">
+<h3>Section 2.1.2: Filtering over time or stimulus/behavior features<a class="headerlink" href="#section-2-1-2-filtering-over-time-or-stimulus-behavior-features" title="Permalink to this headline">#</a></h3>
+<p>So what is <span class="math notranslate nohighlight">\(x_t\)</span>?</p>
+<p>Bit of a trick question because <span class="math notranslate nohighlight">\(x_t\)</span> is whatever you choose it to be. Essentially, as the researcher, you choose what parts of the stimulus or behavior you want to use to predict the neural response at time bin <span class="math notranslate nohighlight">\(t\)</span>. Let’s say you have a 1d stimulus over time and want to use the previous 10 time bins of the stimulus for prediction. In that case, <span class="math notranslate nohighlight">\(x_t\)</span> would the stimulus for the 10 time bins prior, a vector with 10 elements. The linear filter would also be a vector with 10 elements. We would call this filter a temporal filter (it’s acting over time)</p>
+<p>Let’s say you wanted to predict the neural response based just on the frame of a movie at the current time bin. In that case <span class="math notranslate nohighlight">\(x_t\)</span> would be all the pixel values in the image. Note that an image is 2-dimensional so we want to flatten this into a vector. In this case the linear filter would be a vector with length equal to the total number of pixels. We would call this filter a spatial filter (it’s acting over space)</p>
+<div class="tip dropdown admonition">
+<p class="admonition-title"><strong>Stop and think!</strong> You could go even more complicated and use the previous 10 frames of a movie. If each frame was 5 pixels by 5 pixels, what length would your linear filter be?</p>
+<p>We can put every feature that we want to use to predict as an entry in our vector <span class="math notranslate nohighlight">\(x_t\)</span>. In this case that would be 5 x 5 x 10 = 250 features. The linear filter would be the same length so would have 250 entries.</p>
+</div>
+<p>We would call the filter in the example above a spatiotemporal filter (it’s acting over both space and time).</p>
+</section>
+</section>
+<section id="section-2-2-nonlinearity">
+<h2>Section 2.2 Nonlinearity<a class="headerlink" href="#section-2-2-nonlinearity" title="Permalink to this headline">#</a></h2>
+<p>The output of the linear filtering stage would not be a good prediction for the firing rate (in spikes/bin) of our neuron. It is the output of a dot product so could be below 0 or a huge number. We know that the firing rate of a neuron can’t go below 0 (there can’t be a negative number of spikes per second) and has some max value (due to the refactory period of a neuron, the neuron can’t fire an unlimited amount in a second). Additionally, neurons do tend to do some nonlinear processing of their inputs - they are not just firing in proportion to the summation of their inputs.</p>
+<p>Due to these reasons, we put the output of the linear filtering stage, a single number for each time bin, through a nonlinearity.</p>
+<div class="math notranslate nohighlight">
+\[\lambda_t = f(x_t \cdot k)\]</div>
+<p>where <span class="math notranslate nohighlight">\(x_t\)</span> is the features we use for prediction, <span class="math notranslate nohighlight">\(k\)</span> is the linear filter, <span class="math notranslate nohighlight">\(\lambda_t\)</span> is the firing rate in spikes/bin, and <span class="math notranslate nohighlight">\(f\)</span> is our nonlinearity.</p>
+<p>We can choose what nonlinearity to use, or we could fit our nonlinearity to data. Researchers often choose an exponential nonlinearity for reasons that will be explained in the next lecture. Note that while this prevents negative firing rates, it doesn’t actually bound them under a maximum! Despite this, it has worked fairly well in practice.</p>
+<p>Let’s go through a numerical example of the model so far. Our stimulus is:</p>
+<p>s = [5, -1, 4, 0, 2]</p>
+<p>Each entry is the value of the 1d stimulus at a time bin.</p>
+<p>Our linear filter for the 3 time bins up to and including the time bin of a spike is:</p>
+<p>k = [.3, 1, .4]</p>
+<p>We are using an exponential nonlinearity.</p>
+<div class="tip dropdown admonition">
+<p class="admonition-title"><strong>Stop and think!</strong> What is the predicted firing rate, <span class="math notranslate nohighlight">\(\lambda\)</span> for time bins 3 and after based on the above numbers? </p>
+<div class="amsmath math notranslate nohighlight" id="equation-11a06393-f365-4e16-839c-fc88cf0ed328">
+<span class="eqno">(6)<a class="headerlink" href="#equation-11a06393-f365-4e16-839c-fc88cf0ed328" title="Permalink to this equation">#</a></span>\[\begin{align}
+\lambda_3 &amp;= e^{x_3 \cdot k}\\
+&amp;= e^{[5, -1, 4] \cdot [.3, 1, .4]}\\
+&amp;= e^{2.1} \\
+&amp;= 8.16
+\end{align}\]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-17aaec7d-d73c-40ea-8f4b-802964bc6717">
+<span class="eqno">(7)<a class="headerlink" href="#equation-17aaec7d-d73c-40ea-8f4b-802964bc6717" title="Permalink to this equation">#</a></span>\[\begin{align}
+\lambda_4 &amp;= e^{x_4 \cdot k}\\
+&amp;= e^{[-1, 4, 0] \cdot [.3, 1, .4]}\\
+&amp;= e^{3.7} \\
+&amp;= 40.45
+\end{align}\]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-0c0b66c4-e1a4-451a-884e-b0329c44ecc7">
+<span class="eqno">(8)<a class="headerlink" href="#equation-0c0b66c4-e1a4-451a-884e-b0329c44ecc7" title="Permalink to this equation">#</a></span>\[\begin{align}
+\lambda_5 &amp;= e^{x_4 \cdot k}\\
+&amp;= e^{[4, 0, 2] \cdot [.3, 1, .4]}\\
+&amp;= e^{2} \\
+&amp;= 7.38
+\end{align}\]</div>
+<p>So, we’re predicting a firing rate in terms of spikes per bins of</p>
+<p>[0, 0, 8.16, 40.45, 7.38].</p>
+<p>Note we just predicted zero for the first two time bins because we don’t have enough preceding stimulus to use for <span class="math notranslate nohighlight">\(x_t\)</span>. There are better methods for this edge cases but unfortunately, that’s outside of the scope of this lecture.</p>
+</div>
+</section>
+<section id="section-2-3-poisson-stage">
+<h2>Section 2.3: Poisson stage<a class="headerlink" href="#section-2-3-poisson-stage" title="Permalink to this headline">#</a></h2>
+<p>We can now predict firing rate using a linear filtering stage followed by a nonlinearity. However, we want to go all the way to the actual data we’re collecting - spikes. We will make a very specific assumption about spikes in this model: we will assume that the spike count in a time bin (the number of spikes in that time bin) is drawn from a probability distribution that depends on the firing rate. This means that the same firing rate can result in different predictions of spike counts, as we have introduced randomness.</p>
+<p>Remember our raster plots (one shown below)? These are showing the spikes in each trial. Each trial correponds to one presentation of the same stimulus. If neural responses depended entirely on the stimulus and there was no randomness in neural spiking, each trial would result in the exact same number of spikes at the exact same times. This is clearly not the case. This linear-nonlinear-Poisson model assumes that there is the same underlying firing rate on each trial but that the exact spikes seen are slightly different because they’re being drawn from a probability distribution that is based on the firing rate.</p>
+<img alt="rasterplotexample" src="https://praneethnamburi.files.wordpress.com/2015/02/02_raster_baselineandstim.png" />
+<p>In particular, we use the Poisson distribution to account for neural spiking. The Poisson distribution is defined as</p>
+<div class="math notranslate nohighlight">
+\[p(y_t | \lambda_t) = \frac{\lambda_t^{y_t} e^{-\lambda_t}}{y_t!} \]</div>
+<p>where</p>
+<p><span class="math notranslate nohighlight">\(y_t\)</span>: spike count for bin <span class="math notranslate nohighlight">\(t\)</span></p>
+<p><span class="math notranslate nohighlight">\(\lambda_t\)</span>: firing rate in terms of spikes per bin</p>
+<p><span class="math notranslate nohighlight">\(p(y_t | \lambda_t)\)</span>: the probability of the spike count being equal to some number given the firing rate</p>
+<p>Let’s say we have <span class="math notranslate nohighlight">\(\lambda_t\)</span> as .4.</p>
+<p>The probability of seeing 0 spikes is
+<span class="math notranslate nohighlight">\(p(y_t = 0 | \lambda_t = 0.4)\)</span> = 0.67, as computed in the code below. We can do the same computation to find that the probability of seeing 1 spike is .27, the probability of seeing 2 spikes is 0.05, and the probability of seeing 3 spikes is 0.007. If we drew a spike count from a Poisson distribution with <span class="math notranslate nohighlight">\(\lambda_t = 0.4\)</span>, we would get zero spikes 67% of the time, 1 spike 27% of the time, and so on.</p>
+<p>Different <span class="math notranslate nohighlight">\(\lambda_t\)</span>’s would affect these probabilities: higher <span class="math notranslate nohighlight">\(\lambda_t\)</span> would result in higher spike counts, which makes sense as <span class="math notranslate nohighlight">\(\lambda_t\)</span> is our firing rate.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mf">.4</span><span class="o">**</span><span class="mi">0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">.4</span><span class="p">))</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.6703200460356393
+</pre></div>
+</div>
+</div>
+</div>
+<p>Why do we use the Poisson distribution for neural spiking? It works nicely because the Poisson distribution is only defined for non-negative integers. Spike counts are non-negative integers, so this is a natural fit. However, we do have to look at if neurons fire spikes in a Poisson-like way. This isn’t guaranteed! It turns out that the Poisson distribution seems to be a fairly good way to capture spiking responses, although it doesn’t work well for all neurons. Dayan &amp; Abbott 2001 covers this comparison to data well: read the section on Comparison with Data from page 31 to 24 for more information: http://www.gatsby.ucl.ac.uk/~lmate/biblio/dayanabbott.pdf</p>
+<p>Coding note: we can draw random spikes using a Poisson distribution as shown in the code below. Remember our firing rates from a previous problem of [0, 0, 8.16, 40.45, 7.38].</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create firing rates</span>
+<span class="n">firing_rates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">8.16</span><span class="p">,</span> <span class="mf">40.45</span><span class="p">,</span> <span class="mf">7.38</span><span class="p">])</span>
+
+<span class="c1"># Draw spike counts based on firing rates</span>
+<span class="n">spikes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">firing_rates</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">spikes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 0  0 10 41 10]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="summary">
+<h1>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">#</a></h1>
+<p>We now have a model that takes in the stimulus and predicts spikes. In the next lecture, we will cover why this model is popular, how to fit it to data (learn what the linear filter is), and how to use it to learn about neural processing.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="optional-reading">
+<h1>Optional Reading<a class="headerlink" href="#optional-reading" title="Permalink to this headline">#</a></h1>
+<p>Notes on Generalized Linear Models (LNPs): https://arxiv.org/pdf/1404.1999.pdf</p>
+<p>Video diving further into these types of models:  https://youtube.com/watch?v=NXVG9ORBYXQ</p>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "ebatty/IntroCompNeuro",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./Notes"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="SpikeTriggeredAverages.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Spike Triggered Averages</p>
+        </div>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Ella Batty<br/>
+  
+      &copy; Copyright 2021.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
