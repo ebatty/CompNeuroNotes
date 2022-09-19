@@ -485,8 +485,12 @@ title="Print to PDF"
 <p><em>Figure 2: Raster plot for reaches to 180 degrees. The blue vertical line indicates the start of the reach, the red vertical lines indicate start and end of time window for computing average firing rate</em></p>
 <p>For this data, we will choose a 500 ms time window: 250 ms before reach onset and 250 ms after. In Figure 2, the raster plot of reaches to 180 degrees, the beginning and end of this time window are shown with red vertical lines. In this 500 ms time bin, 287 spikes occur over the 10 trials. So the average firing rate is 287 spikes / .5 s / 10 trials = 57.4 spikes per second.</p>
 <p>We can repeat this computation for all reach directions and plot our tuning curve (firing rate vs reach direction), as seen in Figure 8.</p>
-<p><strong>Advanced Coding Challenge!</strong> Using the data in <code class="docutils literal notranslate"><span class="pre">reach_sp_times</span></code> (defined above), compute and plot a tuning curve for this neuron. <code class="docutils literal notranslate"><span class="pre">reach_sp_times</span></code> is a dictionary where the keys are the reach angles (0, 45, 90, 135, 180, 225, 270, 315). The data for each angle is a list of arrays where each array is the spike times for one trial.</p>
-<p>Click here to see solution</p>
+<div class="note dropdown admonition">
+<p class="admonition-title"><strong>Advanced Coding Challenge!</strong> Using the data in reach_sp_times (defined above), compute and plot a tuning curve for this neuron. reach_sp_times is a dictionary where the keys are the reach angles (0, 45, 90, 135, 180, 225, 270, 315). The data for each angle is a list of arrays where each array is the spike times for one trial.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown Click here to see solution</span>
