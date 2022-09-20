@@ -1,0 +1,696 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Decoding: Logistic Regression &#8212; Introductory Computational Neuroscience</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="../_static/NeuroImage.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Spike Triggered Averages" href="SpikeTriggeredAverages.html" />
+    <link rel="prev" title="Decoding: Linear Regression" href="Decoding_LinearRegression.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/NeuroImage.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Introductory Computational Neuroscience</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Neural Coding
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="VisualizingNeuralResponses.html">
+   Visualizing Neural Responses
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="TuningCurves.html">
+   Tuning Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Decoding_LinearRegression.html">
+   Decoding: Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Decoding: Logistic Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="SpikeTriggeredAverages.html">
+   Spike Triggered Averages
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="NeuralEncodingI.html">
+   Neural Encoding I
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/Notes/Decoding_LogisticRegression.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="initThebeSBT()"
+  class="headerbtn headerbtn-launch-thebe"
+  data-toggle="tooltip"
+data-placement="left"
+title="Launch Thebe"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="headerbtn__text-container">Live Code</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/Notes/Decoding_LogisticRegression.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Decoding: Logistic Regression
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-1-regression-vs-classification">
+   Section 1: Regression vs classification
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-2-logistic-regression">
+   Section 2: Logistic Regression
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-1-define-a-mapping-model-from-input-to-output">
+     Step 1: Define a mapping (model) from input to output
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-2-collect-data-measurements-of-input-output-pairs">
+     Step 2: Collect data: measurements of input/output pairs
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-3-decide-on-loss-function">
+     Step 3: Decide on loss function
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-4-learn-model-parameters-from-data">
+     Step 4: Learn model parameters from data
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-5-evaluate-performance-on-held-out-data">
+     Step 5: Evaluate performance on held-out data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-3-multinomial-logistic-regression">
+   Section 3: Multinomial logistic regression
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Decoding: Logistic Regression</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Decoding: Logistic Regression
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-1-regression-vs-classification">
+   Section 1: Regression vs classification
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-2-logistic-regression">
+   Section 2: Logistic Regression
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-1-define-a-mapping-model-from-input-to-output">
+     Step 1: Define a mapping (model) from input to output
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-2-collect-data-measurements-of-input-output-pairs">
+     Step 2: Collect data: measurements of input/output pairs
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-3-decide-on-loss-function">
+     Step 3: Decide on loss function
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-4-learn-model-parameters-from-data">
+     Step 4: Learn model parameters from data
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-5-evaluate-performance-on-held-out-data">
+     Step 5: Evaluate performance on held-out data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-3-multinomial-logistic-regression">
+   Section 3: Multinomial logistic regression
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <p><a href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/Notes/Decoding_LogisticRegression.ipynb" target="_blank"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="decoding-logistic-regression">
+<h1>Decoding: Logistic Regression<a class="headerlink" href="#decoding-logistic-regression" title="Permalink to this headline">#</a></h1>
+<p><strong>Learning objectives of notes</strong>:
+After these notes, students should be able to:</p>
+<ul class="simple">
+<li><p>Describe difference between regression and classification</p></li>
+<li><p>Describe math behind logistic regression</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">widgets</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="section-1-regression-vs-classification">
+<h1>Section 1: Regression vs classification<a class="headerlink" href="#section-1-regression-vs-classification" title="Permalink to this headline">#</a></h1>
+<p>In the last section, we talked about trying to decode speed as a weighted sum of the neural activity, aka by using linear regression. Speed is a continuous-valued variable - it can take on any number. What if we were trying instead to decode the decision of a mouse, whether it turned left or right?</p>
+<p>We can encode a left turn as 0 and a right turn as 1. However, linear regression is no longer a great choice of model here. We have two discrete choices, 0 vs 1, to predict so we should incorporate that into the model. Indeed, this is an example of classification.</p>
+<p>If we are trying to predict a continuously valued output, such as speed, we use <strong>regression models</strong>. If we are trying to predict the output as one of a set of classes or categories (such as left vs right), we use <strong>classification models</strong>.</p>
+<p>In these notes, we’ll outline one classification model, which is extremely confusingly named <strong>logistic regression</strong>. It is not a regression model, so this name is very silly.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="section-2-logistic-regression">
+<h1>Section 2: Logistic Regression<a class="headerlink" href="#section-2-logistic-regression" title="Permalink to this headline">#</a></h1>
+<p>We will outline logistic regression by going through the steps of model fitting we outlined in the previous notes.</p>
+<section id="step-1-define-a-mapping-model-from-input-to-output">
+<h2>Step 1: Define a mapping (model) from input to output<a class="headerlink" href="#step-1-define-a-mapping-model-from-input-to-output" title="Permalink to this headline">#</a></h2>
+<p>Let’s say we have the activities of 3 neurons and we’re trying to decode the decision of the mouse (left turn vs right turn):</p>
+<div class="amsmath math notranslate nohighlight" id="equation-6a744d27-4a0b-451b-8acd-b29e58cc6df8">
+<span class="eqno">(6)<a class="headerlink" href="#equation-6a744d27-4a0b-451b-8acd-b29e58cc6df8" title="Permalink to this equation">#</a></span>\[\begin{align}
+y&amp;: \text{decision, 0 if left turn, 1 if right}\\
+n_1, n_2, n_3 &amp;: \text{firing rates of neuron 1, neuron 2, neuron 3}\\
+\end{align}\]</div>
+<p>We actually are going to use a model quite similar to linear regression but with an extra cherry on top that accounts for this being a classification problem instead of a regression problem.</p>
+<p>The first step of our model will be identical to linear regression: we will compute an intermediate value z as the weighted sum of neural activity:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-3ab36f21-f76c-457a-8f2c-df72c1ac6cb0">
+<span class="eqno">(7)<a class="headerlink" href="#equation-3ab36f21-f76c-457a-8f2c-df72c1ac6cb0" title="Permalink to this equation">#</a></span>\[\begin{align}
+z &amp;= w_0 + w_1n_1 + w_2n_2 + w_3n_3 = \vec{w}\cdot\vec{n}\\
+\end{align}\]</div>
+<p>Next, we’ll put z through a “squishing function”. We want to get to the probability that the mouse turned left vs right. Probabilities have to be between 0 and 1, so we’ll put through z through the sigmoid function, which ensures that the output is between 0 and 1.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-1afd577a-f75c-4858-aa9f-53c3dde68fa8">
+<span class="eqno">(8)<a class="headerlink" href="#equation-1afd577a-f75c-4858-aa9f-53c3dde68fa8" title="Permalink to this equation">#</a></span>\[\begin{align}
+z &amp;= w_0 + w_1n_1 + w_2n_2 + w_3n_3\\
+p &amp;= \frac{1}{1+exp(-z)}
+\end{align}\]</div>
+<p>Here is a plot of the sigmoid function to help visualize this squishing:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;z&#39;</span><span class="p">,</span>
+       <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;p&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Text(0.5, 0, &#39;z&#39;), Text(0, 0.5, &#39;p&#39;)]
+</pre></div>
+</div>
+<img alt="../_images/Decoding_LogisticRegression_6_1.png" src="../_images/Decoding_LogisticRegression_6_1.png" />
+</div>
+</div>
+<p>Now we have <span class="math notranslate nohighlight">\(p\)</span>, which is the probability that the mouse choise to turn right, the probability that y=1.</p>
+<p>We can predict which decision the mouse made based on <span class="math notranslate nohighlight">\(p\)</span>. If <span class="math notranslate nohighlight">\(p&gt;=.5\)</span>, we predict that the mouse turned right. If <span class="math notranslate nohighlight">\(p&lt;.5\)</span>, we predict that the mouse turned left.</p>
+<p>We now have a full model defined that goes from the inputs to a prediction for the output (decision):</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a04d825d-68ca-413e-afec-97c2673eade8">
+<span class="eqno">(9)<a class="headerlink" href="#equation-a04d825d-68ca-413e-afec-97c2673eade8" title="Permalink to this equation">#</a></span>\[\begin{align}
+z &amp;= w_0 + w_1n_1 + w_2n_2 + w_3n_3\\
+p &amp;= \frac{1}{1+exp(-z)}\\
+\hat{y} &amp;=       \begin{cases}
+      0 &amp; \text{if $p&lt;0.5$}\\
+      1 &amp; \text{if $p&gt;=0.5$}\\
+    \end{cases} 
+\end{align}\]</div>
+</section>
+<section id="step-2-collect-data-measurements-of-input-output-pairs">
+<h2>Step 2: Collect data: measurements of input/output pairs<a class="headerlink" href="#step-2-collect-data-measurements-of-input-output-pairs" title="Permalink to this headline">#</a></h2>
+<p>We record the mouse’s decision on many trials, and the neural activity at the time of the decision. Each trial is a data point (input/output pair)</p>
+</section>
+<section id="step-3-decide-on-loss-function">
+<h2>Step 3: Decide on loss function<a class="headerlink" href="#step-3-decide-on-loss-function" title="Permalink to this headline">#</a></h2>
+<p>We now have our model and the data we want to use to fit it. We need a quantitative measure of how badly our model is doing, our <strong>cost function</strong>, or <strong>loss function</strong>.</p>
+<p>Given <span class="math notranslate nohighlight">\(p\)</span>, the probability that y=1 is p. The only other option for y is <span class="math notranslate nohighlight">\(y=0\)</span>, so we know the probability of <span class="math notranslate nohighlight">\(y=0\)</span> has to be <span class="math notranslate nohighlight">\(1-p\)</span> (since probabilities of all options have to add up to 1). We can rewrite this handily as:</p>
+<div class="math notranslate nohighlight">
+\[Prob(y) = p^y(1-p)^{1-y} \]</div>
+<p>where</p>
+<div class="amsmath math notranslate nohighlight" id="equation-59ff5e15-3ba3-4ea3-97fd-d8ab6fddec8f">
+<span class="eqno">(10)<a class="headerlink" href="#equation-59ff5e15-3ba3-4ea3-97fd-d8ab6fddec8f" title="Permalink to this equation">#</a></span>\[\begin{align}
+z &amp;= w_0 + w_1n_1 + w_2n_2 + w_3n_3\\
+p &amp;= \frac{1}{1+exp(-z)}\\
+\end{align}\]</div>
+<p>Think through what the above equation equals for <span class="math notranslate nohighlight">\(y=0\)</span> and <span class="math notranslate nohighlight">\(y=1\)</span> - you’ll see that it’s equivalent to what I wrote out above!</p>
+<p>This is the binomial distribution, it’s most known for determining the probability of seeing heads or tails on a coin flip,. In that scenario, p tells us the bias of a coin. It would be 0.5 for most fair coins (equal likelihoods of seeing heads vs tails) but could be different for a biased coin used by a magician for example.</p>
+<p>We now have an equation for the probability of seeing our data given our model (since p is given by the model). We want to find the values for the weights that <strong>maximize</strong> the probability of seeing our data!</p>
+<p>First though, we need to change this so that we are accounting for more than one data point. Remember we have data from multiple trials. We want to fit our model to maximize the probability of seeing our data given our model <em>across all trials</em>. Remember that you can multiply together probabilities of independent events. So for example, to get the probability of seeing 3 heads in a row on a toin coss, you would multiple together the probability of seeing a head 3 times. p(HHH) = p(H)*p(H)*p(H) = 0.5 * 0.5 * 0.5.</p>
+<p>Using the same logic, the probability of seeing all our data across trials equals the probability of seeing the data on each trials multiplied together. Let’s say we have trials i=1 to i=N. The decision on trial i is <span class="math notranslate nohighlight">\(y_i\)</span> and the neural activity of neuron 1 on trial i is <span class="math notranslate nohighlight">\(n_{1, i}\)</span>, of neuron 2 is <span class="math notranslate nohighlight">\(n_{2, i}\)</span> and so on.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-45db6ad8-5553-4962-a9a9-c6d9024188bd">
+<span class="eqno">(11)<a class="headerlink" href="#equation-45db6ad8-5553-4962-a9a9-c6d9024188bd" title="Permalink to this equation">#</a></span>\[\begin{align}
+Prob(y_1, y_2, ..., y_N) &amp;= \prod_{i=1}^N Prob(y_i)\\&amp;= \prod_{i=1}^N p_i^{y_i}(1-p_i)^{1-y_i} 
+\end{align}\]</div>
+<p>where</p>
+<div class="amsmath math notranslate nohighlight" id="equation-69868b7b-4972-4313-822a-65a42d8350a8">
+<span class="eqno">(12)<a class="headerlink" href="#equation-69868b7b-4972-4313-822a-65a42d8350a8" title="Permalink to this equation">#</a></span>\[\begin{align}
+z_i &amp;= w_0 + w_1n_{1, i} + w_2n_{2, i} + w_3n_{3, i}\\
+p_i &amp;= \frac{1}{1+exp(-z_i)}\\
+\end{align}\]</div>
+<p>We want to find the values of the weights that maximizes this overall probability to fit our model. Since we usually try to minimize things, we can just make this negative: we want to minimize the negative probability of seeing our data given the model</p>
+</section>
+<section id="step-4-learn-model-parameters-from-data">
+<h2>Step 4: Learn model parameters from data<a class="headerlink" href="#step-4-learn-model-parameters-from-data" title="Permalink to this headline">#</a></h2>
+<p>We won’t dive into exactly how we find these weights, we have handy code that does it for us. <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> has a <code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code> class that will fit our model for us (you’ll explore this in homework 1).</p>
+</section>
+<section id="step-5-evaluate-performance-on-held-out-data">
+<h2>Step 5: Evaluate performance on held-out data<a class="headerlink" href="#step-5-evaluate-performance-on-held-out-data" title="Permalink to this headline">#</a></h2>
+<p>Once we have fit our model, we can evaluate our model on held-out data. We can report the accuracy of our model: the percentage of the time that we predicted the right category.</p>
+<p><strong>Note we didn’t explicitly fit our model to maximize accuracy, because this doesn’t work well for reasons we don’t go into. However, it’s a nice interpretable measure of how our model performs that we can still report!</strong></p>
+<div class="tip dropdown admonition">
+<p class="admonition-title"><strong>Stop and think!</strong> Let’s say the true decisions on 6 trials were <span class="math notranslate nohighlight">\(y=[0, 1, 1, 0, 0, 1]\)</span>. Using your learned logistic regression model, your predictions are <span class="math notranslate nohighlight">\(\hat{y} = [1, 0, 1, 0, 0, 1]\)</span>. What is the accuracy of your model?</p>
+<p>We were incorrect in our predictions on two of the trials (the first two) and correct on four (the last four). So our accuracy is 4/6, or 66%.</p>
+</div>
+<div class="tip dropdown admonition">
+<p class="admonition-title"><strong>Stop and think!</strong> What is the chance accuracy in the above example? Let’s say the training data contained 40% left turn decisions (y=0) and 60% right turn decisions (y=1).</p>
+<p>If the neurons didn’t contain any information about decisions, we’d be best off just guessing the most common decision in the training data as our prediction for all test trials. In this case, we’d guess right turn decisions, which would make our accuracy on the test data 50%. So our baseline/chance test accuracy would be 50%</p>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="section-3-multinomial-logistic-regression">
+<h1>Section 3: Multinomial logistic regression<a class="headerlink" href="#section-3-multinomial-logistic-regression" title="Permalink to this headline">#</a></h1>
+<p>Instead of two categories (left vs right decision), let’s say we’re trying to predict which of 6 categories occured. For example, the mouse is now choosing 1 of 6 directions to go in (hallways branching off of the central point where the mouse is located). We want to predict which hallway they went down from neural activity.</p>
+<p>We’ll have weights from the neurons to predict the probability of each class (hallway) separately.</p>
+<p>We can drop the sigmoid function and replace with an exponential function. The reason we can do this is that we want to constrain the outputs to be positive, but we don’t need to constain to between 0 and 1 using the sigmoid. Instead, we’ll normalize all the exponentiated dot products over all the hallways to compute the probability of each hallway (so they all sum to 1):</p>
+<div class="amsmath math notranslate nohighlight" id="equation-01ab5818-7e1f-4689-a2ea-d5c6f2647b57">
+<span class="eqno">(13)<a class="headerlink" href="#equation-01ab5818-7e1f-4689-a2ea-d5c6f2647b57" title="Permalink to this equation">#</a></span>\[\begin{align}
+z_h &amp;= \vec{w}_h\cdot\vec{n}_i\\
+\end{align}\]</div>
+<p>Compute the above for all 6 values of h (the six hallways). Then normalize by the sum so all 6 probabilities sum to 1:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-4748bedb-95ff-4bf7-aaf5-45eab5adf5a1">
+<span class="eqno">(14)<a class="headerlink" href="#equation-4748bedb-95ff-4bf7-aaf5-45eab5adf5a1" title="Permalink to this equation">#</a></span>\[\begin{align}
+Prob(h) &amp;= \frac{e^{z_h}}{\sum_{j=1}^{6} e^{z_j} }\\
+\end{align}\]</div>
+<p>This gives us 6 values: the probabilities that mouse chose each of the 6 hallways. Our prediction can be the hallway with the highest probability. As in the two class logistic regression case, we will learn the weights to maximize the probability of seeing our data given the model/weights (not derived here)</p>
+<div class="tip dropdown admonition">
+<p class="admonition-title"><strong>Stop and think!</strong> Let’s say we have two neurons and are decoding which hallway the mouse took of 3. The neural activity vector is [1, <span class="math notranslate nohighlight">\(n_1\)</span>, <span class="math notranslate nohighlight">\(n_2\)</span>]. You fit the multinomial model and find that <span class="math notranslate nohighlight">\(w_{h=1}\)</span> = [1, -1, 5], <span class="math notranslate nohighlight">\(w_{h=2}\)</span> = [0, 1, 4], and <span class="math notranslate nohighlight">\(w_{h=3}\)</span> = [-2, -1, 0]. For a trial where neuron 1 has activity of 4 and neuron 2 has activity of 1, what hallway would you predict the mouse took?</p>
+<div class="amsmath math notranslate nohighlight" id="equation-48b02af0-440e-4126-b944-be7e1db29863">
+<span class="eqno">(15)<a class="headerlink" href="#equation-48b02af0-440e-4126-b944-be7e1db29863" title="Permalink to this equation">#</a></span>\[\begin{align}
+z_{h=1} &amp;= [1, -1, 5]\cdot[1, 4, 1] = 2\\
+z_{h=2} &amp;= [0, 1, 4]\cdot[1, 4, 1] = 8\\
+z_{h=3} &amp;= [-2, -1, 0]\cdot[1, 4, 1] = -6\\
+\end{align}\]</div>
+<p>Now we normalize:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-5670d992-555c-4b2e-a43d-0eb8f64066a1">
+<span class="eqno">(16)<a class="headerlink" href="#equation-5670d992-555c-4b2e-a43d-0eb8f64066a1" title="Permalink to this equation">#</a></span>\[\begin{align}
+Prob(h=1) &amp;= \frac{e^{z_{h=1}}}{\sum_{j=1}^{3} e^{z_{h=j}}} = \frac{e^2}{e^2 + e^8 + e^{-6}} = 0.0025\\
+Prob(h=2) &amp;= \frac{e^{z_{h=2}}}{\sum_{j=1}^{3} e^{z_{h=j}}} = 0.9975\\
+Prob(h=3) &amp;= \frac{e^{z_{h=-6}}}{\sum_{j=1}^{3} e^{z_{h=j}}} = 0\\
+\end{align}\]</div>
+<p>Note these three probabilities now add up to 0, as they should! It is clear that we would predict the mouse took the second hallway, since the probability of the mouse taking that hallway given the model and neural activity is extremely high.</p>
+</div>
+<div class="tip dropdown admonition">
+<p class="admonition-title"><strong>Stop and think!</strong> If you have 7 neurons and are decoding which hallway the mouse took out of 8 hallways, how many weights will you learn?</p>
+<p>You’ll learn a weight from each neuron for each hallway: 7 neurons * 8 hallways = 56 weights.</p>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "ebatty/IntroCompNeuro",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./Notes"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="Decoding_LinearRegression.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Decoding: Linear Regression</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="SpikeTriggeredAverages.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Spike Triggered Averages</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Ella Batty<br/>
+  
+      &copy; Copyright 2021.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
