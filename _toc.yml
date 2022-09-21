@@ -9,4 +9,4 @@ parts:
     - file: Notes/Decoding_LogisticRegression.ipynb
     - file: Notes/SpikeTriggeredAverages.ipynb
     - file: Notes/NeuralEncodingI.ipynb
-
+    - file: Notes/NeuralEncodingII.ipynb
