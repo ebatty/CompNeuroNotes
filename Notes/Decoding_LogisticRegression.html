@@ -488,20 +488,20 @@ After these notes, students should be able to:</p>
 <section id="step-1-define-a-mapping-model-from-input-to-output">
 <h2>Step 1: Define a mapping (model) from input to output<a class="headerlink" href="#step-1-define-a-mapping-model-from-input-to-output" title="Permalink to this headline">#</a></h2>
 <p>Let’s say we have the activities of 3 neurons and we’re trying to decode the decision of the mouse (left turn vs right turn):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6a744d27-4a0b-451b-8acd-b29e58cc6df8">
-<span class="eqno">(6)<a class="headerlink" href="#equation-6a744d27-4a0b-451b-8acd-b29e58cc6df8" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-1f78151c-abd6-40c3-a078-6f1d04772a2e">
+<span class="eqno">(6)<a class="headerlink" href="#equation-1f78151c-abd6-40c3-a078-6f1d04772a2e" title="Permalink to this equation">#</a></span>\[\begin{align}
 y&amp;: \text{decision, 0 if left turn, 1 if right}\\
 n_1, n_2, n_3 &amp;: \text{firing rates of neuron 1, neuron 2, neuron 3}\\
 \end{align}\]</div>
 <p>We actually are going to use a model quite similar to linear regression but with an extra cherry on top that accounts for this being a classification problem instead of a regression problem.</p>
 <p>The first step of our model will be identical to linear regression: we will compute an intermediate value z as the weighted sum of neural activity:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-3ab36f21-f76c-457a-8f2c-df72c1ac6cb0">
-<span class="eqno">(7)<a class="headerlink" href="#equation-3ab36f21-f76c-457a-8f2c-df72c1ac6cb0" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-8833a4be-8762-44e9-a439-fb63fd62bb3a">
+<span class="eqno">(7)<a class="headerlink" href="#equation-8833a4be-8762-44e9-a439-fb63fd62bb3a" title="Permalink to this equation">#</a></span>\[\begin{align}
 z &amp;= w_0 + w_1n_1 + w_2n_2 + w_3n_3 = \vec{w}\cdot\vec{n}\\
 \end{align}\]</div>
 <p>Next, we’ll put z through a “squishing function”. We want to get to the probability that the mouse turned left vs right. Probabilities have to be between 0 and 1, so we’ll put through z through the sigmoid function, which ensures that the output is between 0 and 1.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-1afd577a-f75c-4858-aa9f-53c3dde68fa8">
-<span class="eqno">(8)<a class="headerlink" href="#equation-1afd577a-f75c-4858-aa9f-53c3dde68fa8" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-36c30f8e-2adf-4b46-964f-32898f0caf68">
+<span class="eqno">(8)<a class="headerlink" href="#equation-36c30f8e-2adf-4b46-964f-32898f0caf68" title="Permalink to this equation">#</a></span>\[\begin{align}
 z &amp;= w_0 + w_1n_1 + w_2n_2 + w_3n_3\\
 p &amp;= \frac{1}{1+exp(-z)}
 \end{align}\]</div>
@@ -528,8 +528,8 @@ p &amp;= \frac{1}{1+exp(-z)}
 <p>Now we have <span class="math notranslate nohighlight">\(p\)</span>, which is the probability that the mouse choise to turn right, the probability that y=1.</p>
 <p>We can predict which decision the mouse made based on <span class="math notranslate nohighlight">\(p\)</span>. If <span class="math notranslate nohighlight">\(p&gt;=.5\)</span>, we predict that the mouse turned right. If <span class="math notranslate nohighlight">\(p&lt;.5\)</span>, we predict that the mouse turned left.</p>
 <p>We now have a full model defined that goes from the inputs to a prediction for the output (decision):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a04d825d-68ca-413e-afec-97c2673eade8">
-<span class="eqno">(9)<a class="headerlink" href="#equation-a04d825d-68ca-413e-afec-97c2673eade8" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-0600f17d-1ff8-4f96-bd5a-3bcb53549880">
+<span class="eqno">(9)<a class="headerlink" href="#equation-0600f17d-1ff8-4f96-bd5a-3bcb53549880" title="Permalink to this equation">#</a></span>\[\begin{align}
 z &amp;= w_0 + w_1n_1 + w_2n_2 + w_3n_3\\
 p &amp;= \frac{1}{1+exp(-z)}\\
 \hat{y} &amp;=       \begin{cases}
@@ -549,8 +549,8 @@ p &amp;= \frac{1}{1+exp(-z)}\\
 <div class="math notranslate nohighlight">
 \[Prob(y) = p^y(1-p)^{1-y} \]</div>
 <p>where</p>
-<div class="amsmath math notranslate nohighlight" id="equation-59ff5e15-3ba3-4ea3-97fd-d8ab6fddec8f">
-<span class="eqno">(10)<a class="headerlink" href="#equation-59ff5e15-3ba3-4ea3-97fd-d8ab6fddec8f" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-db1d9338-5e81-4ced-bcc5-331796f10c42">
+<span class="eqno">(10)<a class="headerlink" href="#equation-db1d9338-5e81-4ced-bcc5-331796f10c42" title="Permalink to this equation">#</a></span>\[\begin{align}
 z &amp;= w_0 + w_1n_1 + w_2n_2 + w_3n_3\\
 p &amp;= \frac{1}{1+exp(-z)}\\
 \end{align}\]</div>
@@ -559,13 +559,13 @@ p &amp;= \frac{1}{1+exp(-z)}\\
 <p>We now have an equation for the probability of seeing our data given our model (since p is given by the model). We want to find the values for the weights that <strong>maximize</strong> the probability of seeing our data!</p>
 <p>First though, we need to change this so that we are accounting for more than one data point. Remember we have data from multiple trials. We want to fit our model to maximize the probability of seeing our data given our model <em>across all trials</em>. Remember that you can multiply together probabilities of independent events. So for example, to get the probability of seeing 3 heads in a row on a toin coss, you would multiple together the probability of seeing a head 3 times. p(HHH) = p(H)*p(H)*p(H) = 0.5 * 0.5 * 0.5.</p>
 <p>Using the same logic, the probability of seeing all our data across trials equals the probability of seeing the data on each trials multiplied together. Let’s say we have trials i=1 to i=N. The decision on trial i is <span class="math notranslate nohighlight">\(y_i\)</span> and the neural activity of neuron 1 on trial i is <span class="math notranslate nohighlight">\(n_{1, i}\)</span>, of neuron 2 is <span class="math notranslate nohighlight">\(n_{2, i}\)</span> and so on.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-45db6ad8-5553-4962-a9a9-c6d9024188bd">
-<span class="eqno">(11)<a class="headerlink" href="#equation-45db6ad8-5553-4962-a9a9-c6d9024188bd" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-4acc5de9-7d3e-42f6-bc2b-de0cd104883c">
+<span class="eqno">(11)<a class="headerlink" href="#equation-4acc5de9-7d3e-42f6-bc2b-de0cd104883c" title="Permalink to this equation">#</a></span>\[\begin{align}
 Prob(y_1, y_2, ..., y_N) &amp;= \prod_{i=1}^N Prob(y_i)\\&amp;= \prod_{i=1}^N p_i^{y_i}(1-p_i)^{1-y_i} 
 \end{align}\]</div>
 <p>where</p>
-<div class="amsmath math notranslate nohighlight" id="equation-69868b7b-4972-4313-822a-65a42d8350a8">
-<span class="eqno">(12)<a class="headerlink" href="#equation-69868b7b-4972-4313-822a-65a42d8350a8" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-3987ed31-18ad-4cbb-8879-980bb998a88e">
+<span class="eqno">(12)<a class="headerlink" href="#equation-3987ed31-18ad-4cbb-8879-980bb998a88e" title="Permalink to this equation">#</a></span>\[\begin{align}
 z_i &amp;= w_0 + w_1n_{1, i} + w_2n_{2, i} + w_3n_{3, i}\\
 p_i &amp;= \frac{1}{1+exp(-z_i)}\\
 \end{align}\]</div>
@@ -594,27 +594,27 @@ p_i &amp;= \frac{1}{1+exp(-z_i)}\\
 <p>Instead of two categories (left vs right decision), let’s say we’re trying to predict which of 6 categories occured. For example, the mouse is now choosing 1 of 6 directions to go in (hallways branching off of the central point where the mouse is located). We want to predict which hallway they went down from neural activity.</p>
 <p>We’ll have weights from the neurons to predict the probability of each class (hallway) separately.</p>
 <p>We can drop the sigmoid function and replace with an exponential function. The reason we can do this is that we want to constrain the outputs to be positive, but we don’t need to constain to between 0 and 1 using the sigmoid. Instead, we’ll normalize all the exponentiated dot products over all the hallways to compute the probability of each hallway (so they all sum to 1):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-01ab5818-7e1f-4689-a2ea-d5c6f2647b57">
-<span class="eqno">(13)<a class="headerlink" href="#equation-01ab5818-7e1f-4689-a2ea-d5c6f2647b57" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-224f584c-724e-4e20-9f26-6f0283a88a93">
+<span class="eqno">(13)<a class="headerlink" href="#equation-224f584c-724e-4e20-9f26-6f0283a88a93" title="Permalink to this equation">#</a></span>\[\begin{align}
 z_h &amp;= \vec{w}_h\cdot\vec{n}_i\\
 \end{align}\]</div>
 <p>Compute the above for all 6 values of h (the six hallways). Then normalize by the sum so all 6 probabilities sum to 1:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4748bedb-95ff-4bf7-aaf5-45eab5adf5a1">
-<span class="eqno">(14)<a class="headerlink" href="#equation-4748bedb-95ff-4bf7-aaf5-45eab5adf5a1" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-0c341003-a38d-4b35-b5f2-96756071fa7f">
+<span class="eqno">(14)<a class="headerlink" href="#equation-0c341003-a38d-4b35-b5f2-96756071fa7f" title="Permalink to this equation">#</a></span>\[\begin{align}
 Prob(h) &amp;= \frac{e^{z_h}}{\sum_{j=1}^{6} e^{z_j} }\\
 \end{align}\]</div>
 <p>This gives us 6 values: the probabilities that mouse chose each of the 6 hallways. Our prediction can be the hallway with the highest probability. As in the two class logistic regression case, we will learn the weights to maximize the probability of seeing our data given the model/weights (not derived here)</p>
 <div class="tip dropdown admonition">
 <p class="admonition-title"><strong>Stop and think!</strong> Let’s say we have two neurons and are decoding which hallway the mouse took of 3. The neural activity vector is [1, <span class="math notranslate nohighlight">\(n_1\)</span>, <span class="math notranslate nohighlight">\(n_2\)</span>]. You fit the multinomial model and find that <span class="math notranslate nohighlight">\(w_{h=1}\)</span> = [1, -1, 5], <span class="math notranslate nohighlight">\(w_{h=2}\)</span> = [0, 1, 4], and <span class="math notranslate nohighlight">\(w_{h=3}\)</span> = [-2, -1, 0]. For a trial where neuron 1 has activity of 4 and neuron 2 has activity of 1, what hallway would you predict the mouse took?</p>
-<div class="amsmath math notranslate nohighlight" id="equation-48b02af0-440e-4126-b944-be7e1db29863">
-<span class="eqno">(15)<a class="headerlink" href="#equation-48b02af0-440e-4126-b944-be7e1db29863" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-6d1910f1-1bfc-4b1f-8ebd-00405df3dc4f">
+<span class="eqno">(15)<a class="headerlink" href="#equation-6d1910f1-1bfc-4b1f-8ebd-00405df3dc4f" title="Permalink to this equation">#</a></span>\[\begin{align}
 z_{h=1} &amp;= [1, -1, 5]\cdot[1, 4, 1] = 2\\
 z_{h=2} &amp;= [0, 1, 4]\cdot[1, 4, 1] = 8\\
 z_{h=3} &amp;= [-2, -1, 0]\cdot[1, 4, 1] = -6\\
 \end{align}\]</div>
 <p>Now we normalize:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5670d992-555c-4b2e-a43d-0eb8f64066a1">
-<span class="eqno">(16)<a class="headerlink" href="#equation-5670d992-555c-4b2e-a43d-0eb8f64066a1" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-6e11b05c-ec83-4249-94c4-baa363c48f90">
+<span class="eqno">(16)<a class="headerlink" href="#equation-6e11b05c-ec83-4249-94c4-baa363c48f90" title="Permalink to this equation">#</a></span>\[\begin{align}
 Prob(h=1) &amp;= \frac{e^{z_{h=1}}}{\sum_{j=1}^{3} e^{z_{h=j}}} = \frac{e^2}{e^2 + e^8 + e^{-6}} = 0.0025\\
 Prob(h=2) &amp;= \frac{e^{z_{h=2}}}{\sum_{j=1}^{3} e^{z_{h=j}}} = 0.9975\\
 Prob(h=3) &amp;= \frac{e^{z_{h=-6}}}{\sum_{j=1}^{3} e^{z_{h=j}}} = 0\\
