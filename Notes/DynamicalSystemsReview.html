@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Section 1: One-dimensional dynamical systems &#8212; Introductory Computational Neuroscience</title>
+    <title>Dynamical Systems Review &#8212; Introductory Computational Neuroscience</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -167,7 +167,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Section 1: One-dimensional dynamical systems
+   Dynamical Systems Review
   </a>
  </li>
 </ul>
@@ -351,6 +351,11 @@ title="Print to PDF"
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#">
+   Dynamical Systems Review
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-1-one-dimensional-dynamical-systems">
    Section 1: One-dimensional dynamical systems
   </a>
   <ul class="visible nav section-nav flex-column">
@@ -419,7 +424,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Section 1: One-dimensional dynamical systems</h1>
+                <h1>Dynamical Systems Review</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -431,6 +436,11 @@ title="Print to PDF"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#">
+   Dynamical Systems Review
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-1-one-dimensional-dynamical-systems">
    Section 1: One-dimensional dynamical systems
   </a>
   <ul class="visible nav section-nav flex-column">
@@ -501,6 +511,8 @@ title="Print to PDF"
               <div>
                 
   <p><a href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/Notes/DynamicalSystemsReview.ipynb" target="_parent"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="dynamical-systems-review">
+<h1>Dynamical Systems Review<a class="headerlink" href="#dynamical-systems-review" title="Permalink to this headline">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -510,6 +522,7 @@ title="Print to PDF"
 </div>
 </div>
 </div>
+</section>
 <section class="tex2jax_ignore mathjax_ignore" id="section-1-one-dimensional-dynamical-systems">
 <h1>Section 1: One-dimensional dynamical systems<a class="headerlink" href="#section-1-one-dimensional-dynamical-systems" title="Permalink to this headline">#</a></h1>
 <p>Much of the concepts (although not the specific example) covered in this section is covered in even greater detail in the following video. You can access the notes for this video here: https://osf.io/4twh6/</p>
@@ -549,8 +562,9 @@ title="Print to PDF"
 <p>The rate of change of the proportion of open channels is the proportion that are opening minus the proportion that are closing:</p>
 <div class="math notranslate nohighlight">
 \[\frac{dP_o}{dt} = P(opening) - P(closing)\]</div>
-<p>The proportion of channels opening over a small time period is equal to the proportion that were closed times the rate of opening:
-$<span class="math notranslate nohighlight">\(P(opening) = \alpha P_c\)</span>$</p>
+<p>The proportion of channels opening over a small time period is equal to the proportion that were closed times the rate of opening:</p>
+<div class="math notranslate nohighlight">
+\[P(opening) = \alpha P_c\]</div>
 <p>The proportion of channels closing over a small time period is equal to the proportion that were open times the rate of closing:</p>
 <div class="math notranslate nohighlight">
 \[P(closing) = \beta P_o\]</div>
@@ -675,7 +689,7 @@ P_o(t) &amp;= \frac{\int \mu(t) g(t) dt + C}{\mu(t)}\\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/DynamicalSystemsReview_11_0.png" src="../_images/DynamicalSystemsReview_11_0.png" />
+<img alt="../_images/DynamicalSystemsReview_12_0.png" src="../_images/DynamicalSystemsReview_12_0.png" />
 </div>
 </div>
 <p>You can see that the numerical approximation so closely follows the analytical solution that they’re indistinguishable in the plot above. With larger dt, these two lines would diverge more (the numerical approximation is less accurate).</p>
@@ -719,7 +733,7 @@ P_o = 0.75\end{split}\]</div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/DynamicalSystemsReview_15_0.png" src="../_images/DynamicalSystemsReview_15_0.png" />
+<img alt="../_images/DynamicalSystemsReview_16_0.png" src="../_images/DynamicalSystemsReview_16_0.png" />
 </div>
 </div>
 <p>First of all, this validates our found equilibrium point - <span class="math notranslate nohighlight">\(\frac{dP_o}{dt}\)</span> is 0 at <span class="math notranslate nohighlight">\(P_o = 0.75\)</span>.</p>
@@ -766,19 +780,19 @@ P_o = 0.75\end{split}\]</div>
 <section id="section-2-2-1-linear-homogenous-system">
 <h3>Section 2.2.1: Linear homogenous system<a class="headerlink" href="#section-2-2-1-linear-homogenous-system" title="Permalink to this headline">#</a></h3>
 <p>Let’s assume we have two differential equations of the form:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a2b1ca96-1480-4ea0-b3d0-b9fdc51b2af3">
-<span class="eqno">(27)<a class="headerlink" href="#equation-a2b1ca96-1480-4ea0-b3d0-b9fdc51b2af3" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-18134bfc-b526-4c9b-a1d2-fea5e1715b9c">
+<span class="eqno">(27)<a class="headerlink" href="#equation-18134bfc-b526-4c9b-a1d2-fea5e1715b9c" title="Permalink to this equation">#</a></span>\[\begin{align}
 \frac{dx_1}{dt} &amp;= a_1x_1 + a_2x_2\\
 \frac{dx_2}{dt} &amp;= b_1x_1 + b_2x_2
 \end{align}\]</div>
 <p>We can write this using matrix-vector notation:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7c01b60e-927e-46a9-a90c-e9fd0b36ff8c">
-<span class="eqno">(28)<a class="headerlink" href="#equation-7c01b60e-927e-46a9-a90c-e9fd0b36ff8c" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-19247ae1-f9d8-4d96-abc8-4ee9422a177e">
+<span class="eqno">(28)<a class="headerlink" href="#equation-19247ae1-f9d8-4d96-abc8-4ee9422a177e" title="Permalink to this equation">#</a></span>\[\begin{align}
 \frac{d\bar{x}}{dt} = A\bar{x}
 \end{align}\]</div>
 <p>where</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6d405786-d4f3-4c1e-ac44-effb3cab6918">
-<span class="eqno">(29)<a class="headerlink" href="#equation-6d405786-d4f3-4c1e-ac44-effb3cab6918" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-4ea55b67-5afb-4514-a6b6-29e8142ac6bc">
+<span class="eqno">(29)<a class="headerlink" href="#equation-4ea55b67-5afb-4514-a6b6-29e8142ac6bc" title="Permalink to this equation">#</a></span>\[\begin{align}
 A = \begin{bmatrix}a_1 &amp; a_2 \\ b_1 &amp; b_2\end{bmatrix}
 \end{align}\]</div>
 <p>This is a linear homogenous system.</p>
@@ -801,32 +815,33 @@ A = \begin{bmatrix}a_1 &amp; a_2 \\ b_1 &amp; b_2\end{bmatrix}
 <section id="section-2-2-2-linear-nonhomogenous-system">
 <h3>Section 2.2.2: Linear nonhomogenous system<a class="headerlink" href="#section-2-2-2-linear-nonhomogenous-system" title="Permalink to this headline">#</a></h3>
 <p>Let’s say you have a very similar system but you have constants added to both differential equations:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-cee56ee6-8299-44a0-8e0a-39a61e8b927c">
-<span class="eqno">(30)<a class="headerlink" href="#equation-cee56ee6-8299-44a0-8e0a-39a61e8b927c" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-fbe3eb32-821d-43e2-9bb8-03d302819fec">
+<span class="eqno">(30)<a class="headerlink" href="#equation-fbe3eb32-821d-43e2-9bb8-03d302819fec" title="Permalink to this equation">#</a></span>\[\begin{align}
 \frac{dx_1}{dt} &amp;= a_1x_1 + a_2x_2 + c_1\\
 \frac{dx_2}{dt} &amp;= b_1x_1 + b_2x_2 + c_2
 \end{align}\]</div>
 <p>We can write this using matrix-vector notation:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c68e53e1-12b6-4c23-8b57-f89bb0f8628e">
-<span class="eqno">(31)<a class="headerlink" href="#equation-c68e53e1-12b6-4c23-8b57-f89bb0f8628e" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-ea9e37ee-eec5-4c40-8ded-49a91ca0fbde">
+<span class="eqno">(31)<a class="headerlink" href="#equation-ea9e37ee-eec5-4c40-8ded-49a91ca0fbde" title="Permalink to this equation">#</a></span>\[\begin{align}
 \frac{d\bar{x}}{dt} = A\bar{x} + \bar{c}
 \end{align}\]</div>
-<p>The origin is no longer necessarily a fixed point. Instead, we can compute a new fixed point <span class="math notranslate nohighlight">\(\bar{x_C}\)</span> that results in $<span class="math notranslate nohighlight">\(\frac{d\bar{x}}{dt}  = 0\)</span>$.</p>
+<p>The origin is no longer necessarily a fixed point. Instead, we can compute a new fixed point <span class="math notranslate nohighlight">\(\bar{x_C}\)</span> that results in</p>
+<p>$<span class="math notranslate nohighlight">\(\frac{d\bar{x}}{dt}  = 0\)</span>$.</p>
 <p>Now we can classify the dynamics around the fixed point using the eigenvalues of A just as in Section 2.2.1. So the dynamical system will look the same given the eigenvalues category, just around the new fixed point instead of the origin.</p>
 </section>
 <section id="section-2-2-3-nonhomogenous-systems">
 <h3>Section 2.2.3: Nonhomogenous systems<a class="headerlink" href="#section-2-2-3-nonhomogenous-systems" title="Permalink to this headline">#</a></h3>
 <p>Let’s say we have more complex differential equations:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-326f33b2-a9b1-412b-bbae-b9571d7a1a6e">
-<span class="eqno">(32)<a class="headerlink" href="#equation-326f33b2-a9b1-412b-bbae-b9571d7a1a6e" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-4a19331c-0907-40be-9897-a96be241d792">
+<span class="eqno">(32)<a class="headerlink" href="#equation-4a19331c-0907-40be-9897-a96be241d792" title="Permalink to this equation">#</a></span>\[\begin{align}
 \frac{dx_1}{dt} &amp;= F(x_1, x_2)\\
 \frac{dx_2}{dt} &amp;= G(x_1, x_2)
 \end{align}\]</div>
 <p>where <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(G\)</span> are some complex functions. This system could have any number of fixed points.</p>
 <p>This system is more complicated that the simple case in Section 2.2.1, but we can still use the information there.</p>
 <p>First, we need to find the fixed points of this system. It turns out that we can approximate the system near each fixed point as a more simple system:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b7f4d41c-64b3-4197-82e5-3529d84fced4">
-<span class="eqno">(33)<a class="headerlink" href="#equation-b7f4d41c-64b3-4197-82e5-3529d84fced4" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-e9f1f70b-287a-40d4-9701-ab396744dbcf">
+<span class="eqno">(33)<a class="headerlink" href="#equation-e9f1f70b-287a-40d4-9701-ab396744dbcf" title="Permalink to this equation">#</a></span>\[\begin{align}
 \frac{d\bar{x}}{dt} = J\bar{x}
 \end{align}\]</div>
 <p>where <span class="math notranslate nohighlight">\(J\)</span> is the Jacobian of the system, the matrix of partial derivatives:</p>
