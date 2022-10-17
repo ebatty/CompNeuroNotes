@@ -1,0 +1,899 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Section 1: One-dimensional dynamical systems &#8212; Introductory Computational Neuroscience</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="../_static/NeuroImage.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Neural Encoding II" href="NeuralEncodingII.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/NeuroImage.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Introductory Computational Neuroscience</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Neural Coding
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="VisualizingNeuralResponses.html">
+   Visualizing Neural Responses
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="TuningCurves.html">
+   Tuning Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Decoding_LinearRegression.html">
+   Decoding: Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Decoding_LogisticRegression.html">
+   Decoding: Logistic Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="SpikeTriggeredAverages.html">
+   Spike Triggered Averages
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="NeuralEncodingI.html">
+   Neural Encoding I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="NeuralEncodingII.html">
+   Neural Encoding II
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Biophysical Neural Models
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Section 1: One-dimensional dynamical systems
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/Notes/DynamicalSystemsReview.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="initThebeSBT()"
+  class="headerbtn headerbtn-launch-thebe"
+  data-toggle="tooltip"
+data-placement="left"
+title="Launch Thebe"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="headerbtn__text-container">Live Code</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/Notes/DynamicalSystemsReview.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Section 1: One-dimensional dynamical systems
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-1-dynamical-system-example">
+     Section 1.1: Dynamical System Example
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-2-analytical-solution">
+     Section 1.2: Analytical solution
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-3-euler-s-method">
+     Section 1.3: Euler’s method
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-4-graphical-fixed-point-analysis">
+     Section 1.4: Graphical fixed point analysis
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-2-two-dimensional-dynamical-systems">
+   Section 2: Two-dimensional dynamical systems
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-1-plotting-2d-systems-of-differential-equations">
+     Section 2.1: Plotting 2D systems of differential equations
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-2-understanding-trajectories-with-eigenstuff">
+     Section 2.2: Understanding trajectories with eigenstuff
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-2-1-linear-homogenous-system">
+       Section 2.2.1: Linear homogenous system
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-2-2-linear-nonhomogenous-system">
+       Section 2.2.2: Linear nonhomogenous system
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-2-3-nonhomogenous-systems">
+       Section 2.2.3: Nonhomogenous systems
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Section 1: One-dimensional dynamical systems</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Section 1: One-dimensional dynamical systems
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-1-dynamical-system-example">
+     Section 1.1: Dynamical System Example
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-2-analytical-solution">
+     Section 1.2: Analytical solution
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-3-euler-s-method">
+     Section 1.3: Euler’s method
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-4-graphical-fixed-point-analysis">
+     Section 1.4: Graphical fixed point analysis
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-2-two-dimensional-dynamical-systems">
+   Section 2: Two-dimensional dynamical systems
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-1-plotting-2d-systems-of-differential-equations">
+     Section 2.1: Plotting 2D systems of differential equations
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-2-understanding-trajectories-with-eigenstuff">
+     Section 2.2: Understanding trajectories with eigenstuff
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-2-1-linear-homogenous-system">
+       Section 2.2.1: Linear homogenous system
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-2-2-linear-nonhomogenous-system">
+       Section 2.2.2: Linear nonhomogenous system
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-2-3-nonhomogenous-systems">
+       Section 2.2.3: Nonhomogenous systems
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <p><a href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/Notes/DynamicalSystemsReview.ipynb" target="_parent"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="section-1-one-dimensional-dynamical-systems">
+<h1>Section 1: One-dimensional dynamical systems<a class="headerlink" href="#section-1-one-dimensional-dynamical-systems" title="Permalink to this headline">#</a></h1>
+<p>Much of the concepts (although not the specific example) covered in this section is covered in even greater detail in the following video. You can access the notes for this video here: https://osf.io/4twh6/</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>  <span class="c1"># @markdown Execute to see video on 1 differential equation and Euler&#39;s method</span>
+  <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">YouTubeVideo</span>
+  <span class="n">video</span> <span class="o">=</span> <span class="n">YouTubeVideo</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;rSMn_aU_XgA&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">854</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">480</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rel</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Video available at https://youtube.com/watch?v=&#39;</span> <span class="o">+</span> <span class="n">video</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+  <span class="n">display</span><span class="p">(</span><span class="n">video</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Video available at https://youtube.com/watch?v=rSMn_aU_XgA
+</pre></div>
+</div>
+<div class="output text_html">
+<iframe
+    width="854"
+    height="480"
+    src="https://www.youtube.com/embed/rSMn_aU_XgA?fs=1&rel=0"
+    frameborder="0"
+    allowfullscreen
+
+></iframe>
+</div></div>
+</div>
+<p>Continuous dynamical systems concern the evolution of variables over time, where the update rules are differential equations.</p>
+<p>Let’s look at a dynamical system with just one variable concerning ion channel kinetics.</p>
+<section id="section-1-1-dynamical-system-example">
+<h2>Section 1.1: Dynamical System Example<a class="headerlink" href="#section-1-1-dynamical-system-example" title="Permalink to this headline">#</a></h2>
+<p>Let’s say that we have a population of ion channels of the same type, which are individually either open or closed. There is some rate at which the channels open, dependent on the voltage of the cell, <span class="math notranslate nohighlight">\(\alpha(V)\)</span> and some rate at which they close, <span class="math notranslate nohighlight">\(\beta(V)\)</span>. These would be in units 1/ms (essentially the number of times in a ms that a gate closes and vice versa) and can be found empirically. We suddenly step the voltage to one that opens channels and keep it at that voltage. Although <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> are normally voltage-dependent, we will treat them as constants from here on out since we are holding the voltage steady.</p>
+<p>We need to introduce two more variables before writing out a differential equation that defines our system: <span class="math notranslate nohighlight">\(P_o\)</span> is the proportion of channels that are open (or equivalently the probability that a particular channel is open) and <span class="math notranslate nohighlight">\(P_c\)</span> is the the proportion of closed channels (or equivalently the probability that a particular channel is closed).</p>
+<p>We will now write out a differential equation to model what happens when we step to a certain voltage. In particular, we want to figure out how the proportion of open channels, <span class="math notranslate nohighlight">\(P_o\)</span>, changes over time. This means we want to find a differential equation <span class="math notranslate nohighlight">\(\frac{dP_o}{dt} = ...\)</span>. We will take you through this process step by step.</p>
+<p>Let’s say <span class="math notranslate nohighlight">\(P(opening)\)</span> is the proportion of channels opening over some tiny time step and <span class="math notranslate nohighlight">\(P(closing)\)</span> is the proportion of channels closing.</p>
+<p>The rate of change of the proportion of open channels is the proportion that are opening minus the proportion that are closing:</p>
+<div class="math notranslate nohighlight">
+\[\frac{dP_o}{dt} = P(opening) - P(closing)\]</div>
+<p>The proportion of channels opening over a small time period is equal to the proportion that were closed times the rate of opening:
+$<span class="math notranslate nohighlight">\(P(opening) = \alpha P_c\)</span>$</p>
+<p>The proportion of channels closing over a small time period is equal to the proportion that were open times the rate of closing:</p>
+<div class="math notranslate nohighlight">
+\[P(closing) = \beta P_o\]</div>
+<p>Now we combine all of this information and the fact that the proportion of open channels and the proportion of closed channels must add up to 1:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\frac{dP_o}{dt} &amp;= P(opening) - P(closing) \\
+&amp;= \alpha P_c - \beta P_o \\
+&amp;= \alpha (1 - P_o) - \beta P_o \\
+&amp; = \alpha - (\alpha + \beta)P_o
+\end{align}\end{split}\]</div>
+<p>We will assume that <span class="math notranslate nohighlight">\(\alpha=.3\)</span> and <span class="math notranslate nohighlight">\(\beta=.1\)</span></p>
+</section>
+<section id="section-1-2-analytical-solution">
+<h2>Section 1.2: Analytical solution<a class="headerlink" href="#section-1-2-analytical-solution" title="Permalink to this headline">#</a></h2>
+<p><strong>Note this is for demonstration purposes but you won’t usually have to analytically solve equations in this course.</strong></p>
+<p>In this case, we can actually solve this differential equation (integrate both sides) to come up with an equation for <span class="math notranslate nohighlight">\(P_o(t)\)</span> that does not include a derivative.</p>
+<p>The general form of a first order linear differential equation is:</p>
+<div class="math notranslate nohighlight">
+\[ \frac{dx}{dt} + p(t)x = g(t)\]</div>
+<p>In this case, we can compute the solution as:</p>
+<div class="math notranslate nohighlight">
+\[ x(t) = \frac{\int \mu(t) g(t) dt + C}{\mu(t)} \]</div>
+<p>where <span class="math notranslate nohighlight">\(\mu(t) = e^{\int p(t) dt}\)</span>.</p>
+<p>Let’s do so:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align} 
+\frac{dP_o}{dt} &amp; = \alpha - (\alpha + \beta)P_o \\
+\frac{dP_o}{dt} + (\alpha + \beta)P_o &amp; = \alpha \\
+g(t) &amp;= \alpha\\
+p(t) &amp;= \alpha+\beta \\
+\mu(t) &amp; = e^{\int p(t) dt} = e^{\int \alpha + \beta dt} = e^{(\alpha + \beta)t + C}
+\end{align} \end{split}\]</div>
+<p>Now we substitute into our equation for <span class="math notranslate nohighlight">\(x(t)\)</span>. We will drop the C from <span class="math notranslate nohighlight">\(\mu\)</span> because it’s taken care of by the constant in this equation.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \begin{align}
+P_o(t) &amp;= \frac{\int \mu(t) g(t) dt + C}{\mu(t)}\\
+&amp; = \frac{\int e^{(\alpha + \beta)t}\alpha dt + C}{e^{(\alpha+\beta)t}} \\
+&amp; = \frac{ \frac{\alpha}{\alpha+\beta}{e^{(\alpha+\beta)t}}+ C}{e^{(\alpha+\beta)t}}\\
+&amp; = \frac{\alpha}{\alpha+\beta} + Ce^{-(\alpha+\beta)t}
+\end{align} \end{split}\]</div>
+<p>We now have our analytical solution. We can solve for C based on the initial condition.</p>
+</section>
+<section id="section-1-3-euler-s-method">
+<h2>Section 1.3: Euler’s method<a class="headerlink" href="#section-1-3-euler-s-method" title="Permalink to this headline">#</a></h2>
+<p>Often, we can’t come up with a nice analytical solution to a differential equation, so we have to use Euler’s method.</p>
+<p>Let’s say we have a differential equation of y over time, <span class="math notranslate nohighlight">\(\frac{dy}{dt}\)</span> and we know the value of <span class="math notranslate nohighlight">\(y\)</span> at time <span class="math notranslate nohighlight">\(t_n\)</span>. We can approximate the value of y at time <span class="math notranslate nohighlight">\(t_{n+1}\)</span> using the derivative. Specifically, the derivative gives the slope of a tangent line at the curve at <span class="math notranslate nohighlight">\(y_n\)</span> (that’s the definition of a derivative).</p>
+<a class="reference internal image-reference" href="https://upload.wikimedia.org/wikipedia/commons/e/ee/Forward_Euler_method_illustration.png"><img alt="https://upload.wikimedia.org/wikipedia/commons/e/ee/Forward_Euler_method_illustration.png" src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Forward_Euler_method_illustration.png" style="width: 300px;" /></a>
+<p>Remember that the slope can also be computed as rise over run, so we could approximate as</p>
+<div class="math notranslate nohighlight">
+\[\frac{dy}{dt} = \frac{y_{n+1} - y_n}{t_{n+1} - t_n} \]</div>
+<p>if the time difference is really small. If we rearrange this equation and use <span class="math notranslate nohighlight">\(dt = t_{n+1} - t_n\)</span>, we get</p>
+<div class="math notranslate nohighlight">
+\[y_{n+1} = y_n + \frac{dy(t_n)}{dt}dt \]</div>
+<p>We can keep stepping along and approximating the next y value using this equation. Note, it will only be an accurate approximation if dt is small.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown Execute to get helper function `plot_trajectories`</span>
+<span class="k">def</span> <span class="nf">plot_trajectories</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">numerical_P</span><span class="p">,</span> <span class="n">init_Po</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
+
+  <span class="c1"># Get analytical solution</span>
+  <span class="n">analytical_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mf">.01</span><span class="p">)</span>
+  <span class="n">C</span> <span class="o">=</span> <span class="n">init_Po</span> <span class="o">-</span> <span class="n">alpha</span><span class="o">/</span><span class="p">(</span><span class="n">alpha</span> <span class="o">+</span> <span class="n">beta</span><span class="p">)</span>
+  <span class="n">analytical_P</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">/</span><span class="p">(</span><span class="n">alpha</span> <span class="o">+</span> <span class="n">beta</span><span class="p">)</span> <span class="o">+</span> <span class="n">C</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">alpha</span><span class="o">+</span><span class="n">beta</span><span class="p">)</span><span class="o">*</span><span class="n">analytical_t</span><span class="p">)</span>
+
+  <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">analytical_t</span><span class="p">,</span> <span class="n">analytical_P</span><span class="p">,</span><span class="s1">&#39;#33D396&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">numerical_P</span><span class="p">,</span> <span class="s1">&#39;#1F59EB&#39;</span><span class="p">)</span>
+  
+  <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Time (ms)&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Probability of channel open&#39;</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Analytical&#39;</span><span class="p">,</span><span class="s1">&#39;Numerical&#39;</span><span class="p">])</span>
+  
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">prob_open_euler_integration</span><span class="p">(</span><span class="n">init_Po</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Numerically approximate the solution of the differential equation governing </span>
+<span class="sd">  ion channel kinetics given an initial condition for a duration T. </span>
+
+<span class="sd">  Args:</span>
+<span class="sd">    init_Po (scalar): value of Po at start of simulation (at time = 0)</span>
+<span class="sd">    dt (scalar): timestep of the simulation</span>
+<span class="sd">    T (scalar): total duration of the simulation</span>
+<span class="sd">    alpha (scalar): rate of change of ion channel opening</span>
+<span class="sd">    beta (scalar): rate of change of ion channel closing</span>
+
+<span class="sd">  Returns:</span>
+<span class="sd">    ndarray, ndarray: Po and the time t at each step</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="c1"># Initialize variables</span>
+  <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+  <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+  <span class="n">P</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">init_Po</span> <span class="c1"># This is Po at time 0</span>
+
+  <span class="c1"># Step through time</span>
+  <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+
+    <span class="c1"># for each point in time, compute dP_dt from P[n]</span>
+    <span class="n">dP_dt</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">-</span> <span class="p">(</span><span class="n">beta</span><span class="o">+</span><span class="n">alpha</span><span class="p">)</span><span class="o">*</span><span class="n">P</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+
+    <span class="c1"># Update P[n+1] based on P[n] and dP_dt</span>
+    <span class="n">P</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">P</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+</span> <span class="n">dP_dt</span> <span class="o">*</span><span class="n">dt</span>
+
+  <span class="k">return</span> <span class="n">P</span><span class="p">,</span> <span class="n">t</span>
+
+
+<span class="n">init_Po</span> <span class="o">=</span> <span class="mf">.4</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">.01</span> <span class="c1"># step size is .01 ms</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">50</span> <span class="c1"># run simulation for 50 ms</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">.3</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="mf">.1</span>
+
+<span class="n">numerical_P</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">prob_open_euler_integration</span><span class="p">(</span><span class="n">init_Po</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+
+
+<span class="n">plot_trajectories</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">numerical_P</span><span class="p">,</span> <span class="n">init_Po</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/DynamicalSystemsReview_11_0.png" src="../_images/DynamicalSystemsReview_11_0.png" />
+</div>
+</div>
+<p>You can see that the numerical approximation so closely follows the analytical solution that they’re indistinguishable in the plot above. With larger dt, these two lines would diverge more (the numerical approximation is less accurate).</p>
+</section>
+<section id="section-1-4-graphical-fixed-point-analysis">
+<h2>Section 1.4: Graphical fixed point analysis<a class="headerlink" href="#section-1-4-graphical-fixed-point-analysis" title="Permalink to this headline">#</a></h2>
+<p>Fixed points in continuous dynamical systems occur when all derivatives are equal to 0. These are also called equilibrium and critical points.</p>
+<p>Fixed points can either be <strong>stable</strong> or <strong>unstable</strong>. In both cases, if the system is at the fixed point, it will stay there (because there is no change, the derivatives are equal to 0). If the system starts near a fixed point and goes towards it, that fixed point is stable. If the sytem starts near a fixed point and isn’t drawn towards it, that fixed point is unstable.</p>
+<p>Let’s start by computing the equilibrium point in our system:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{dP_o}{dt}= .3 - .4P_o = 0\\
+P_o = 0.75\end{split}\]</div>
+<p>The equilibrium point occurs at <span class="math notranslate nohighlight">\(P_o = 0.75\)</span>. If the proportion of open channels is 0.75, the change in the proportion of open channels is 0 so it will never change!</p>
+<p>Now let’s see if this is a stable or unstable point. To do so, we can plot <span class="math notranslate nohighlight">\(\frac{dP_o}{dt}\)</span> vs <span class="math notranslate nohighlight">\(P_o\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @markdown Execute to visualize dPo/dt vs Po</span>
+
+<span class="k">def</span> <span class="nf">plot_derivative_vs_variable</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dx</span><span class="p">):</span>
+
+  <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+  <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;P$_o$&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\frac</span><span class="si">{dP_o}{dt}</span><span class="s1">$&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># Set parameters</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">.3</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="mf">.1</span>
+
+<span class="c1"># We will evalute dP_o/dt on a span of possible P_o values</span>
+<span class="n">Po</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">.1</span><span class="p">)</span>
+
+<span class="c1"># Fill in your code here to compute dPo/dt for all Po above</span>
+<span class="n">dPo_dt</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">-</span> <span class="p">(</span><span class="n">beta</span><span class="o">+</span><span class="n">alpha</span><span class="p">)</span><span class="o">*</span><span class="n">Po</span>
+
+<span class="c1"># Uncomment below to use plotting function plot_derivative_vs_variable</span>
+<span class="n">plot_derivative_vs_variable</span><span class="p">(</span><span class="n">Po</span><span class="p">,</span> <span class="n">dPo_dt</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/DynamicalSystemsReview_15_0.png" src="../_images/DynamicalSystemsReview_15_0.png" />
+</div>
+</div>
+<p>First of all, this validates our found equilibrium point - <span class="math notranslate nohighlight">\(\frac{dP_o}{dt}\)</span> is 0 at <span class="math notranslate nohighlight">\(P_o = 0.75\)</span>.</p>
+<p>From this plot you can see that if the proportion of open channels is below 0.75, the derivative is positive. This means that the rate of change of the proportion of open channels is positive, emaning that the proportion of open channels will grow. So if the proportion of open channels is below 0.75, it will grow.</p>
+<p>If the proportion of open channels is above 0.75, the derivative is negative. So if the proportion of open channels is above 0.75, it will decrease.</p>
+<p>This means this equilibrium point is stable! The proportion of open channels will converge onto the equilibrium point no matter where it starts.</p>
+<p>You can see that in the trajectory plot above too - the proportion of open channels starts at .4 and grows to reach 0.75 and remains there.</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="section-2-two-dimensional-dynamical-systems">
+<h1>Section 2: Two-dimensional dynamical systems<a class="headerlink" href="#section-2-two-dimensional-dynamical-systems" title="Permalink to this headline">#</a></h1>
+<p>A lot of what is covered in this section is covered in greater detail in the following video. You can access the notes for this video here: https://osf.io/sjz5x/</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>  <span class="c1"># @markdown Execute to see video on systems of differential equations</span>
+  <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">YouTubeVideo</span>
+  <span class="n">video</span> <span class="o">=</span> <span class="n">YouTubeVideo</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;lV8SoeAxLgM&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">854</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">480</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rel</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Video available at https://youtube.com/watch?v=&#39;</span> <span class="o">+</span> <span class="n">video</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+  <span class="n">display</span><span class="p">(</span><span class="n">video</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Video available at https://youtube.com/watch?v=lV8SoeAxLgM
+</pre></div>
+</div>
+<div class="output text_html">
+<iframe
+    width="854"
+    height="480"
+    src="https://www.youtube.com/embed/lV8SoeAxLgM?fs=1&rel=0"
+    frameborder="0"
+    allowfullscreen
+
+></iframe>
+</div></div>
+</div>
+<section id="section-2-1-plotting-2d-systems-of-differential-equations">
+<h2>Section 2.1: Plotting 2D systems of differential equations<a class="headerlink" href="#section-2-1-plotting-2d-systems-of-differential-equations" title="Permalink to this headline">#</a></h2>
+<p>TBD</p>
+</section>
+<section id="section-2-2-understanding-trajectories-with-eigenstuff">
+<h2>Section 2.2: Understanding trajectories with eigenstuff<a class="headerlink" href="#section-2-2-understanding-trajectories-with-eigenstuff" title="Permalink to this headline">#</a></h2>
+<section id="section-2-2-1-linear-homogenous-system">
+<h3>Section 2.2.1: Linear homogenous system<a class="headerlink" href="#section-2-2-1-linear-homogenous-system" title="Permalink to this headline">#</a></h3>
+<p>Let’s assume we have two differential equations of the form:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a2b1ca96-1480-4ea0-b3d0-b9fdc51b2af3">
+<span class="eqno">(27)<a class="headerlink" href="#equation-a2b1ca96-1480-4ea0-b3d0-b9fdc51b2af3" title="Permalink to this equation">#</a></span>\[\begin{align}
+\frac{dx_1}{dt} &amp;= a_1x_1 + a_2x_2\\
+\frac{dx_2}{dt} &amp;= b_1x_1 + b_2x_2
+\end{align}\]</div>
+<p>We can write this using matrix-vector notation:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-7c01b60e-927e-46a9-a90c-e9fd0b36ff8c">
+<span class="eqno">(28)<a class="headerlink" href="#equation-7c01b60e-927e-46a9-a90c-e9fd0b36ff8c" title="Permalink to this equation">#</a></span>\[\begin{align}
+\frac{d\bar{x}}{dt} = A\bar{x}
+\end{align}\]</div>
+<p>where</p>
+<div class="amsmath math notranslate nohighlight" id="equation-6d405786-d4f3-4c1e-ac44-effb3cab6918">
+<span class="eqno">(29)<a class="headerlink" href="#equation-6d405786-d4f3-4c1e-ac44-effb3cab6918" title="Permalink to this equation">#</a></span>\[\begin{align}
+A = \begin{bmatrix}a_1 &amp; a_2 \\ b_1 &amp; b_2\end{bmatrix}
+\end{align}\]</div>
+<p>This is a linear homogenous system.</p>
+<p>This system has one fixed point at (0, 0).</p>
+<p>The eigenvalues and eigenvectors of A tell us the stability of this fixed point and what will happen in this system. See below to see what will happen with different eigenvalue options.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#@markdown Execute this cell to view dynamical systems gif</span>
+
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="n">Image</span><span class="p">(</span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/ebatty/MathToolsforNeuroscience/blob/master/dynsysdemo.gif?raw=True&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">700</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><img src="https://github.com/ebatty/MathToolsforNeuroscience/blob/master/dynsysdemo.gif?raw=True" width="700"/></div></div>
+</div>
+</section>
+<section id="section-2-2-2-linear-nonhomogenous-system">
+<h3>Section 2.2.2: Linear nonhomogenous system<a class="headerlink" href="#section-2-2-2-linear-nonhomogenous-system" title="Permalink to this headline">#</a></h3>
+<p>Let’s say you have a very similar system but you have constants added to both differential equations:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-cee56ee6-8299-44a0-8e0a-39a61e8b927c">
+<span class="eqno">(30)<a class="headerlink" href="#equation-cee56ee6-8299-44a0-8e0a-39a61e8b927c" title="Permalink to this equation">#</a></span>\[\begin{align}
+\frac{dx_1}{dt} &amp;= a_1x_1 + a_2x_2 + c_1\\
+\frac{dx_2}{dt} &amp;= b_1x_1 + b_2x_2 + c_2
+\end{align}\]</div>
+<p>We can write this using matrix-vector notation:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c68e53e1-12b6-4c23-8b57-f89bb0f8628e">
+<span class="eqno">(31)<a class="headerlink" href="#equation-c68e53e1-12b6-4c23-8b57-f89bb0f8628e" title="Permalink to this equation">#</a></span>\[\begin{align}
+\frac{d\bar{x}}{dt} = A\bar{x} + \bar{c}
+\end{align}\]</div>
+<p>The origin is no longer necessarily a fixed point. Instead, we can compute a new fixed point <span class="math notranslate nohighlight">\(\bar{x_C}\)</span> that results in $<span class="math notranslate nohighlight">\(\frac{d\bar{x}}{dt}  = 0\)</span>$.</p>
+<p>Now we can classify the dynamics around the fixed point using the eigenvalues of A just as in Section 2.2.1. So the dynamical system will look the same given the eigenvalues category, just around the new fixed point instead of the origin.</p>
+</section>
+<section id="section-2-2-3-nonhomogenous-systems">
+<h3>Section 2.2.3: Nonhomogenous systems<a class="headerlink" href="#section-2-2-3-nonhomogenous-systems" title="Permalink to this headline">#</a></h3>
+<p>Let’s say we have more complex differential equations:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-326f33b2-a9b1-412b-bbae-b9571d7a1a6e">
+<span class="eqno">(32)<a class="headerlink" href="#equation-326f33b2-a9b1-412b-bbae-b9571d7a1a6e" title="Permalink to this equation">#</a></span>\[\begin{align}
+\frac{dx_1}{dt} &amp;= F(x_1, x_2)\\
+\frac{dx_2}{dt} &amp;= G(x_1, x_2)
+\end{align}\]</div>
+<p>where <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(G\)</span> are some complex functions. This system could have any number of fixed points.</p>
+<p>This system is more complicated that the simple case in Section 2.2.1, but we can still use the information there.</p>
+<p>First, we need to find the fixed points of this system. It turns out that we can approximate the system near each fixed point as a more simple system:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-b7f4d41c-64b3-4197-82e5-3529d84fced4">
+<span class="eqno">(33)<a class="headerlink" href="#equation-b7f4d41c-64b3-4197-82e5-3529d84fced4" title="Permalink to this equation">#</a></span>\[\begin{align}
+\frac{d\bar{x}}{dt} = J\bar{x}
+\end{align}\]</div>
+<p>where <span class="math notranslate nohighlight">\(J\)</span> is the Jacobian of the system, the matrix of partial derivatives:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}J = \begin{bmatrix}\frac{dF}{dx_1} &amp; \frac{dF}{dx_2} \\ \frac{dG}{dx_1} &amp; \frac{dG}{dx_2}\end{bmatrix}\end{split}\]</div>
+<p>So, the eigenvalues of the Jacobian at a fixed point tells us the behavior near that fixed point.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "ebatty/IntroCompNeuro",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./Notes"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="NeuralEncodingII.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Neural Encoding II</p>
+        </div>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Ella Batty<br/>
+  
+      &copy; Copyright 2021.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
