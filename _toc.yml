@@ -10,3 +10,6 @@ parts:
     - file: Notes/SpikeTriggeredAverages.ipynb
     - file: Notes/NeuralEncodingI.ipynb
     - file: Notes/NeuralEncodingII.ipynb
+  - caption: Biophysical Neural Models
+    chapters:
+    - file: Notes/DynamicalSystemsReview.ipynb
