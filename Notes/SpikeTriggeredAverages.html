@@ -504,6 +504,12 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Blue">notice</span><span class=" -Color -Color-Bold">]</span> A new release of pip available: <span class=" -Color -Color-Red">22.2.2</span> -&gt; <span class=" -Color -Color-Green">22.3</span>
+<span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Blue">notice</span><span class=" -Color -Color-Bold">]</span> To update, run: <span class=" -Color -Color-Green">pip install --upgrade pip</span>
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="section-1-why-do-we-need-to-move-beyond-tuning-curves">
@@ -538,30 +544,25 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/gdown/cli.py:131: FutureWarning: Option `--id` was deprecated in version 4.3.1 and will be removed in 5.0. You don&#39;t need to pass it anymore to use a file ID.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.7.14/x64/lib/python3.7/site-packages/gdown/cli.py:131: FutureWarning: Option `--id` was deprecated in version 4.3.1 and will be removed in 5.0. You don&#39;t need to pass it anymore to use a file ID.
   category=FutureWarning,
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading...
 From: https://drive.google.com/uc?id=1V2QAdFLQnAb-gdFQ9-Py1AydI7tlTifm
 To: /home/runner/work/IntroCompNeuro/IntroCompNeuro/Notes/c1p8.mat
-
-  0%|                                               | 0.00/5.40M [00:00&lt;?, ?B/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 10%|███▊                                   | 524k/5.40M [00:00&lt;00:01, 2.48MB/s]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0%|                                               | 0.00/5.40M [00:00&lt;?, ?B/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 49%|██████████████████▍                   | 2.62M/5.40M [00:00&lt;00:00, 9.41MB/s]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████████████████████████████████| 5.40M/5.40M [00:00&lt;00:00, 14.3MB/s]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|███████████████████████████████████████| 5.40M/5.40M [00:00&lt;00:00, 191MB/s]
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Text(0.5, 1.0, &#39;Spikes&#39;), Text(0.5, 0, &#39;Time bins&#39;)]
 </pre></div>
 </div>
-<img alt="../_images/SpikeTriggeredAverages_8_6.png" src="../_images/SpikeTriggeredAverages_8_6.png" />
+<img alt="../_images/SpikeTriggeredAverages_8_5.png" src="../_images/SpikeTriggeredAverages_8_5.png" />
 </div>
 </div>
 <p>As you can see below, for each time bin (2 ms chunk of time), we have the value of the stimulus and whether a spike occurred or not. The stimulus is denoted by just a single number per time bin.</p>
