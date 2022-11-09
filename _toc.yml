@@ -13,3 +13,4 @@ parts:
   - caption: Biophysical Neural Models
     chapters:
     - file: Notes/DynamicalSystemsReview.ipynb
+    - file: Notes/IntrotoNeuralNetworks.ipynb
