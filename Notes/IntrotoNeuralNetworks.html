@@ -1,0 +1,1145 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Intro to Neural Networks &#8212; Introductory Computational Neuroscience</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="../_static/NeuroImage.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Dynamical Systems Review" href="DynamicalSystemsReview.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/NeuroImage.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Introductory Computational Neuroscience</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Neural Coding
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="VisualizingNeuralResponses.html">
+   Visualizing Neural Responses
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="TuningCurves.html">
+   Tuning Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Decoding_LinearRegression.html">
+   Decoding: Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Decoding_LogisticRegression.html">
+   Decoding: Logistic Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="SpikeTriggeredAverages.html">
+   Spike Triggered Averages
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="NeuralEncodingI.html">
+   Neural Encoding I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="NeuralEncodingII.html">
+   Neural Encoding II
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Biophysical Neural Models
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="DynamicalSystemsReview.html">
+   Dynamical Systems Review
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Intro to Neural Networks
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/Notes/IntrotoNeuralNetworks.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="initThebeSBT()"
+  class="headerbtn headerbtn-launch-thebe"
+  data-toggle="tooltip"
+data-placement="left"
+title="Launch Thebe"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="headerbtn__text-container">Live Code</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/Notes/IntrotoNeuralNetworks.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Intro to Neural Networks
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-1-intro-to-neural-networks">
+   Section 1: Intro to neural networks
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-1-neural-network-choices">
+     Section 1.1: Neural network choices
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-2-rate-based-model-of-neuron">
+     Section 1.2: Rate-based model of neuron
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-3-feedforward-vs-recurrent-networks">
+     Section 1.3: Feedforward vs recurrent networks
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-3-1-feedforward-networks">
+     Section 1.3.1: Feedforward networks
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-3-2-recurrent-neural-networks">
+     Section 1.3.2: Recurrent neural networks
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-2-diving-into-recurrent-neural-networks">
+   Section 2: Diving into recurrent neural networks
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-1-simulating-our-network">
+     Section 2.1: Simulating our network
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-2-eigenstuff">
+     Section 2.2: Eigenstuff
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-2-1-changing-to-eigenbasis">
+       Section 2.2.1: Changing to eigenbasis
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-2-2-looking-at-evolution-of-eigenvector-coordinates-over-time">
+       Section 2.2.2: Looking at evolution of eigenvector coordinates over time
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-2-3-analyzing-analytical-solutions-of-c-s">
+       Section 2.2.3: Analyzing analytical solutions of c’s
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-2-4-connection-to-general-understanding-of-first-order-differential-equations">
+       Section 2.2.4: Connection to general understanding of first order differential equations
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Intro to Neural Networks</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Intro to Neural Networks
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-1-intro-to-neural-networks">
+   Section 1: Intro to neural networks
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-1-neural-network-choices">
+     Section 1.1: Neural network choices
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-2-rate-based-model-of-neuron">
+     Section 1.2: Rate-based model of neuron
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-3-feedforward-vs-recurrent-networks">
+     Section 1.3: Feedforward vs recurrent networks
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-3-1-feedforward-networks">
+     Section 1.3.1: Feedforward networks
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-3-2-recurrent-neural-networks">
+     Section 1.3.2: Recurrent neural networks
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-2-diving-into-recurrent-neural-networks">
+   Section 2: Diving into recurrent neural networks
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-1-simulating-our-network">
+     Section 2.1: Simulating our network
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-2-eigenstuff">
+     Section 2.2: Eigenstuff
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-2-1-changing-to-eigenbasis">
+       Section 2.2.1: Changing to eigenbasis
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-2-2-looking-at-evolution-of-eigenvector-coordinates-over-time">
+       Section 2.2.2: Looking at evolution of eigenvector coordinates over time
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-2-3-analyzing-analytical-solutions-of-c-s">
+       Section 2.2.3: Analyzing analytical solutions of c’s
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#section-2-2-4-connection-to-general-understanding-of-first-order-differential-equations">
+       Section 2.2.4: Connection to general understanding of first order differential equations
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <p><a href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/Notes/IntrotoNeuralNetworks.ipynb" target="_parent"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="intro-to-neural-networks">
+<h1>Intro to Neural Networks<a class="headerlink" href="#intro-to-neural-networks" title="Permalink to this headline">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="section-1-intro-to-neural-networks">
+<h1>Section 1: Intro to neural networks<a class="headerlink" href="#section-1-intro-to-neural-networks" title="Permalink to this headline">#</a></h1>
+<section id="section-1-1-neural-network-choices">
+<h2>Section 1.1: Neural network choices<a class="headerlink" href="#section-1-1-neural-network-choices" title="Permalink to this headline">#</a></h2>
+<p>In neuroscience, we often want to simulate a network, or population, of neurons. To do so, we build a neural network model. We use this neural network simulations to model and understand a range of neuroscience concepts, including population coding, distributed representations, excitatory-inhibitory balance, memory, decision-making, and learning.</p>
+<p>There are a lot of different options for how we construct our neural network model.</p>
+<p><strong>Time</strong>
+We could model the network using continuous time (i.e. using different equations that evolve over time) or discrete time (have discrete time steps).</p>
+<p><strong>Type of neuron</strong></p>
+<p>We need to decide the neuron model we will use in our network. One big choice is between rate-based and spiking-based neurons: will we just model neural activations as continuous values (such as firing rates), or will we have spiking behavior? If we choose to have spiking-based neurons, we can choose any of our biological neuron models discussed in class: leaky integrate-and-fire neurons, Hodgkin-Huxley neurons, multi-compartment neural models, etc.</p>
+<p><strong>Type of connection</strong></p>
+<p>We need to decide how to wire up our neurons. We could have fully connected networks, where every neuron is connected to every other neuron. We could have randomly connected networks, where every neuron is connected to a random subset of the population. We could have sparsely connected networks, where each neuron is connected to only a few others. We could have connections based on spatial structure (such as neurons connecting to nearby neurons) or based on learned structure (train the neural network and learn the structure).</p>
+<p><strong>Type of synapse</strong></p>
+<p>How will we model the synapses between neurons in the network? We could use simple numbers to denote the weight or strength of the synapse. Alternatively, we could account for temporal effects at synapses and use a temporal kernel. We could also allow the synapses to be plastic (change over time) or static.</p>
+<p><strong>Type of inputs</strong></p>
+<p>We probably want some input to the network. We could have that input be constant over time, be stochastic so there is some randomness to the input, or have the input be temporally or spatially structured based on properties of the system we’re modeling, among other options.</p>
+</section>
+<section id="section-1-2-rate-based-model-of-neuron">
+<h2>Section 1.2: Rate-based model of neuron<a class="headerlink" href="#section-1-2-rate-based-model-of-neuron" title="Permalink to this headline">#</a></h2>
+<p>One of the biggest choices (under type of neuron) is whether our neurons are rate-based or spiking-based. Spiking neural networks are more realistic, as the brain spikes, and allows us to model computations and learning based on things like spike timing and correlations. Unfortunately, these networks are very computationally expensive (in part because we need to model small enough time scales to account for spiking dynamics) and can be more difficult to analyze and train.</p>
+<p>Rate-based neural networks are more computationally tractable, scale well to larger networks, and are easy to analyze and train. They can capture computations and learning based on rate coding, but obviously ignore effects of exact spike timing/correlations.</p>
+<p>We will focus on exclusively rate-based neural networks. We will ignore the temporal dynamics of how incoming pre-synaptic action potentials change the incoming current to the cell, and thus will model the synapses of just simple weights.</p>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/ch7fig1.png"><img alt="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/ch7fig1.png" src="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/ch7fig1.png" style="width: 300px;" /></a>
+<p>Let’s say we have a single output neuron getting inputs from multiple input neurons (pictured above in figure from Dayan &amp; Abbott). We will model the firing rates of the input neurons as a vector <span class="math notranslate nohighlight">\(\bar{u}\)</span>, where the first element is the firing rate of the first input neuron, the second element is the firing rate of the second input neuron, and so on. We will use <span class="math notranslate nohighlight">\(\bar{w}\)</span> to represent the weights from each input neuron: the first element of <span class="math notranslate nohighlight">\(\bar{w}\)</span> is the weight from input neuron 1, the second is the weight from input neuron 2, and so on.</p>
+<p>The total input to the output neuron is <span class="math notranslate nohighlight">\(\bar{w}\cdot\bar{u}\)</span>, the weighted sum of the input neural firing rates, where the weights are the synapse strenghs.</p>
+<p>We can then write a differential equation for the change in the firing rate of the output neuron over time:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-0f5cbbc0-aa50-4837-a1ec-a0584e2c54a8">
+<span class="eqno">(34)<a class="headerlink" href="#equation-0f5cbbc0-aa50-4837-a1ec-a0584e2c54a8" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau_r\frac{dv}{dt} = -v + F(\bar{w}\cdot\bar{u})
+\end{align}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\tau_r\)</span> is a time constant that controls how quickly the output firing rate changes in response to inputs and <span class="math notranslate nohighlight">\(F\)</span> is some function.</p>
+<p><strong>Stop and think!</strong> Assuming the input neural firing rates are constant over time (<span class="math notranslate nohighlight">\(\bar{u}\)</span> doesn’t change based on time), what will the steady state firing rate of the output neuron be (the firing rate it converges to)? In other words, what is the fixed point of the system?</p>
+<p>We can find the steady state firing rate by setting our differential equation equal to 0 and solving for <span class="math notranslate nohighlight">\(v\)</span>. This will give us the value of <span class="math notranslate nohighlight">\(v\)</span> for which there will be no more change (as the derivative is equal to 0). We find that🇰</p>
+<div class="amsmath math notranslate nohighlight" id="equation-06d81899-e129-4da2-be18-458fc1871c9a">
+<span class="eqno">(35)<a class="headerlink" href="#equation-06d81899-e129-4da2-be18-458fc1871c9a" title="Permalink to this equation">#</a></span>\[\begin{align}
+v = F(\bar{w}\cdot\bar{u})
+\end{align}\]</div>
+<p>Let’s look at an example. Let’s say we have two input neurons and their firing rate does not change over time. The first input neuron fires at 5 Hz and the second at 2 Hz so \begin{align}\bar{u} = \begin{bmatrix}1\3\end{bmatrix}\end{align}.
+Our weight matrix is \begin{align}\bar{w} = \begin{bmatrix}.2.1\end{bmatrix}\end{align}. And our function <span class="math notranslate nohighlight">\(F\)</span> is \begin{align}F(x) = \frac{1}{1+e^{-x}}\end{align}. And our <span class="math notranslate nohighlight">\(\tau_r\)</span> will be 5 ms.</p>
+<p>If we plot <span class="math notranslate nohighlight">\(\frac{dv}{dt}\)</span> vs <span class="math notranslate nohighlight">\(v\)</span> for this system, we get:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
+<span class="n">F_input</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="nb">input</span><span class="p">))</span>
+
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">.1</span><span class="p">)</span>
+<span class="n">dv_dt</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">v</span> <span class="o">+</span> <span class="n">F_input</span><span class="p">)</span><span class="o">/</span><span class="n">tau</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">dv_dt</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;dv_dt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1839</span><span class="o">/</span><span class="mf">2386671152.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="nb">input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">F_input</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="nb">input</span><span class="p">))</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> 
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">.1</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">dv_dt</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">v</span> <span class="o">+</span> <span class="n">F_input</span><span class="p">)</span><span class="o">/</span><span class="n">tau</span>
+
+<span class="ne">NameError</span>: name &#39;w&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Stop and think!</strong> What is the steady state output firing rate of our system? Is this a stable or unstable fixed point?</p>
+<p>The derivative of v with respect to t equals 0 at around v = 0.61 (the blue line crosses the black line there). This is a stable fixed point: values of <span class="math notranslate nohighlight">\(v\)</span> higher than 0.61 have a negative derivative so would be drawn down, back to that fixed point. Values of <span class="math notranslate nohighlight">\(v\)</span> smaller than 0.61 have positive derivatives so would be drawn up, back to the fixed point.</p>
+<p>Let’s simulate our system using Euler’s method! We will assume the output neural firing rate starts at 0.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set length of time we will simulate for (ms)</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Set Euler step size (ms)</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># Compute number of steps we will take</span>
+<span class="n">n_steps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">T</span> <span class="o">/</span> <span class="n">dt</span><span class="p">)</span>
+
+<span class="c1"># Set input and weight vectors</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">.2</span><span class="p">,</span> <span class="mf">.1</span><span class="p">])</span>
+<span class="n">tau</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1"># Initialize firing rate of output neuron array</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_steps</span><span class="p">,))</span>
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_steps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+
+  <span class="c1"># Compute derivative</span>
+  <span class="nb">input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
+  <span class="n">F_input</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="nb">input</span><span class="p">))</span>
+  <span class="n">dv_dt</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">v</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">+</span>  <span class="n">F_input</span><span class="p">)</span> <span class="o">/</span> <span class="n">tau</span>
+
+  <span class="c1"># Update v</span>
+  <span class="n">v</span><span class="p">[</span><span class="n">step</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>  <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">+</span> <span class="n">dv_dt</span> <span class="o">*</span> <span class="n">dt</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time (ms)&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Output firing rate (Hz)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Text(0.5, 0, &#39;Time (ms)&#39;), Text(0, 0.5, &#39;Output firing rate (Hz)&#39;)]
+</pre></div>
+</div>
+<img alt="../_images/IntrotoNeuralNetworks_13_1.png" src="../_images/IntrotoNeuralNetworks_13_1.png" />
+</div>
+</div>
+</section>
+<section id="section-1-3-feedforward-vs-recurrent-networks">
+<h2>Section 1.3: Feedforward vs recurrent networks<a class="headerlink" href="#section-1-3-feedforward-vs-recurrent-networks" title="Permalink to this headline">#</a></h2>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/ch7fig3.png"><img alt="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/ch7fig3.png" src="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/ch7fig3.png" style="width: 500px;" /></a>
+</section>
+<section id="section-1-3-1-feedforward-networks">
+<h2>Section 1.3.1: Feedforward networks<a class="headerlink" href="#section-1-3-1-feedforward-networks" title="Permalink to this headline">#</a></h2>
+<p>Let’s extend our model from Section 1.2 to now have multiple output neurons. We can summarize their firing rates in a vector <span class="math notranslate nohighlight">\(\bar{v}\)</span>.</p>
+<p>We now have a weight matrix instead of a weight vector, because we have multiple output neurons. The rows of <span class="math notranslate nohighlight">\(W\)</span> are just the weight vectors for each output neuron. So the entry at row i, column j of <span class="math notranslate nohighlight">\(W\)</span> is the weight from input neuron j to output neuron i.</p>
+<p>and we need to look at the evolution of the whole vector. We can write our new equation as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a019ef31-bd09-47d8-893e-4b7c5c26cdb6">
+<span class="eqno">(36)<a class="headerlink" href="#equation-a019ef31-bd09-47d8-893e-4b7c5c26cdb6" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau_r\frac{d\bar{v}}{dt} = -\bar{v} + F(W\bar{u})
+\end{align}\]</div>
+<p>If you think through the matrix-vector multiplication, you will see this works out like our single output neuron case, we just are summarizing N different output neurons using vectors and matrices.</p>
+<p>This model is shown in A in the figure above.</p>
+</section>
+<section id="section-1-3-2-recurrent-neural-networks">
+<h2>Section 1.3.2: Recurrent neural networks<a class="headerlink" href="#section-1-3-2-recurrent-neural-networks" title="Permalink to this headline">#</a></h2>
+<p>We may want to extend our model to account for interactions between the neurons in our output layer. We can introduce a new matrix <span class="math notranslate nohighlight">\(M\)</span>, which captures the synaptic weights between output neurons. Now each output neuron is driven by a weighted sum of the input neuron firing rates (the weights given by the relevant row of W) and the weighted sum of the output neuron firing rates (the weights given by the relevant row of M). Our equation becomes:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-8b4e0454-5f0c-4e8a-b7a6-900f2446270e">
+<span class="eqno">(37)<a class="headerlink" href="#equation-8b4e0454-5f0c-4e8a-b7a6-900f2446270e" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau_r\frac{d\bar{v}}{dt} = -\bar{v} + F(W\bar{u} + M\bar{v})
+\end{align}\]</div>
+<p>This model is shown in B in the figure above.</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="section-2-diving-into-recurrent-neural-networks">
+<h1>Section 2: Diving into recurrent neural networks<a class="headerlink" href="#section-2-diving-into-recurrent-neural-networks" title="Permalink to this headline">#</a></h1>
+<p>We have our equation for our recurrent neural network evolution, given by:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-b6ac6aec-151f-4f30-a3ef-a5b09be2d563">
+<span class="eqno">(38)<a class="headerlink" href="#equation-b6ac6aec-151f-4f30-a3ef-a5b09be2d563" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau\frac{d\bar{v}}{dt} = -\bar{v} + F(W\bar{u} + M\bar{v})
+\end{align}\]</div>
+<p>where:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-ac429333-7be8-4b28-be75-8807cc0d2940">
+<span class="eqno">(39)<a class="headerlink" href="#equation-ac429333-7be8-4b28-be75-8807cc0d2940" title="Permalink to this equation">#</a></span>\[\begin{align}
+\bar{v}&amp;= \text{ vector of output neuron firing rates}\\
+\bar{u}&amp;= \text{ vector of input neuron firing rates}\\
+W &amp;= \text{input weight matrix from input neurons to output neurons}\\
+M &amp;= \text{recurrent weight matrix between output neurons}\\
+\tau &amp;= \text{time constant governing speed of changes in output firing rates in response to inputs}\\
+F &amp;= \text{some function}
+\end{align}\]</div>
+<p>We will sometimes simplify the equation to:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-7bd50986-1fea-4f9b-8e8f-e5f7ccd3ece2">
+<span class="eqno">(40)<a class="headerlink" href="#equation-7bd50986-1fea-4f9b-8e8f-e5f7ccd3ece2" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau\frac{d\bar{v}}{dt} = -\bar{v} + F(\bar{h} + M\bar{v})
+\end{align}\]</div>
+<p>where:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-86f26445-6463-4e7b-9a65-ab2fa59ed2ea">
+<span class="eqno">(41)<a class="headerlink" href="#equation-86f26445-6463-4e7b-9a65-ab2fa59ed2ea" title="Permalink to this equation">#</a></span>\[\begin{align}
+\bar{h}&amp;= W\bar{u}= \text{ vector of total input from input neurons to each output neuron}\\
+\end{align}\]</div>
+<p>We will also often work with <strong>linear recurrent neural networks</strong> where <span class="math notranslate nohighlight">\(F(x) = x\)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d45e6093-e9a1-4d46-a2a6-509a235937c6">
+<span class="eqno">(42)<a class="headerlink" href="#equation-d45e6093-e9a1-4d46-a2a6-509a235937c6" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau\frac{d\bar{v}}{dt} = -\bar{v} + \bar{h} + M\bar{v}
+\end{align}\]</div>
+<section id="section-2-1-simulating-our-network">
+<h2>Section 2.1: Simulating our network<a class="headerlink" href="#section-2-1-simulating-our-network" title="Permalink to this headline">#</a></h2>
+<p>Let’s simulate a linear recurrent neural network with 50 output neurons and 20 input neurons. We will assume for now the input neural firing rates are constant over time.</p>
+<p><strong>Stop and think!</strong> What size should matrix M be? Matrix W?</p>
+<p>The matrix W should be 50 x 20, since we have 50 output neurons and 20 input neurons. The matrix M should be 50 x 50.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set length of time we will simulate for (ms)</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c1"># Set Euler step size (ms)</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># Compute number of steps we will take</span>
+<span class="n">n_steps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">T</span> <span class="o">/</span> <span class="n">dt</span><span class="p">)</span>
+
+<span class="c1"># Set input and weight matrices</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,))</span>
+
+<span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">U</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">M</span> <span class="o">=</span> <span class="mf">.8</span><span class="o">*</span> <span class="n">U</span>
+
+<span class="n">tau</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1"># Initialize firing rate of output neuron array</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_steps</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_steps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+
+  <span class="c1"># Compute derivative </span>
+  <span class="n">h</span> <span class="o">=</span> <span class="n">W</span> <span class="o">@</span> <span class="n">u</span>
+  <span class="n">dv_dt</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">v</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">+</span>  <span class="n">h</span> <span class="o">+</span> <span class="n">M</span> <span class="o">@</span> <span class="n">v</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="p">)</span> <span class="o">/</span> <span class="n">tau</span>
+
+  <span class="c1"># Update v</span>
+  <span class="n">v</span><span class="p">[</span><span class="n">step</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>  <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">+</span> <span class="n">dv_dt</span> <span class="o">*</span> <span class="n">dt</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time (ms)&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Output firing rate (Hz)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Text(0.5, 0, &#39;Time (ms)&#39;), Text(0, 0.5, &#39;Output firing rate (Hz)&#39;)]
+</pre></div>
+</div>
+<img alt="../_images/IntrotoNeuralNetworks_20_1.png" src="../_images/IntrotoNeuralNetworks_20_1.png" />
+</div>
+</div>
+<p>Let’s look at another simulation, with a different recurrent weight matrix.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">U</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">M</span> <span class="o">=</span> <span class="mf">1.1</span> <span class="o">*</span> <span class="n">U</span>
+
+<span class="n">tau</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1"># Initialize firing rate of output neuron array</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_steps</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_steps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+
+  <span class="c1"># Compute derivative </span>
+  <span class="n">h</span> <span class="o">=</span> <span class="n">W</span> <span class="o">@</span> <span class="n">u</span>
+  <span class="n">dv_dt</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">v</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">+</span>  <span class="n">h</span> <span class="o">+</span> <span class="n">M</span> <span class="o">@</span> <span class="n">v</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="p">)</span> <span class="o">/</span> <span class="n">tau</span>
+
+  <span class="c1"># Update v</span>
+  <span class="n">v</span><span class="p">[</span><span class="n">step</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>  <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">+</span> <span class="n">dv_dt</span> <span class="o">*</span> <span class="n">dt</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time (ms)&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Output firing rate (Hz)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Text(0.5, 0, &#39;Time (ms)&#39;), Text(0, 0.5, &#39;Output firing rate (Hz)&#39;)]
+</pre></div>
+</div>
+<img alt="../_images/IntrotoNeuralNetworks_22_1.png" src="../_images/IntrotoNeuralNetworks_22_1.png" />
+</div>
+</div>
+<p>With this weight matrix, the output firing rates explode to positive and negative infinity. We need a way to start to analyze the behavior of this system, ideally without just simulations. Luckily, we can use dynamical systems analyses techniques to start to understand and analyze our recurrent neural networks!</p>
+</section>
+<section id="section-2-2-eigenstuff">
+<h2>Section 2.2: Eigenstuff<a class="headerlink" href="#section-2-2-eigenstuff" title="Permalink to this headline">#</a></h2>
+<section id="section-2-2-1-changing-to-eigenbasis">
+<h3>Section 2.2.1: Changing to eigenbasis<a class="headerlink" href="#section-2-2-1-changing-to-eigenbasis" title="Permalink to this headline">#</a></h3>
+<p>We will also assume that our matrix <span class="math notranslate nohighlight">\(M\)</span> is symmetric (the weight from neuron 1 to neuron 5 is equal to the weight from neuron 5 to neuron 1). Note this is a big assumption - we would not expect matched reciprocal connections like this in the brain. If our matrix is symmetric, it has
+This means that matrix <span class="math notranslate nohighlight">\(M\)</span> has <span class="math notranslate nohighlight">\(N\)</span> orthogonal eigenvectors, <span class="math notranslate nohighlight">\(\bar{e}_1, \bar{e}_2, ..., \bar{e}_N\)</span>, with distinct eigenvalues, <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2, ..., \lambda_N\)</span>. Remember that the definition of an eigenvector of a matrix is that it is a vector that when multiplied by the matrix transforms to a scalar multiple of itself:</p>
+<div class="math notranslate nohighlight">
+\[M\bar{e}_i = \lambda_i\bar{e}_i \]</div>
+<p>Because the eigenvectors are orthogonal, the dot product of different eigenvectors is 0:
+<span class="math notranslate nohighlight">\(\bar{e}_j\cdot\bar{e}_i = 0\)</span> if j does not equal i. We will assume we have normalized the eigenvectors so that <span class="math notranslate nohighlight">\(\bar{e}_j\cdot\bar{e}_j = 1\)</span></p>
+<p>We can analyze our linear recurrent system nicely using the eigenvalues and eigenvectors of matrix <span class="math notranslate nohighlight">\(M\)</span>. Because we have N orthogonal eigenvectors, these form a basis for N dimensional space. This means that we can change bases to this eigenbasis. Instead of writing the coordinates of a point with respect to the standard basis (the x/y/z axes), we can write the point with respect to the eigenvectors. Review vector bases and changes of bases if confused: https://ebatty.github.io/IntroCompNeuro/lectures/MathReview.html.</p>
+<p>We can write any N-dimensional vector in terms of the coordinates with respect to the eigenvectors, including the firing rate vector:</p>
+<div class="math notranslate nohighlight">
+\[\bar{v}(t) = \sum_{i=1}^N c_i(t)\bar{e}_i\]</div>
+<p>So we are writing the vector of firing rates as a linear combination of the eigenvectors of M with some scalar weightings <span class="math notranslate nohighlight">\(c_i\)</span>.</p>
+</section>
+<section id="section-2-2-2-looking-at-evolution-of-eigenvector-coordinates-over-time">
+<h3>Section 2.2.2: Looking at evolution of eigenvector coordinates over time<a class="headerlink" href="#section-2-2-2-looking-at-evolution-of-eigenvector-coordinates-over-time" title="Permalink to this headline">#</a></h3>
+<p>Instead of looking at the evolution of our output firing rates over time, we can now look at the evolution of evolution of our <span class="math notranslate nohighlight">\(c_i\)</span>’s over time. At a given time, we can reconstruct the output firing rate vector with our equation:</p>
+<div class="math notranslate nohighlight">
+\[\bar{v}(t) = \sum_{i=1}^N c_i(t)\bar{e}_i\]</div>
+<p>We can derive a differential equation for each <span class="math notranslate nohighlight">\(c_j\)</span> and find that:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-74b8b184-0694-49e4-9070-c7387de4f6d0">
+<span class="eqno">(43)<a class="headerlink" href="#equation-74b8b184-0694-49e4-9070-c7387de4f6d0" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau \frac{d{c_i(t)}}{dt} &amp;= - c_i(t)(1 - \lambda_i) + \bar{h}  \cdot \bar{e}_i
+\end{align}\]</div>
+<p><strong>Derivation of above equation</strong>:
+You do not need to understand this derivation - it is here if you wish to.</p>
+<p>Let’s substitute this formula for <span class="math notranslate nohighlight">\(v(t)\)</span> into our equation for our network:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-e6adf57e-6772-42f8-9442-80c70f55417e">
+<span class="eqno">(44)<a class="headerlink" href="#equation-e6adf57e-6772-42f8-9442-80c70f55417e" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau \frac{d{v}}{dt} &amp;= -\bar{v} + \bar{h} + M\bar{v}\\
+\tau \frac{d{\sum_{i=1}^N c_i(t)\bar{e}_i}}{dt} &amp;= -\sum_{i=1}^N c_i(t)\bar{e}_i + \bar{h} + M\sum_{i=1}^N c_i(t)\bar{e}_i
+\end{align}\]</div>
+<p>We can change where the sum occurs in the left-hand side of the equation (because the derivative of summed entries is the sum of their derivatives):
+$<span class="math notranslate nohighlight">\(\frac{d{\sum_{i=1}^N c_i(t)\bar{e}_i}}{dt} = \sum_{i=1}^N [\frac{d{c_i(t)}}{dt}\bar{e}_i]\)</span>$
+and rearrange the right-hand side:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-6dea0adb-2e7a-4ce1-b854-15db2c2bfcc6">
+<span class="eqno">(45)<a class="headerlink" href="#equation-6dea0adb-2e7a-4ce1-b854-15db2c2bfcc6" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau \sum_{i=1}^N [\frac{d{c_i(t)}}{dt}\bar{e}_i] &amp;= -\sum_{i=1}^N c_i(t) [(\bar{e}_i - M\bar{e}_i)] + \bar{h}\\
+&amp;= -\sum_{i=1}^N [c_i(t)(\bar{e}_i - \lambda_i\bar{e}_i)] + \bar{h}
+\end{align}\]</div>
+<p>In the last step, we used the fact that <span class="math notranslate nohighlight">\(\bar{e}\)</span>s are eigenvectors.
+We can now get rid of the sum by taking the dot product of both sides with <span class="math notranslate nohighlight">\(\bar{e}_j\)</span>. Let’s take the left-hand side first</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d4a9e31e-eaf7-4575-9e05-3d4c6d22c24c">
+<span class="eqno">(46)<a class="headerlink" href="#equation-d4a9e31e-eaf7-4575-9e05-3d4c6d22c24c" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau \sum_{i=1}^N [\frac{d{c_i(t)}}{dt}\bar{e}_i] \cdot \bar{e_j}
+&amp;= \tau \sum_{i=1}^N [\frac{d{c_i(t)}}{dt}\bar{e}_i\cdot\bar{e_j}]\\
+&amp;= \tau \frac{d{c_j(t)}}{dt}
+\end{align}\]</div>
+<p>For the last step, remember that the eigenvectors are orthogonal and unit vectors so that the dot product of different eigenvectors is 0 and the dot product of the eigenvector with itself is 1. So the only entry of the sum that won’t be zero is when j is equal to i.</p>
+<p>Now let’s look at the right-hand side:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-b5a42328-14c4-4e4c-a6f8-5610e95f7fdd">
+<span class="eqno">(47)<a class="headerlink" href="#equation-b5a42328-14c4-4e4c-a6f8-5610e95f7fdd" title="Permalink to this equation">#</a></span>\[\begin{align}
+(-\sum_{i=1}^N [c_i(t)(\bar{e}_i - \lambda_i\bar{e}_i)] + \bar{h})\cdot\bar{e}_j &amp;= \sum_{i=1}^N [c_i(t)(\bar{e}_i - \lambda_i\bar{e}_i) \cdot \bar{e}_j] + \bar{h}  \cdot \bar{e}_j\\
+&amp;= -\sum_{i=1}^N [c_i(t)(\bar{e}_i\cdot \bar{e}_j - \lambda_i\bar{e}_i \cdot \bar{e}_j)] + \bar{h}  \cdot \bar{e}_j\\
+&amp;= - c_j(t)(1 - \lambda_j) + \bar{h}  \cdot \bar{e}_j\\
+\end{align}\]</div>
+<p>Now let’s put them back together to get our differential equations for the <span class="math notranslate nohighlight">\(c_i\)</span>’s:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-691de7dc-fae7-4b6a-b21b-c2d2b40624e8">
+<span class="eqno">(48)<a class="headerlink" href="#equation-691de7dc-fae7-4b6a-b21b-c2d2b40624e8" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau \frac{d{c_j(t)}}{dt} &amp;= - c_j(t)(1 - \lambda_j) + \bar{h}  \cdot \bar{e}_j
+\end{align}\]</div>
+<p><strong>Simulation</strong></p>
+<p>Let’s look at a simple simulation to prove to ourselves that we can look at the evolution of the coordinate values, <span class="math notranslate nohighlight">\(c_i\)</span>’s over time and reconstruct the firing rate. We will assume we have two input neurons and two output neurons. In the first cell below, we simulate our network as we have been doing using euler’s method for <span class="math notranslate nohighlight">\(\frac{dv}{dt}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set length of time we will simulate for (ms)</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c1"># Set Euler step size (ms)</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># Compute number of steps we will take</span>
+<span class="n">n_steps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">T</span> <span class="o">/</span> <span class="n">dt</span><span class="p">)</span>
+
+<span class="c1"># Set input and weight matrices</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">.1</span><span class="p">,</span> <span class="mf">.2</span><span class="p">],</span> <span class="p">[</span><span class="mf">.2</span><span class="p">,</span> <span class="mf">.3</span><span class="p">]])</span>
+
+<span class="n">tau</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1"># Initialize firing rate of output neuron array</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_steps</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_steps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+
+  <span class="c1"># Compute derivative </span>
+  <span class="n">h</span> <span class="o">=</span> <span class="n">W</span> <span class="o">@</span> <span class="n">u</span>
+  <span class="n">dv_dt</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">v</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">+</span>  <span class="n">h</span> <span class="o">+</span> <span class="n">M</span> <span class="o">@</span> <span class="n">v</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="p">)</span> <span class="o">/</span> <span class="n">tau</span>
+
+  <span class="c1"># Update v</span>
+  <span class="n">v</span><span class="p">[</span><span class="n">step</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>  <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">+</span> <span class="n">dv_dt</span> <span class="o">*</span> <span class="n">dt</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time (ms)&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Output firing rate (Hz)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Text(0.5, 0, &#39;Time (ms)&#39;), Text(0, 0.5, &#39;Output firing rate (Hz)&#39;)]
+</pre></div>
+</div>
+<img alt="../_images/IntrotoNeuralNetworks_28_1.png" src="../_images/IntrotoNeuralNetworks_28_1.png" />
+</div>
+</div>
+<p>Now, we will take an alternate approach and approximate the evolution of <span class="math notranslate nohighlight">\(c_1\)</span> and <span class="math notranslate nohighlight">\(c_2\)</span> according to our equations, then reconstruct the firing rates. The initial values of the output firing rates are 0, so <span class="math notranslate nohighlight">\(c_1\)</span> and <span class="math notranslate nohighlight">\(c_2\)</span> are initially 0.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find eigvals, eigvecs of M</span>
+<span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+
+<span class="c1"># Initialize cs</span>
+<span class="n">c1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_steps</span><span class="p">,))</span>
+<span class="n">c2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_steps</span><span class="p">,))</span>
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_steps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+
+  <span class="c1"># Compute derivative </span>
+  <span class="n">h</span> <span class="o">=</span> <span class="n">W</span> <span class="o">@</span> <span class="n">u</span>
+  <span class="n">dc1_dt</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">c1</span><span class="p">[</span><span class="n">step</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">eigvals</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span>  <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">eigvecs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="p">)</span> <span class="o">/</span> <span class="n">tau</span>
+  <span class="n">dc2_dt</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">c2</span><span class="p">[</span><span class="n">step</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">eigvals</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span>  <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">eigvecs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span> <span class="p">)</span> <span class="o">/</span> <span class="n">tau</span>
+
+  <span class="c1"># Update c</span>
+  <span class="n">c1</span><span class="p">[</span><span class="n">step</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>  <span class="o">=</span> <span class="n">c1</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">+</span> <span class="n">dc1_dt</span> <span class="o">*</span> <span class="n">dt</span>
+  <span class="n">c2</span><span class="p">[</span><span class="n">step</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>  <span class="o">=</span> <span class="n">c2</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">+</span> <span class="n">dc2_dt</span> <span class="o">*</span> <span class="n">dt</span>
+
+<span class="c1"># Compute v</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_steps</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_steps</span> <span class="p">):</span>
+  <span class="n">v</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="n">c1</span><span class="p">[</span><span class="n">step</span><span class="p">]</span><span class="o">*</span><span class="n">eigvecs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">c2</span><span class="p">[</span><span class="n">step</span><span class="p">]</span><span class="o">*</span><span class="n">eigvecs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">),</span> <span class="n">c1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;c1&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">),</span> <span class="n">c2</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;c2&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;v1&#39;</span><span class="p">,</span> <span class="s1">&#39;v2&#39;</span><span class="p">])</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time (ms)&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;c value&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time (ms)&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Output firing rate (Hz)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Text(0.5, 0, &#39;Time (ms)&#39;), Text(0, 0.5, &#39;Output firing rate (Hz)&#39;)]
+</pre></div>
+</div>
+<img alt="../_images/IntrotoNeuralNetworks_30_1.png" src="../_images/IntrotoNeuralNetworks_30_1.png" />
+</div>
+</div>
+<p>You can see that we find the exact same output firing rates over time using this method.</p>
+</section>
+<section id="section-2-2-3-analyzing-analytical-solutions-of-c-s">
+<h3>Section 2.2.3: Analyzing analytical solutions of c’s<a class="headerlink" href="#section-2-2-3-analyzing-analytical-solutions-of-c-s" title="Permalink to this headline">#</a></h3>
+<p><strong>If any of the eigenvalues of matrix M are over 1, the output firing rates will blow up to positive or negative infinity - the network will explode. If all of the eigenvalues are under 1, the output firing rates will converge to some steady state values.</strong></p>
+<p>Let’s prove this.</p>
+<p>If the input neuron firing rates are constant, so <span class="math notranslate nohighlight">\(\bar{h} = W\bar{u}\)</span> is constant over time, we can find an analytical solution for the evolution of firing rate vector coordinates with respect to the eigenvectors, <span class="math notranslate nohighlight">\(c_i\)</span>’s.</p>
+<p>We will not cover the derivation of this analytical solution as it involve tough integrals, but will just give you the equation:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-699d4505-3b78-4fc8-9a06-7f5ada66d2f4">
+<span class="eqno">(49)<a class="headerlink" href="#equation-699d4505-3b78-4fc8-9a06-7f5ada66d2f4" title="Permalink to this equation">#</a></span>\[\begin{align}
+c_i(t) = \frac{\bar{h}\cdot\bar{e_i}}{1-\lambda_i}(1-exp(-\frac{t(1-\lambda_i)}{\tau})) + c_i(0)exp(-\frac{t(1-\lambda_i)}{\tau})
+\end{align}\]</div>
+<p>If <span class="math notranslate nohighlight">\(\lambda_1\)</span> is 0.8, what will happen to <span class="math notranslate nohighlight">\(c_1\)</span> over time?</p>
+<div class="amsmath math notranslate nohighlight" id="equation-09a4042d-b233-47e4-8431-bfdfc13c6791">
+<span class="eqno">(50)<a class="headerlink" href="#equation-09a4042d-b233-47e4-8431-bfdfc13c6791" title="Permalink to this equation">#</a></span>\[\begin{align}
+exp(-\frac{t(1-\lambda_i)}{\tau}) &amp;= exp(-\frac{t(.2)}{\tau})
+\end{align}\]</div>
+<p>If we plot this, we see it goes to 0 at large values of t.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_vec</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">.2</span><span class="o">*</span><span class="n">t_vec</span><span class="o">/</span><span class="n">tau</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f14147cb850&gt;]
+</pre></div>
+</div>
+<img alt="../_images/IntrotoNeuralNetworks_34_1.png" src="../_images/IntrotoNeuralNetworks_34_1.png" />
+</div>
+</div>
+<p>So at large values of t, this term will equal 0 and we will get:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-91ffc8c5-5064-45eb-bd11-fe92eb2e2a9e">
+<span class="eqno">(51)<a class="headerlink" href="#equation-91ffc8c5-5064-45eb-bd11-fe92eb2e2a9e" title="Permalink to this equation">#</a></span>\[\begin{align}
+c_1(t) &amp;= \frac{\bar{h}\cdot\bar{e_1}}{1-\lambda_1}(1-exp(-\frac{t(1-\lambda_1)}{\tau})) + c_1(0)exp(-\frac{t(1-\lambda_1)}{\tau})\\
+&amp;= \frac{\bar{h}\cdot\bar{e_1}}{1-\lambda_1}(1-0) + c_1(0)*0)\\
+&amp;=\frac{\bar{h}\cdot\bar{e_1}}{1-\lambda_1}\\
+\end{align}\]</div>
+<p>The value of c will decay to a fixed point <span class="math notranslate nohighlight">\(\frac{\bar{h}\cdot\bar{e_1}}{1-\lambda_1}\)</span></p>
+<p>If <span class="math notranslate nohighlight">\(\lambda_1\)</span> is 1.2, what will happen to <span class="math notranslate nohighlight">\(c_1\)</span> over time?</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a74f9df5-f7c3-4041-b8d0-0f115dde12b9">
+<span class="eqno">(52)<a class="headerlink" href="#equation-a74f9df5-f7c3-4041-b8d0-0f115dde12b9" title="Permalink to this equation">#</a></span>\[\begin{align}
+exp(-\frac{t(1-\lambda_i)}{\tau}) &amp;= exp(-\frac{t(-.2)}{\tau})
+\end{align}\]</div>
+<p>If we plot this, we see it goes to infinity at large values of t.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_vec</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">.2</span><span class="o">*</span><span class="n">t_vec</span><span class="o">/</span><span class="n">tau</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f1414743e90&gt;]
+</pre></div>
+</div>
+<img alt="../_images/IntrotoNeuralNetworks_37_1.png" src="../_images/IntrotoNeuralNetworks_37_1.png" />
+</div>
+</div>
+<p>So <span class="math notranslate nohighlight">\(c_1\)</span> will blow up to positive or negative infinity. If one of the c’s blows up, <span class="math notranslate nohighlight">\(\bar{v}(t)\)</span> will too.</p>
+<p><strong>If any of the eigenvalues of matrix M are over 1, the output firing rates will blow up to positive or negative infinity - the network will explode. If all of the eigenvalues are under 1, the output firing rates will converge to some steady state values.</strong></p>
+<p><strong>Stop and think!</strong> What is the formula for the steady state value of <span class="math notranslate nohighlight">\(\bar{v}\)</span> using the eigenbasis? Assume the input neuron firing rates do not change over time and all eigenvalues are under 1.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f82381a5-784a-4fc3-9941-e5e8fa012d45">
+<span class="eqno">(53)<a class="headerlink" href="#equation-f82381a5-784a-4fc3-9941-e5e8fa012d45" title="Permalink to this equation">#</a></span>\[\begin{align}
+\bar{v}(t) &amp;= \sum_{i=1}^N c_i(t)\bar{e}_i\\
+\tau \frac{d{c_i(t)}}{dt} &amp;= - c_i(t)(1 - \lambda_i) + \bar{h}  \cdot \bar{e}_i
+\end{align}\]</div>
+<p>We can find the steady state value of <span class="math notranslate nohighlight">\(\bar{v}\)</span> by finding the values of <span class="math notranslate nohighlight">\(c_i\)</span>’s when their derivatives are equal to 0.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-7365367c-4bd9-4c6f-b0ce-90d608864e79">
+<span class="eqno">(54)<a class="headerlink" href="#equation-7365367c-4bd9-4c6f-b0ce-90d608864e79" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau \frac{d{c_j(t)}}{dt} &amp;= - c_j(t)(1 - \lambda_j) + \bar{h}  \cdot \bar{e}_j = 0\\
+c_j(t) = \frac{\bar{h}\cdot\bar{e}_j}{1-\lambda_j}
+\end{align}\]</div>
+<p>We can then subsitute into our equation for <span class="math notranslate nohighlight">\(\bar{v}\)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-843d833b-dda3-4890-bf68-5f126acf1cda">
+<span class="eqno">(55)<a class="headerlink" href="#equation-843d833b-dda3-4890-bf68-5f126acf1cda" title="Permalink to this equation">#</a></span>\[\begin{align}
+\bar{v}_{SS} &amp;= \sum_{i=1}^N c_i(t)\bar{e}_i\\
+&amp;= \sum_{i=1}^N \frac{\bar{h}\cdot\bar{e}_i}{1-\lambda_i}\bar{e}_i
+\end{align}\]</div>
+</section>
+<section id="section-2-2-4-connection-to-general-understanding-of-first-order-differential-equations">
+<h3>Section 2.2.4: Connection to general understanding of first order differential equations<a class="headerlink" href="#section-2-2-4-connection-to-general-understanding-of-first-order-differential-equations" title="Permalink to this headline">#</a></h3>
+<p>Let’s rearrange slightly our equation for our linear recurrent neural network:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f5576e43-4968-41cf-bb9a-ba4b7116ec62">
+<span class="eqno">(56)<a class="headerlink" href="#equation-f5576e43-4968-41cf-bb9a-ba4b7116ec62" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau\frac{d\bar{v}}{dt} &amp;= -\bar{v} + \bar{h} + M\bar{v}\\
+\frac{d\bar{v}}{dt} &amp;= \frac{(M - 1)\bar{v} + \bar{h}}{\tau}\\
+\end{align}\]</div>
+<p>Let’s say we have no input so <span class="math notranslate nohighlight">\(\bar{h} = \bar{0}\)</span></p>
+<div class="amsmath math notranslate nohighlight" id="equation-f1cc0c80-bbc3-4827-9146-3c83f2f25774">
+<span class="eqno">(57)<a class="headerlink" href="#equation-f1cc0c80-bbc3-4827-9146-3c83f2f25774" title="Permalink to this equation">#</a></span>\[\begin{align}
+\frac{d\bar{v}}{dt} &amp;= \frac{(M - 1)}{\tau}\bar{v}\\
+\end{align}\]</div>
+<p>This resembles our simple first order system of differential equations from section 2.4.1 here: https://ebatty.github.io/IntroCompNeuro/lectures/MathReview.html.</p>
+<p>In particular,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-7b20a26b-399f-4b2d-8fb7-897941233cc2">
+<span class="eqno">(58)<a class="headerlink" href="#equation-7b20a26b-399f-4b2d-8fb7-897941233cc2" title="Permalink to this equation">#</a></span>\[\begin{align}
+\frac{d\bar{v}}{dt} = A\bar{v}
+\end{align}\]</div>
+<p>where</p>
+<div class="amsmath math notranslate nohighlight" id="equation-0e040140-ca62-4f1a-bcc7-ee7c9d588bfc">
+<span class="eqno">(59)<a class="headerlink" href="#equation-0e040140-ca62-4f1a-bcc7-ee7c9d588bfc" title="Permalink to this equation">#</a></span>\[\begin{align}
+A = \frac{(M-1)}{\tau}
+\end{align}\]</div>
+<p>The eigenvalues of A are the same as the eigenvalues of M but minus 1. So what we have found syncs with our gif:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#@markdown Execute this cell to view dynamical systems gif</span>
+
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="n">Image</span><span class="p">(</span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/ebatty/MathToolsforNeuroscience/blob/master/dynsysdemo.gif?raw=True&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">700</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><img src="https://github.com/ebatty/MathToolsforNeuroscience/blob/master/dynsysdemo.gif?raw=True" width="700"/></div></div>
+</div>
+<p>Eigenvalues of M over 1 are equivalent to eigenvalues of A over 0 and so lead to our system blowing up. All eigenvalues of M under 1 are equivalent to eigenvalues of A under 0 and so lead to our system converging on a fixed point (in the case of zero input, the origin).</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "ebatty/IntroCompNeuro",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./Notes"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="DynamicalSystemsReview.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Dynamical Systems Review</p>
+        </div>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Ella Batty<br/>
+  
+      &copy; Copyright 2021.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
