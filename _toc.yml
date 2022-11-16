@@ -14,3 +14,4 @@ parts:
     chapters:
     - file: Notes/DynamicalSystemsReview.ipynb
     - file: Notes/IntrotoNeuralNetworks.ipynb
+    - file: Notes/HebbianLearning.ipynb
