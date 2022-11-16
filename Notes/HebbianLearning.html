@@ -1,0 +1,947 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Hebbian &amp; Unsupervised Learning &#8212; Introductory Computational Neuroscience</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="../_static/NeuroImage.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Intro to Neural Networks" href="IntrotoNeuralNetworks.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/NeuroImage.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Introductory Computational Neuroscience</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Neural Coding
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="VisualizingNeuralResponses.html">
+   Visualizing Neural Responses
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="TuningCurves.html">
+   Tuning Curves
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Decoding_LinearRegression.html">
+   Decoding: Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Decoding_LogisticRegression.html">
+   Decoding: Logistic Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="SpikeTriggeredAverages.html">
+   Spike Triggered Averages
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="NeuralEncodingI.html">
+   Neural Encoding I
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="NeuralEncodingII.html">
+   Neural Encoding II
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Biophysical Neural Models
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="DynamicalSystemsReview.html">
+   Dynamical Systems Review
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="IntrotoNeuralNetworks.html">
+   Intro to Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Hebbian &amp; Unsupervised Learning
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/Notes/HebbianLearning.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="initThebeSBT()"
+  class="headerbtn headerbtn-launch-thebe"
+  data-toggle="tooltip"
+data-placement="left"
+title="Launch Thebe"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="headerbtn__text-container">Live Code</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/Notes/HebbianLearning.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Hebbian &amp; Unsupervised Learning
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-1-hebbian-learning-rules">
+   Section 1: Hebbian Learning Rules
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-1-experimental-evidence-of-hebbian-learning-long-term-potentiation-ltp">
+     Section 1.1: Experimental evidence of Hebbian learning: long-term potentiation (LTP)
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-2-our-neural-model">
+     Section 1.2: Our neural model
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-3-basic-hebbian-learning">
+     Section 1.3: Basic Hebbian Learning
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-4-covariance-based-learning">
+     Section 1.4: Covariance-based learning
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-5-proof-of-weight-explosion">
+     Section 1.5: Proof of weight explosion
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-6-oja-s-rule">
+     Section 1.6: Oja’s rule
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-2-what-does-hebbian-learning-learn">
+   Section 2: What does Hebbian learning learn?
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-1-simulation">
+     Section 2.1: Simulation
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-2-mathematical-proof">
+     Section 2.2: Mathematical proof
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-3-interpretation-of-hebbian-learning-pca">
+     Section 2.3: Interpretation of Hebbian Learning &amp; PCA
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-3-grid-cell-example">
+   Section 3: Grid cell example
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Hebbian & Unsupervised Learning</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Hebbian &amp; Unsupervised Learning
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-1-hebbian-learning-rules">
+   Section 1: Hebbian Learning Rules
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-1-experimental-evidence-of-hebbian-learning-long-term-potentiation-ltp">
+     Section 1.1: Experimental evidence of Hebbian learning: long-term potentiation (LTP)
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-2-our-neural-model">
+     Section 1.2: Our neural model
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-3-basic-hebbian-learning">
+     Section 1.3: Basic Hebbian Learning
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-4-covariance-based-learning">
+     Section 1.4: Covariance-based learning
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-5-proof-of-weight-explosion">
+     Section 1.5: Proof of weight explosion
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-1-6-oja-s-rule">
+     Section 1.6: Oja’s rule
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-2-what-does-hebbian-learning-learn">
+   Section 2: What does Hebbian learning learn?
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-1-simulation">
+     Section 2.1: Simulation
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-2-mathematical-proof">
+     Section 2.2: Mathematical proof
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#section-2-3-interpretation-of-hebbian-learning-pca">
+     Section 2.3: Interpretation of Hebbian Learning &amp; PCA
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#section-3-grid-cell-example">
+   Section 3: Grid cell example
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <p><a href="https://colab.research.google.com/github/ebatty/IntroCompNeuro/blob/main/Notes/HebbianLearning.ipynb" target="_parent"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<section class="tex2jax_ignore mathjax_ignore" id="hebbian-unsupervised-learning">
+<h1>Hebbian &amp; Unsupervised Learning<a class="headerlink" href="#hebbian-unsupervised-learning" title="Permalink to this headline">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="section-1-hebbian-learning-rules">
+<h1>Section 1: Hebbian Learning Rules<a class="headerlink" href="#section-1-hebbian-learning-rules" title="Permalink to this headline">#</a></h1>
+<p>In 1949, David Hebb postulated that “neurons that fire together, wire together”.  In other words, if a presynaptic neuron and postsynaptic neuron are firing at the same time, the synapse between them strengthens.</p>
+<section id="section-1-1-experimental-evidence-of-hebbian-learning-long-term-potentiation-ltp">
+<h2>Section 1.1: Experimental evidence of Hebbian learning: long-term potentiation (LTP)<a class="headerlink" href="#section-1-1-experimental-evidence-of-hebbian-learning-long-term-potentiation-ltp" title="Permalink to this headline">#</a></h2>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/LTP.png"><img alt="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/LTP.png" src="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/LTP.png" style="width: 600px;" /></a>
+<p>There is some experimental evidence of this in the brain (schematic above from https://neuronaldynamics.epfl.ch/online/Ch19.S1.html). We can record the excitatory postsynaptic potential (EPSP) in a postsynaptic neuron - this is the voltage change in the postynaptic cell body following a presynaptic spike. We can stimulate the presynaptic fibers a little - enough to induce a postynaptic voltage change but not enough to induce a postsynaptic spike (Part A in figure above). We measure the strength of the postsynaptic response (the EPSP amplitude). We can then stimulate the presynaptic fibers a lot - enough to induce postsynaptic spikes so the presynaptic and postsynaptic neurons are firing together (Part B above). After this, we test the subthreshold presynaptic stimulation and measure the EPSP amplitude (part C above). We find that the EPSP amplitude is bigger after the period where the presynaptic and postsynaptic neurons were firing together - meaning that the neurons wired together because they fired together (part D above)! This effect is called <strong>long-term potentiation</strong> and can last for days or months.</p>
+<p>We also see <strong>long-term depression</strong> experimentally: if a presynaptic neuron is firing for an extended period of time and the postsynaptic neuron never fires, the synapse can weaken.</p>
+</section>
+<section id="section-1-2-our-neural-model">
+<h2>Section 1.2: Our neural model<a class="headerlink" href="#section-1-2-our-neural-model" title="Permalink to this headline">#</a></h2>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/neuraldiagram.png"><img alt="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/neuraldiagram.png" src="https://raw.githubusercontent.com/ebatty/IntroCompNeuro/main/images/neuraldiagram.png" style="width: 300px;" /></a>
+<p>Assume we have one output neuron receiving inputs from several input neurons (in the schematic above, 2). We will use the same notation as for our RNNs: we have an output neuron with firing rate <span class="math notranslate nohighlight">\(v\)</span> receiving synaptic connections from some inputs neurons, whose firing rates are summarized in vector <span class="math notranslate nohighlight">\(\bar{u} = \begin{bmatrix}u_1 \\ u_2 \\ \end{bmatrix}\)</span>. So the first element of <span class="math notranslate nohighlight">\(\bar{u}\)</span> is the first input neuron firing rate and the second element is the second input neuron firing rate (and so on if we had more input neurons). The weights from the input neurons to the output neuron are summarized in vector <span class="math notranslate nohighlight">\(\bar{w} = \begin{bmatrix}w_1 \\ w_2 \\ \end{bmatrix}\)</span>, where the first element is the weight from the first input neuron, the second element is the weight from the second input neuron (and so on if we had more input neurons).</p>
+<p>Our neural model is that the output neural firing rate is the weighted sum of the inputs, where the weights are…the synaptic weights! Specifically, our output neuron firing rate is the dot product between <span class="math notranslate nohighlight">\(\bar{w}\)</span> and <span class="math notranslate nohighlight">\(\bar{u}\)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-1fa7cbba-f86a-4c18-b858-b8915e91fea0">
+<span class="eqno">(60)<a class="headerlink" href="#equation-1fa7cbba-f86a-4c18-b858-b8915e91fea0" title="Permalink to this equation">#</a></span>\[\begin{align}
+v = \bar{w} \cdot \bar{u}
+\end{align}\]</div>
+</section>
+<section id="section-1-3-basic-hebbian-learning">
+<h2>Section 1.3: Basic Hebbian Learning<a class="headerlink" href="#section-1-3-basic-hebbian-learning" title="Permalink to this headline">#</a></h2>
+<p>We can formalize the idea that neurons that fire together, wire together, with the following equation:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-bb47ad77-761c-42ff-9503-09775f0d11c7">
+<span class="eqno">(61)<a class="headerlink" href="#equation-bb47ad77-761c-42ff-9503-09775f0d11c7" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau_w \frac{d\bar{w}}{dt} = v(t) \bar{u}(t)
+\end{align}\]</div>
+<p>In other words, the rate of change in the weight between input neuron and output neuron is equal to the output firing rate times the input firing rate divided by the time constant <span class="math notranslate nohighlight">\(\tau_w\)</span>.  Remember that the output and input neuron firing rates change over time. So the weight will only grow if both neurons are active simultaneously (the whole idea of Hebbian learning).</p>
+<p>Below, I simulate Hebbian learning in code. I plot <span class="math notranslate nohighlight">\(v\)</span> and <span class="math notranslate nohighlight">\(u_1\)</span> over time. I also plot both <span class="math notranslate nohighlight">\(\frac{w_1}{dt}\)</span> and <span class="math notranslate nohighlight">\(w_1\)</span> over time, computed with Hebbian learning. You can see that the weight grows when the output neuron and the first input neuron are active at the same time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="mi">200</span> <span class="c1"># number of time steps to simulate for</span>
+<span class="n">tau</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">0.001</span>
+
+<span class="c1"># Create firing rates of two input neurons</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">T</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">u</span><span class="p">[</span><span class="mi">50</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">u</span><span class="p">[</span><span class="mi">110</span><span class="p">:</span><span class="mi">190</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># Initialize weights (keep track for plotting)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">T</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">.1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="p">))</span>
+
+<span class="c1"># Initialize dw_dt and v (just tracking for plotting)</span>
+<span class="n">dw_dt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">T</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">T</span><span class="p">,</span> <span class="p">))</span>
+
+<span class="c1"># Loop over time steps</span>
+<span class="k">for</span> <span class="n">i_t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+
+  <span class="c1"># Compute output firing rate according to model</span>
+  <span class="n">v</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="n">i_t</span><span class="p">],</span> <span class="n">u</span><span class="p">[</span><span class="n">i_t</span><span class="p">])</span>
+
+  <span class="c1"># Compute dw_dt</span>
+  <span class="n">dw_dt</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span> <span class="o">/</span> <span class="n">tau</span>
+
+  <span class="c1"># Update w</span>
+  <span class="n">w</span><span class="p">[</span><span class="n">i_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span> <span class="o">+</span> <span class="n">dw_dt</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span> <span class="o">*</span> <span class="n">dt</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">sharex</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="sa">r</span><span class="s1">&#39;Input neuron 1: $u_1$&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;Input neuron 2: $u_2$&#39;</span><span class="p">])</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="sa">r</span><span class="s1">&#39;Output neuron: v&#39;</span><span class="p">])</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dw_dt</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="sa">r</span><span class="s1">&#39;$\frac</span><span class="si">{dw_1}{dt}</span><span class="s1">$&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$\frac</span><span class="si">{dw_1}{dt}</span><span class="s1">$&#39;</span><span class="p">])</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="sa">r</span><span class="s1">&#39;$w_1$&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$w_2$&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fc27c6a1c50&gt;
+</pre></div>
+</div>
+<img alt="../_images/HebbianLearning_9_1.png" src="../_images/HebbianLearning_9_1.png" />
+</div>
+</div>
+<p>With this Hebbian learning rule is that our weights can only increase, not decrease: both <span class="math notranslate nohighlight">\(v\)</span> and <span class="math notranslate nohighlight">\(\bar{u}\)</span> represent firing rates and so are non-negative, meaning that their product and by extension <span class="math notranslate nohighlight">\(\frac{dw}{dt}\)</span> is always positive. There are two issues: 1) the weights would evenutally explore, and 2) this doesn’t model long-term depression. We’ll fix the second issue first in the next part.</p>
+</section>
+<section id="section-1-4-covariance-based-learning">
+<h2>Section 1.4: Covariance-based learning<a class="headerlink" href="#section-1-4-covariance-based-learning" title="Permalink to this headline">#</a></h2>
+<p>To model long-term depression, we extend our learning rule:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d68eab06-1991-45eb-a69d-b89f03ec5bf2">
+<span class="eqno">(62)<a class="headerlink" href="#equation-d68eab06-1991-45eb-a69d-b89f03ec5bf2" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau_w \frac{d\bar{w}}{dt} = \bar{u}(t)(v(t) - &lt;v&gt;)
+\end{align}\]</div>
+<p>We are now modeling the rate of change in the weight as the input neuron firing rate times the output neuron firing rate at that time minus its average firing rate, <span class="math notranslate nohighlight">\(&lt;v&gt;\)</span>, over the time constant. The average firing rate <span class="math notranslate nohighlight">\(&lt;v&gt;\)</span> is the average firing rate of the output neuron over some prior chunk of time.</p>
+<p>If the output firing rate is higher than average, the term <span class="math notranslate nohighlight">\((v(t) - &lt;v&gt;)\)</span> will be positive and the synapses will strengthen, modeling long-term potentiation. If the output firing rate is lower than average, the term <span class="math notranslate nohighlight">\((v(t) - &lt;v&gt;)\)</span> is negative, and the synapses will weaken, consistent with long-term depression. This makes intuitive sense: we don’t just care whether the output neuron is firing at the same time as the input neuron, we care whether it’s <em>firing more than it usually does</em>.</p>
+<p>So, we’ve solved our problem from our first rule of not allowing synapses to weaken - this extension models LTP in addition to LTD! Unfortunately, despite that, with this model, the weights still tend to explode to infinity. See the next section for proof.</p>
+<p>This learning rule is called <strong>covariance-based learning</strong>. We can average over the training inputs: in other words we assume that the weights are the same while the neuron sees that set of inputs and just change afterwards. This is a fair approximation because the time scale of learning is often much slower than the time scale of seeing multiple inputs. If we do that, we can write:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c92db2b6-043a-4b91-82ec-e33fc684bc72">
+<span class="eqno">(63)<a class="headerlink" href="#equation-c92db2b6-043a-4b91-82ec-e33fc684bc72" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau_w \frac{d\bar{w}}{dt} &amp;= &lt;\bar{u}(t)(v(t) - &lt;v&gt;)&gt; \\
+&amp;= &lt;\bar{u}(\bar{u}\cdot \bar{w} - &lt;\bar{u}\cdot \bar{w}&gt;)&gt;\\
+&amp;= &lt;\bar{u}(\bar{u} - &lt;\bar{u} &gt;)&gt; \cdot \bar{w}
+\end{align}\]</div>
+<p>It so happens that this first term, <span class="math notranslate nohighlight">\(&lt;\bar{u}(\bar{u} - &lt;\bar{u} &gt;)&gt;\)</span>, defines the covariance matrix of the inputs, <span class="math notranslate nohighlight">\(C\)</span>. If we had N input neurons, the covariance matrix is an N x N matrix where each entry denotes how those two input neurons (indicated by the row and column) covary. This means we can write this rule as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-dc008eaf-efc7-4e9f-a313-327f859fb43d">
+<span class="eqno">(64)<a class="headerlink" href="#equation-dc008eaf-efc7-4e9f-a313-327f859fb43d" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau_w \frac{d\bar{w}}{dt} &amp;= C \cdot \bar{w}
+\end{align}\]</div>
+<p>In other words, the rate of change of the weights equal the covariance matrix of the inputs over a period of time times the starting weight vector.</p>
+</section>
+<section id="section-1-5-proof-of-weight-explosion">
+<h2>Section 1.5: Proof of weight explosion<a class="headerlink" href="#section-1-5-proof-of-weight-explosion" title="Permalink to this headline">#</a></h2>
+<p><strong>Basic Hebb’s Rule</strong> (Section 1.3)</p>
+<p>Let’s return to our basic Hebbian rule and prove that the weights will explode. Remember our neural model is:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-65fe8975-e134-46d8-83b5-626947072c65">
+<span class="eqno">(65)<a class="headerlink" href="#equation-65fe8975-e134-46d8-83b5-626947072c65" title="Permalink to this equation">#</a></span>\[\begin{align}
+v = \bar{w} \cdot \bar{u}
+\end{align}\]</div>
+<p>and our learning rule is</p>
+<div class="amsmath math notranslate nohighlight" id="equation-71958d42-9ee6-4073-b7f6-51b3269c0d70">
+<span class="eqno">(66)<a class="headerlink" href="#equation-71958d42-9ee6-4073-b7f6-51b3269c0d70" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau \frac{d\bar{w}}{dt} = v\bar{u}
+\end{align}\]</div>
+<p>We can write the square of the length of the weight vector, <span class="math notranslate nohighlight">\(||\bar{w}||^2\)</span> as the dot product of the weight vector with itself (this is relation from linear algebra that the length of a vector equals the square root of its dot product with itself).</p>
+<div class="amsmath math notranslate nohighlight" id="equation-6245b1d8-d8e2-4e50-9cb3-1583e286772b">
+<span class="eqno">(67)<a class="headerlink" href="#equation-6245b1d8-d8e2-4e50-9cb3-1583e286772b" title="Permalink to this equation">#</a></span>\[\begin{align}
+||\bar{w}||^2 = \bar{w}\cdot\bar{w}
+\end{align}\]</div>
+<p>Let’s compute the derivative of the length of this vector squared. The first step is to use the chain rule:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-af720cef-5149-4baf-bf98-c5f943369318">
+<span class="eqno">(68)<a class="headerlink" href="#equation-af720cef-5149-4baf-bf98-c5f943369318" title="Permalink to this equation">#</a></span>\[\begin{align}
+\frac{d||\bar{w}||^2}{dt} &amp;= 2\bar{w}\cdot\frac{d\bar{w}}{dt}\\
+&amp;= 2\bar{w}\cdot(v\bar{u})/\tau\\
+&amp;= 2v\bar{w}\cdot\bar{u}/\tau\\
+&amp;= 2v^2/\tau
+\end{align}\]</div>
+<p>Between the first and second rows, we substituted in the equation for <span class="math notranslate nohighlight">\(\frac{d\bar{w}}{dt}\)</span>. Between the third and fourth rows, we substituted in <span class="math notranslate nohighlight">\(v = \bar{w}\cdot\bar{u}\)</span>. We see that the derivative of the length of the weight vector squared is equal to 2 times the output firing rate squared divided by the time constant. These terms can never be negative, or equal to zero, so the length of the weight vector will grow and grow until it explodes!</p>
+<p><strong>Covariance-based rule</strong> (Section 1.4)</p>
+<p>Even though the covariance-based rule presented in section 1.4 allows for long-term depression, the weights still explode. We can prove this in much the same way as above, by deriving the derivative of the length of the weight vector squared, but the proof is a little more difficult/confusing so we’ll skip it (but check Dayan &amp; Abbott Chapter 8 if interested).</p>
+</section>
+<section id="section-1-6-oja-s-rule">
+<h2>Section 1.6: Oja’s rule<a class="headerlink" href="#section-1-6-oja-s-rule" title="Permalink to this headline">#</a></h2>
+<p>We will look at one more extension of the Hebbian learning rule: Oja’s rule. This rule results in more stable learning: the synaptic weights do not explode. Oja’s rule is:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-998265b0-c284-40f1-be1c-a32919197c5e">
+<span class="eqno">(69)<a class="headerlink" href="#equation-998265b0-c284-40f1-be1c-a32919197c5e" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau \frac{d\bar{w}}{dt} = v\bar{u} - \alpha v^2\bar{w}
+\end{align}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\alpha\)</span> is some constant value.</p>
+<p>As in section 1.5, we can compute the derivative of the length of the weight vector squared:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d667b8fd-a23f-47d5-a043-01e9ec9af23a">
+<span class="eqno">(70)<a class="headerlink" href="#equation-d667b8fd-a23f-47d5-a043-01e9ec9af23a" title="Permalink to this equation">#</a></span>\[\begin{align}
+\frac{d||\bar{w}||^2}{dt} &amp;= 2\bar{w}\cdot\frac{d\bar{w}}{dt}\\
+&amp;= 2\bar{w}\cdot(v\bar{u} - \alpha v^2\bar{w})/\tau\\
+&amp;= (2v\bar{w}\cdot\bar{u} - 2\alpha v^2\bar{w}\cdot\bar{w})/\tau\\
+&amp;= 2v^2 - 2\alpha v^2||\bar{w}||^2\\
+&amp;= 2v^2(1 - \alpha ||\bar{w}||^2)
+\end{align}\]</div>
+<p>We can find the steady-state values of the weights by setting this equal to zero and solving for the length of the weight vector. We find that the length of the weight vectors becomes the square root of 1 over <span class="math notranslate nohighlight">\(\alpha\)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-2ae303cd-63db-471c-b37c-a2853600d1b9">
+<span class="eqno">(71)<a class="headerlink" href="#equation-2ae303cd-63db-471c-b37c-a2853600d1b9" title="Permalink to this equation">#</a></span>\[\begin{align}
+||\bar{w}|| = \sqrt{\frac{1}{\alpha}}
+\end{align}\]</div>
+<p>The weights do not explode as the length of the weight vector does not explode!</p>
+<p>Oja’s rule induces <strong>competition between synapses</strong>: if one synapse strengthens, the others must weaken so that the length of the total vector remains at <span class="math notranslate nohighlight">\(\sqrt{\frac{1}{\alpha}}\)</span>.</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="section-2-what-does-hebbian-learning-learn">
+<h1>Section 2: What does Hebbian learning learn?<a class="headerlink" href="#section-2-what-does-hebbian-learning-learn" title="Permalink to this headline">#</a></h1>
+<section id="section-2-1-simulation">
+<h2>Section 2.1: Simulation<a class="headerlink" href="#section-2-1-simulation" title="Permalink to this headline">#</a></h2>
+<p>So what does Hebbian learning actually learn? Let’s look at an example where our two input neurons are correlated. In the plot below, each point is the firing rate of the two neurons at a specific time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create inputs</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">u1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<span class="n">u2</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">u1</span> <span class="o">+</span> <span class="mf">.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">T</span><span class="p">,)</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">u1</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">u2</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">u</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">u</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;.k&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$u_1$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$u_2$&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;$u_2$&#39;)
+</pre></div>
+</div>
+<img alt="../_images/HebbianLearning_16_1.png" src="../_images/HebbianLearning_16_1.png" />
+</div>
+</div>
+<p>We can implement Oja’s rule and update the weights for each data point, as below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tau</span> <span class="o">=</span> <span class="mf">.1</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">.1</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="mf">.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="p">))</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">T</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+
+  <span class="c1"># Compute output response</span>
+  <span class="n">v</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">[</span><span class="n">step</span><span class="p">])</span>
+
+  <span class="c1"># Compute rate of change of weights</span>
+  <span class="n">dw_dt</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="p">[</span><span class="n">step</span><span class="p">]</span>  <span class="o">-</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="n">step</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">w</span>
+
+  <span class="c1"># Update weights</span>
+  <span class="n">w</span> <span class="o">+=</span> <span class="n">dw_dt</span> <span class="o">*</span> <span class="n">dt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">u</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">u</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;.k&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;-r&#39;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;-or&#39;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Learned weights&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$u_1$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$u_2$&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;$u_2$&#39;)
+</pre></div>
+</div>
+<img alt="../_images/HebbianLearning_19_1.png" src="../_images/HebbianLearning_19_1.png" />
+</div>
+</div>
+<p>The red line is the weight vector. You may be able to tell by eye that the weight vector learned is the first principal component of the input data!</p>
+</section>
+<section id="section-2-2-mathematical-proof">
+<h2>Section 2.2: Mathematical proof<a class="headerlink" href="#section-2-2-mathematical-proof" title="Permalink to this headline">#</a></h2>
+<p>We can prove what we see in our simulation: Hebbian learning results in a weight vector that equals the first principal component. Let’s prove this for our covariance-based rule.</p>
+<p>Remember our rule is:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-7f5c190f-b09c-415d-a4c3-7508e6c7601a">
+<span class="eqno">(72)<a class="headerlink" href="#equation-7f5c190f-b09c-415d-a4c3-7508e6c7601a" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau_w \frac{d\bar{w}}{dt} = \bar{u}(t)(v(t) - &lt;v&gt;)
+\end{align}\]</div>
+<p>We can also write it as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-b9e9a568-ad33-4235-b84a-b2d4bf323fe1">
+<span class="eqno">(73)<a class="headerlink" href="#equation-b9e9a568-ad33-4235-b84a-b2d4bf323fe1" title="Permalink to this equation">#</a></span>\[\begin{align}
+\tau_w \frac{d\bar{w}}{dt} = C \cdot \bar{w}
+\end{align}\]</div>
+<p>where C is the covariance matrix.</p>
+<p>Let’s say we have the eigenvectors of the covariance matrix <span class="math notranslate nohighlight">\(\bar{e}_1\)</span>, <span class="math notranslate nohighlight">\(\bar{e}_2\)</span>, and so on, and the corresponding eigenvalues <span class="math notranslate nohighlight">\(\lambda_1\)</span>, <span class="math notranslate nohighlight">\(\lambda_2\)</span>, and so on. Covariance matrices are symmetric, so just as with the recurrent matrix in RNNs, we know that the eigvectors form a basis for N-dimensional space. This means that we can write any vector in that space as a linear combination of the eigenvectors. So any weight vector can be written as the sum of scalar values, c’s, times the eigenvectors:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-6f22d27d-3c13-4ab8-891e-bf3901323358">
+<span class="eqno">(74)<a class="headerlink" href="#equation-6f22d27d-3c13-4ab8-891e-bf3901323358" title="Permalink to this equation">#</a></span>\[\begin{align}
+\bar{w}(t) = \sum_i c_i(t)\bar{e}_i
+\end{align}\]</div>
+<p>We can find the equation for each coefficient (not shown as similar to RNN case), which is</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d95eba98-e9c7-4a4f-b679-92aa4dc89754">
+<span class="eqno">(75)<a class="headerlink" href="#equation-d95eba98-e9c7-4a4f-b679-92aa4dc89754" title="Permalink to this equation">#</a></span>\[\begin{align}
+c_i(t) = c_i(0)exp(\frac{\lambda_i t}{\tau})
+\end{align}\]</div>
+<p>So, we get</p>
+<div class="amsmath math notranslate nohighlight" id="equation-275a7775-ce3a-48a0-b50a-c1b3ff6e6b4b">
+<span class="eqno">(76)<a class="headerlink" href="#equation-275a7775-ce3a-48a0-b50a-c1b3ff6e6b4b" title="Permalink to this equation">#</a></span>\[\begin{align}
+\bar{w}(t) = \sum_i c_i(0)exp(\frac{\lambda_i t}{\tau})\bar{e}_i
+\end{align}\]</div>
+<p>Let’s say we have two eigenvalues, <span class="math notranslate nohighlight">\(\lambda_1 = 0.9\)</span>, and <span class="math notranslate nohighlight">\(\lambda_2 = 0.6\)</span>. Below, I plot <span class="math notranslate nohighlight">\(exp(\frac{\lambda_1 t}{\tau})\)</span> in green and <span class="math notranslate nohighlight">\(exp(\frac{\lambda_2 t}{\tau})\)</span> in red, with <span class="math notranslate nohighlight">\(\tau = 1\)</span> for t up to 1000. You can see that at high t, the term with the larger lambda is much much bigger: the red line looks like it stays at zero by comparison (even though it actually reaches up to 2 x 10^260. At large t, the term with the largest eigenvalue dominates in the sum, so much so that we can ignore the other terms in our approximation of <span class="math notranslate nohighlight">\(\bar{w}(t)\)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-de94b73a-4726-4a6e-83e3-ba709eac5c5c">
+<span class="eqno">(77)<a class="headerlink" href="#equation-de94b73a-4726-4a6e-83e3-ba709eac5c5c" title="Permalink to this equation">#</a></span>\[\begin{align}
+\bar{w}(t) \approx c_1(0)exp(\frac{\lambda_1 t}{\tau})\bar{e}_1
+\end{align}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda_1\)</span> is the largest eigenvalue.</p>
+<p>So we find that the weight vector is proportional to the first eigenvector of the covariance matrix of the inputs:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-6187cba9-b7de-4328-a8e7-66dd04f32dd3">
+<span class="eqno">(78)<a class="headerlink" href="#equation-6187cba9-b7de-4328-a8e7-66dd04f32dd3" title="Permalink to this equation">#</a></span>\[\begin{align}
+\bar{w}(t) \propto \bar{e}_1
+\end{align}\]</div>
+<p>By definition, the first eigenvector of the covariance matrix of the inputs is the first principal component!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">.6</span><span class="o">*</span><span class="n">t_vec</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">.9</span><span class="o">*</span><span class="n">t_vec</span><span class="p">),</span> <span class="s1">&#39;g&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.7.15/x64/lib/python3.7/site-packages/ipykernel_launcher.py:3: RuntimeWarning: overflow encountered in exp
+  This is separate from the ipykernel package so we can avoid doing imports until
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fc27bfe0bd0&gt;]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.7.15/x64/lib/python3.7/site-packages/matplotlib/ticker.py:2073: RuntimeWarning: overflow encountered in multiply
+  steps = self._extended_steps * scale
+</pre></div>
+</div>
+<img alt="../_images/HebbianLearning_22_3.png" src="../_images/HebbianLearning_22_3.png" />
+</div>
+</div>
+</section>
+<section id="section-2-3-interpretation-of-hebbian-learning-pca">
+<h2>Section 2.3: Interpretation of Hebbian Learning &amp; PCA<a class="headerlink" href="#section-2-3-interpretation-of-hebbian-learning-pca" title="Permalink to this headline">#</a></h2>
+<p>So the weight vector learned is the first principal component of the input data. We proved it for the covariance-based rule, but this is also true for the other two learning rules (although those assume that each input neuron has mean 0 firing rate so allows negative firing rates). This is the optimal choice for the weight vector if each input data point is represented by and reconstructed by a single number.</p>
+<p>Remember that we project onto the first principal component by taking the dot product of that component and the input vector. This is what the output neuron is doing if the weight vector is the first principal component!</p>
+<p>Remember from linear algebra that the length of the projection of the input vector onto the weight vector is given by:  <span class="math notranslate nohighlight">\(||proj_{\bar{w}}\bar{u}|| = \frac{\bar{w}\cdot\bar{u}}{||\bar{w}||}\)</span>.</p>
+<p>So the output neuron is computing the length of the projection of the inputs onto the weight vector times the length of the weight vector. So, it’s computing something proportional to the length of the projection of the inputs onto the first principal component. Essentially, the output firing rate tells you how far along that weight vector/first principal component the data point is. This is the best possible representation of the input data using only one number per data point - it explains the maximal variance in the input data and leads to the best reconstructions of the data. So the neuron is representing the input data as efficiently and well as possible by being a principal component analyzer!</p>
+<p>Let’s go back to our simulation from Section 2.1 and look at the output firing rate for a couple inputs. The inputs are now color coded and we show the projection of each input onto the weight vector. The output firing rate will equal the distance from the origin to that projected point, times the length of the weight vector.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">u</span><span class="p">[:</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">u</span><span class="p">[:</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span> <span class="o">=</span> <span class="n">colors</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;jet&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;-r&#39;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;-or&#39;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Learned weights&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;$u_1$&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;$u_2$&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Inputs &amp; weight vector&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">projected_lengths</span> <span class="o">=</span> <span class="n">u</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span> <span class="o">@</span> <span class="n">w</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> 
+<span class="n">projected_points</span> <span class="o">=</span> <span class="n">projected_lengths</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">projected_points</span><span class="p">[:</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">projected_points</span><span class="p">[:</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span> <span class="o">=</span> <span class="n">colors</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;jet&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;-r&#39;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;-or&#39;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Learned weights&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;$u_1$&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;$u_2$&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Projected inputs&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">output_firing_rates</span> <span class="o">=</span> <span class="n">u</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span> <span class="o">@</span> <span class="n">w</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="p">)),</span> <span class="n">output_firing_rates</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">colors</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;jet&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;$v$&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Output firing rate&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Text(0, 0.5, &#39;$v$&#39;), Text(0.5, 1.0, &#39;Output firing rate&#39;)]
+</pre></div>
+</div>
+<img alt="../_images/HebbianLearning_25_1.png" src="../_images/HebbianLearning_25_1.png" />
+</div>
+</div>
+<p>Since we know the output firing rate and the weight vector, we could reconstruct the data point to its place in the middle column from just the output firing rate - which is as good a reconstruction as we can get in this context.</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="section-3-grid-cell-example">
+<h1>Section 3: Grid cell example<a class="headerlink" href="#section-3-grid-cell-example" title="Permalink to this headline">#</a></h1>
+<p>TBD</p>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "ebatty/IntroCompNeuro",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./Notes"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="IntrotoNeuralNetworks.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Intro to Neural Networks</p>
+        </div>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Ella Batty<br/>
+  
+      &copy; Copyright 2021.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

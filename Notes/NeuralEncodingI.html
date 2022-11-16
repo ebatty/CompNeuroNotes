@@ -176,6 +176,11 @@ const thebe_selector_output = ".output, .cell_output"
    Intro to Neural Networks
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="HebbianLearning.html">
+   Hebbian &amp; Unsupervised Learning
+  </a>
+ </li>
 </ul>
 
     </div>
@@ -673,22 +678,22 @@ y_t \sim
 <p>We are using an exponential nonlinearity.</p>
 <div class="tip dropdown admonition">
 <p class="admonition-title"><strong>Stop and think!</strong> What is the predicted firing rate, <span class="math notranslate nohighlight">\(\lambda\)</span> for time bins 3 and after based on the above numbers? </p>
-<div class="amsmath math notranslate nohighlight" id="equation-16926823-fd15-4a7f-b188-b5efeb0c01bf">
-<span class="eqno">(17)<a class="headerlink" href="#equation-16926823-fd15-4a7f-b188-b5efeb0c01bf" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f4641180-a6a6-4e7c-9a4d-aa69765f6d21">
+<span class="eqno">(17)<a class="headerlink" href="#equation-f4641180-a6a6-4e7c-9a4d-aa69765f6d21" title="Permalink to this equation">#</a></span>\[\begin{align}
 \lambda_3 &amp;= e^{x_3 \cdot k}\\
 &amp;= e^{[5, -1, 4] \cdot [.3, 1, .4]}\\
 &amp;= e^{2.1} \\
 &amp;= 8.16
 \end{align}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-503ec4c9-3f83-4b9e-9024-849e9c2ced73">
-<span class="eqno">(18)<a class="headerlink" href="#equation-503ec4c9-3f83-4b9e-9024-849e9c2ced73" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f2e95e7f-094b-4787-8f14-be827889b57f">
+<span class="eqno">(18)<a class="headerlink" href="#equation-f2e95e7f-094b-4787-8f14-be827889b57f" title="Permalink to this equation">#</a></span>\[\begin{align}
 \lambda_4 &amp;= e^{x_4 \cdot k}\\
 &amp;= e^{[-1, 4, 0] \cdot [.3, 1, .4]}\\
 &amp;= e^{3.7} \\
 &amp;= 40.45
 \end{align}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-75a9aef3-832b-4130-b646-6e7ce517a909">
-<span class="eqno">(19)<a class="headerlink" href="#equation-75a9aef3-832b-4130-b646-6e7ce517a909" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-e2389d43-fed0-43fe-9f03-13d7d45fa022">
+<span class="eqno">(19)<a class="headerlink" href="#equation-e2389d43-fed0-43fe-9f03-13d7d45fa022" title="Permalink to this equation">#</a></span>\[\begin{align}
 \lambda_5 &amp;= e^{x_4 \cdot k}\\
 &amp;= e^{[4, 0, 2] \cdot [.3, 1, .4]}\\
 &amp;= e^{2} \\

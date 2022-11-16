@@ -176,6 +176,11 @@ const thebe_selector_output = ".output, .cell_output"
    Intro to Neural Networks
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="HebbianLearning.html">
+   Hebbian &amp; Unsupervised Learning
+  </a>
+ </li>
 </ul>
 
     </div>
@@ -786,19 +791,19 @@ P_o = 0.75\end{split}\]</div>
 <section id="section-2-2-1-linear-homogenous-system">
 <h3>Section 2.2.1: Linear homogenous system<a class="headerlink" href="#section-2-2-1-linear-homogenous-system" title="Permalink to this headline">#</a></h3>
 <p>Let’s assume we have two differential equations of the form:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-10471330-64bc-47a5-982a-18d34b93503a">
-<span class="eqno">(27)<a class="headerlink" href="#equation-10471330-64bc-47a5-982a-18d34b93503a" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-1cbd1955-ade9-4ca5-9ce0-321818cefac7">
+<span class="eqno">(27)<a class="headerlink" href="#equation-1cbd1955-ade9-4ca5-9ce0-321818cefac7" title="Permalink to this equation">#</a></span>\[\begin{align}
 \frac{dx_1}{dt} &amp;= a_1x_1 + a_2x_2\\
 \frac{dx_2}{dt} &amp;= b_1x_1 + b_2x_2
 \end{align}\]</div>
 <p>We can write this using matrix-vector notation:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-26cccbda-cb1a-48e0-9406-d1316a0e3ec6">
-<span class="eqno">(28)<a class="headerlink" href="#equation-26cccbda-cb1a-48e0-9406-d1316a0e3ec6" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-aa595772-da62-4ab9-a2c5-af0f72023048">
+<span class="eqno">(28)<a class="headerlink" href="#equation-aa595772-da62-4ab9-a2c5-af0f72023048" title="Permalink to this equation">#</a></span>\[\begin{align}
 \frac{d\bar{x}}{dt} = A\bar{x}
 \end{align}\]</div>
 <p>where</p>
-<div class="amsmath math notranslate nohighlight" id="equation-fa18d45e-d9e4-4ffe-b20c-84a1b120a332">
-<span class="eqno">(29)<a class="headerlink" href="#equation-fa18d45e-d9e4-4ffe-b20c-84a1b120a332" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-8e70770b-ba7d-4069-84fa-d180bcc84205">
+<span class="eqno">(29)<a class="headerlink" href="#equation-8e70770b-ba7d-4069-84fa-d180bcc84205" title="Permalink to this equation">#</a></span>\[\begin{align}
 A = \begin{bmatrix}a_1 &amp; a_2 \\ b_1 &amp; b_2\end{bmatrix}
 \end{align}\]</div>
 <p>This is a linear homogenous system.</p>
@@ -821,14 +826,14 @@ A = \begin{bmatrix}a_1 &amp; a_2 \\ b_1 &amp; b_2\end{bmatrix}
 <section id="section-2-2-2-linear-nonhomogenous-system">
 <h3>Section 2.2.2: Linear nonhomogenous system<a class="headerlink" href="#section-2-2-2-linear-nonhomogenous-system" title="Permalink to this headline">#</a></h3>
 <p>Let’s say you have a very similar system but you have constants added to both differential equations:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e2462a36-ef7d-45bf-8b8e-34a76044e86b">
-<span class="eqno">(30)<a class="headerlink" href="#equation-e2462a36-ef7d-45bf-8b8e-34a76044e86b" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-b8e40982-750a-4e9e-8612-b714c1f6ec1a">
+<span class="eqno">(30)<a class="headerlink" href="#equation-b8e40982-750a-4e9e-8612-b714c1f6ec1a" title="Permalink to this equation">#</a></span>\[\begin{align}
 \frac{dx_1}{dt} &amp;= a_1x_1 + a_2x_2 + c_1\\
 \frac{dx_2}{dt} &amp;= b_1x_1 + b_2x_2 + c_2
 \end{align}\]</div>
 <p>We can write this using matrix-vector notation:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c1335544-e1b4-4ce1-bc32-919002213070">
-<span class="eqno">(31)<a class="headerlink" href="#equation-c1335544-e1b4-4ce1-bc32-919002213070" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-4a03c098-fced-45c7-9aaf-6437156bacdd">
+<span class="eqno">(31)<a class="headerlink" href="#equation-4a03c098-fced-45c7-9aaf-6437156bacdd" title="Permalink to this equation">#</a></span>\[\begin{align}
 \frac{d\bar{x}}{dt} = A\bar{x} + \bar{c}
 \end{align}\]</div>
 <p>The origin is no longer necessarily a fixed point. Instead, we can compute a new fixed point <span class="math notranslate nohighlight">\(\bar{x_C}\)</span> that results in</p>
@@ -838,16 +843,16 @@ A = \begin{bmatrix}a_1 &amp; a_2 \\ b_1 &amp; b_2\end{bmatrix}
 <section id="section-2-2-3-nonhomogenous-systems">
 <h3>Section 2.2.3: Nonhomogenous systems<a class="headerlink" href="#section-2-2-3-nonhomogenous-systems" title="Permalink to this headline">#</a></h3>
 <p>Let’s say we have more complex differential equations:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-cb89de74-8657-4fbd-be87-cad1ada73dbe">
-<span class="eqno">(32)<a class="headerlink" href="#equation-cb89de74-8657-4fbd-be87-cad1ada73dbe" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-11a7f933-9c61-43f6-9d7b-6d6247b8b068">
+<span class="eqno">(32)<a class="headerlink" href="#equation-11a7f933-9c61-43f6-9d7b-6d6247b8b068" title="Permalink to this equation">#</a></span>\[\begin{align}
 \frac{dx_1}{dt} &amp;= F(x_1, x_2)\\
 \frac{dx_2}{dt} &amp;= G(x_1, x_2)
 \end{align}\]</div>
 <p>where <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(G\)</span> are some complex functions. This system could have any number of fixed points.</p>
 <p>This system is more complicated that the simple case in Section 2.2.1, but we can still use the information there.</p>
 <p>First, we need to find the fixed points of this system. It turns out that we can approximate the system near each fixed point as a more simple system:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-42c332c2-9d37-4e76-be90-29677549646b">
-<span class="eqno">(33)<a class="headerlink" href="#equation-42c332c2-9d37-4e76-be90-29677549646b" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-75250811-ff84-4710-b21c-217cb11be37e">
+<span class="eqno">(33)<a class="headerlink" href="#equation-75250811-ff84-4710-b21c-217cb11be37e" title="Permalink to this equation">#</a></span>\[\begin{align}
 \frac{d\bar{x}}{dt} = J\bar{x}
 \end{align}\]</div>
 <p>where <span class="math notranslate nohighlight">\(J\)</span> is the Jacobian of the system, the matrix of partial derivatives:</p>
